@@ -1,0 +1,83 @@
+.bg-image {
+  background: url("./images/vector-background-with-decorative-puppy-icons.jpg")
+    no-repeat center center/cover;
+  opacity: 50%;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: -1;
+}
+
+.homepage-container {
+  margin: auto;
+  display: flex;
+}
+
+.homepage-text {
+  color: #2f4f4f;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin: auto;
+}
+
+.navbar {
+  background-color: #2f4f4f;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 2rem;
+  top: 0;
+  border-bottom: solid 1px #2f4f4f;
+  opacity: 0.9;
+}
+
+.container {
+  max-width: 1200px;
+  position: relative;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+  margin-top: 10px;
+}
+
+.sidebar-container {
+  margin-left: auto;
+  margin-right: auto;
+  overflow: auto;
+  margin-left: 230px;
+  padding-top: 70px;
+  height: 100vh;
+  text-align: center;
+  background-color: #fff;
+  margin-bottom: 20px;
+}
+.sidebar-container .form {
+  margin-left: auto;
+  margin-right: auto;
+}
+.xx-large {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.x-large {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.large {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+}
+.headers {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.p-content {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.text-primary {
+  color: #310b04;
+}

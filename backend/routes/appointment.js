@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
-
 const Appointment = require('../models/Appointment');
-const Customer = require('../models/OnlineCustomer');
 
 // @route   POST api/appointments
 // @desc    Create Appointments
@@ -36,7 +34,7 @@ router.post(
 
     try {
       //Create record
-      appointment = new Appointment(appointmentFields);
+      const appointment = new Appointment(appointmentFields);
       await appointment.save();
       res.json(appointment);
 
@@ -55,7 +53,7 @@ router.get('/my-appointments', auth, async (req, res) => {
     const userId = req.user.id;
     const appointments = await Appointment.find({
       customer: userId,
-    }).populate('customer', ['name', 'contact', 'email']);
+    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name']);
 
     if (!appointments) {
       return res.status(400).json({ msg: 'You have not made any Appointments' });
@@ -77,7 +75,7 @@ router.get('/:customer_id', auth, async (req, res) => {
   try {
     const appointments = await Appointment.find({
       customer: req.params.customer_id,
-    }).populate('customer', ['name', 'contact', 'email'])
+    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
     if (!appointments) {
       return res.status(400).json({ msg: 'You have not made any Appointments' });
     }
@@ -96,7 +94,7 @@ router.get('/:customer_id', auth, async (req, res) => {
 // @access  private
 router.get('/', auth, async (req, res) => {
   try {
-    const appointments = await Appointment.find().populate('customer', ['name', 'contact', 'email'])
+    const appointments = await Appointment.find().populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
     res.json(appointments);
   } catch (err) {
     console.error(err.message);
@@ -111,7 +109,7 @@ router.get('/:appointment_id', auth, async (req, res) => {
   try {
     const appointment = await Appointment.findOne({
       _id: req.params.appointment_id,
-    }).populate('customer', ['name', 'contact', 'email'])
+    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
     if (!appointment) {
       return res.status(400).json({ msg: 'Appointment Details Not Found' });
     }
@@ -163,7 +161,10 @@ router.put(
       name,
       contact,
       email,
-      animal,
+      species,
+      breed,
+      gender,
+      animalName,
       isAttended,
     } = req.body;
 
@@ -175,7 +176,10 @@ router.put(
     if (isAttended) appointmentFields.isAttended = isAttended;
     if (scheduleDate) appointmentFields.scheduleDate = scheduleDate;
     if (scheduleTime) appointmentFields.scheduleTime = scheduleTime;
-    if (animal) appointmentFields.animal = animal;
+    if (animalName) appointmentFields.animalName = animalName;
+    if (species) appointmentFields.species = species;
+    if (breed) appointmentFields.breed = breed;
+    if (gender) appointmentFields.gender = gender;
     if (remarks) appointmentFields.remarks = remarks;
 
     try {
