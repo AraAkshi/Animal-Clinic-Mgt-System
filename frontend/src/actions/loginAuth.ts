@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAlert } from './alert';
+import { setAlert } from './alerts';
 import {
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
@@ -32,7 +32,7 @@ export const loadUser = () => async (dispatch: any) => {
 };
 
 //Login User
-export const clientLogin = (email: string, password: string) => async (
+export const userLogin = (email: string, password: string) => async (
 	dispatch: any
 ) => {
 	const config = {

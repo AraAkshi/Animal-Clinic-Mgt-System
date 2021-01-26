@@ -7,3 +7,7 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGOUT = 'LOGOUT';
+export const GET_CUSTOMER = 'GET_CUSTOMER';
+export const GET_CUSTOMERS = 'GET_CUSTOMERS';
+export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
+export const DELETE_CUSTOMER = 'DELETE_CUSTOMER';

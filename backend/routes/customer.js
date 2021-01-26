@@ -1,17 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
-const Customer = require('../models/Customer');
+const { check, validationResult } = require("express-validator");
+const Customer = require("../models/Customer");
+const auth = require("../middleware/auth");
+const checkObjectId = require("../middleware/checkObjectId");
 
 // @route   POST api/customers
 // @desc    Register user
 // @access  Public
 router.post(
-  '/',
+  "/",
   [
-    check('name', 'Name is required').not().isEmpty(),
-    check('contact', 'Contact No is required').not().isEmpty(),
-    check('email', 'Please include a valid email').isEmail(),
+    check("name", "Name is required").not().isEmpty(),
+    check("contact", "Contact No is required").not().isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -24,28 +26,29 @@ router.post(
       let customer = await Customer.findOne({ email });
       //Check if user already exists
       if (customer) {
-        return res.status(400).json({ errors: [{ msg: 'User already exists!' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User already exists!" }] });
       }
       customer = new Customer({ name, email, address, contact });
       await customer.save();
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
-)
+);
 
 // @route    GET api/customer/me
 // @desc     Get current users customer
 // @access   Private
-router.get('/me', auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
   try {
-    const customer = await Customer.findOne({ _id: req.user.id })
+    const customer = await Customer.findOne({ _id: req.user.id });
     res.json(customer);
-
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
@@ -53,17 +56,17 @@ router.get('/me', auth, async (req, res) => {
 // @desc     Get customer by user ID
 // @access   Private
 router.get(
-  '/:customer_id',
-  checkObjectId('customer_id'),
+  "/:customer_id",
+  checkObjectId("customer_id"),
   async ({ params: { customer_id } }, res) => {
     try {
-      const customer = await Customer.findOne({ _id: customer_id })
+      const customer = await Customer.findOne({ _id: customer_id });
 
-      if (!customer) return res.status(400).json({ msg: 'customer not found' });
+      if (!customer) return res.status(400).json({ msg: "customer not found" });
       return res.json(customer);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).json({ msg: 'Server error' });
+      return res.status(500).json({ msg: "Server error" });
     }
   }
 );
@@ -71,20 +74,20 @@ router.get(
 // @route    GET api/customer
 // @desc     Get all customers
 // @access   Private
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const customers = await Customer.find()
+    const customers = await Customer.find();
     res.json(customers);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route   POST api/customers
 // @desc    Update customer
 // @access  private
-router.post('/:customer_id', auth, async (req, res) => {
+router.post("/:customer_id", auth, async (req, res) => {
   const { name, email, contact, address } = req.body;
 
   const customerFields = {};
@@ -107,21 +110,21 @@ router.post('/:customer_id', auth, async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route    DELETE api/customer
 // @desc     Delete user
 // @access   Private
-router.delete('/:customer_id', auth, async (req, res) => {
+router.delete("/:customer_id", auth, async (req, res) => {
   try {
     //Remove User
     await Customer.findOneAndRemove({ _id: req.params.customer_id });
-    res.json({ msg: 'User deleted' });
+    res.json({ msg: "User deleted" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 

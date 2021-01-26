@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const TreatmentSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'customers'
+    ref: "customers",
   },
   animal: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'animals'
+    ref: "animals",
   },
   treatmentType: {
-    type: String
+    type: String,
   },
   decription: {
     type: String,
@@ -22,9 +22,9 @@ const TreatmentSchema = new mongoose.Schema({
   timeReceived: {
     type: Date,
   },
+  nextTreatmentDate: {
+    type: Date,
+  },
 });
 
-module.exports = Treatment = mongoose.model(
-  'treatments',
-  TreatmentSchema
-);
+module.exports = Treatment = mongoose.model("treatments", TreatmentSchema);

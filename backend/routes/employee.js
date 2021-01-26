@@ -1,21 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../../middleware/auth');
-const checkObjectId = require('../../middleware/checkObjectId');
-const { check, validationResult } = require('express-validator');
-const Employee = require('../models/Employee');
+const auth = require("../middleware/auth");
+const checkObjectId = require("../middleware/checkObjectId");
+const { check, validationResult } = require("express-validator");
+const Employee = require("../models/Employee");
 
 // @route   POST api/employees
 // @desc    Add/Update employees
 // @access  Private
 router.post(
-  '/',
-  [auth,
+  "/",
+  [
+    auth,
     [
-      check('nic', 'Please enter a valid NIC number').isLength({ min: 10 }),
-      check('name', 'Name is required').not().isEmpty(),
-      check('email', 'Please include a valid email').isEmail(),
-      check('contact', 'Contact No is required').not().isEmpty(),
+      check("nic", "Please enter a valid NIC number").isLength({ min: 10 }),
+      check("name", "Name is required").not().isEmpty(),
+      check("email", "Please include a valid email").isEmail(),
+      check("contact", "Contact No is required").not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -53,7 +54,7 @@ router.post(
       return res.json(employee);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
 );
@@ -62,17 +63,17 @@ router.post(
 // @desc     Get employee by employee ID
 // @access   Private
 router.get(
-  '/:employee_id',
-  checkObjectId('employee_id'),
+  "/:employee_id",
+  checkObjectId("employee_id"),
   async ({ params: { employee_id } }, res) => {
     try {
       const employee = await Employee.findOne({ _id: employee_id });
 
-      if (!employee) return res.status(400).json({ msg: 'Employee not found' });
+      if (!employee) return res.status(400).json({ msg: "Employee not found" });
       return res.json(profile);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).json({ msg: 'Server error' });
+      return res.status(500).json({ msg: "Server error" });
     }
   }
 );
@@ -80,27 +81,27 @@ router.get(
 // @route    GET api/employees
 // @desc     Get all employees
 // @access   Private
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const employees = await Employee.find();
     res.json(employees);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 // @route    DELETE api/employee
 // @desc     Delete employee
 // @access   Private
-router.delete('/:employee_id', auth, async (req, res) => {
+router.delete("/:employee_id", auth, async (req, res) => {
   try {
     //Remove employee
     await Employee.findOneAndRemove({ _id: req.params.employee_id });
-    res.json({ msg: 'Employee deleted' });
+    res.json({ msg: "Employee deleted" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 

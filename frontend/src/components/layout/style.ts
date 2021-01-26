@@ -5,11 +5,23 @@ export const useStyles = makeStyles((theme: Theme) =>
 		navbar: {
 			backgroundColor: '#2f4f4f',
 			display: 'flex',
+			justifyItems:'space-between',
+			position:'fixed',
 			justifyContent: 'space-between',
 			padding: '0.3rem 2rem',
-			top: 0,
+			top: -5,
+			left:0,
+			height:'10vh',
 			borderBottom: 'solid 1px #2f4f4f',
-			opacity: 0.9,
+		},
+
+		homepageText: {
+			color: '#2f4f4f',
+			// color: '#333',
+			// fontFamily: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,
+			fontWeight:"bold",
+			textAlign: 'center',
+		marginTop:'7rem'
 		},
 
 		main: {
@@ -62,6 +74,26 @@ export const useStyles = makeStyles((theme: Theme) =>
 			backgroundColor: '#12327C',
 			fontFamily: 'arial',
 			fontSize: '1vw',
+		},
+
+		drawerHeader: {
+			display: 'flex',
+			alignItems: 'center',
+			padding: '0 1rem',
+			// padding: theme.spacing(0, 1),
+			// // necessary for content to be below app bar
+			// ...theme.mixins.toolbar,
+			justifyContent: 'flex-end',
+		},
+
+		
+		drawer: {
+			width: 240,
+			flexShrink: 0,
+		},
+
+		drawerPaper: {
+			width: 240,
 		},
 	})
 );

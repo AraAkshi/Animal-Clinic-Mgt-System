@@ -1,0 +1,176 @@
+import React, { Fragment, useState } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { setAlert } from "../actions/alerts";
+import { register } from "../actions/loginAuth";
+import Homepage from "./layout/Homepage";
+import PropTypes from "prop-types";
+import Alerts from "./layout/Alerts";
+import { Modal, Typography, TextField, Button, Grid } from "@material-ui/core";
+
+const Register = ({ setAlert, register, isAuthenticated }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+    contact: "",
+    password: "",
+    password2: "",
+  });
+
+  const [open, setOpen] = useState(true);
+  const { name, email, address, contact, password, password2 } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    if (password !== password2) {
+      setAlert("Passwords do not match", "danger");
+    } else {
+      register({ name, email, address, contact, password });
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    window.open("/", "_self");
+  };
+
+  if (isAuthenticated) {
+    return <Redirect to="/" />;
+  }
+
+  return (
+    <Fragment>
+      <Homepage />
+      <Modal
+        open={open}
+        onClose={handleClose}
+        style={{ height: "90vh", width: "40vw", margin: "auto" }}
+      >
+        <div className="loginModal">
+          <Typography variant="h4" align="center">
+            SIGN UP
+          </Typography>
+          <Typography variant="h6" align="center">
+            <i className="fas fa-user"></i>Create Your Account
+          </Typography>
+          <form className="form" onSubmit={(e) => onSubmit(e)}>
+            <Grid
+              container
+              direction="column"
+              spacing={1}
+              style={{ padding: "1rem" }}
+            >
+              <TextField
+                name="name"
+                label="Name"
+                value={name}
+                onChange={(e) => onChange(e)}
+                required
+                color="secondary"
+              />
+              <Typography variant="caption" color="textSecondary">
+                *Please enter your First Name and Last Name
+              </Typography>
+              <TextField
+                name="email"
+                label="Email"
+                value={email}
+                onChange={(e) => onChange(e)}
+                required
+                color="secondary"
+                style={{ marginTop: "1rem" }}
+              />
+              <TextField
+                name="address"
+                label="Address"
+                value={address}
+                onChange={(e) => onChange(e)}
+                multiline
+                rows={2}
+                color="secondary"
+                style={{ marginTop: "1rem" }}
+              />
+              <TextField
+                type="number"
+                name="contact"
+                label="Contact No"
+                value={contact}
+                onChange={(e) => onChange(e)}
+                required
+                minLength="10"
+                color="secondary"
+                style={{ marginTop: "1rem" }}
+              />
+              <TextField
+                type="password"
+                name="password"
+                label="Password"
+                value={password}
+                onChange={(e) => onChange(e)}
+                required
+                minLength="6"
+                color="secondary"
+                style={{ marginTop: "1rem" }}
+              />
+              <Typography variant="caption" color="textSecondary">
+                *Please enter a password of minimum length of 6 characters
+              </Typography>
+              <TextField
+                type="password"
+                name="password2"
+                label="Confirm Password"
+                value={password2}
+                onChange={(e) => onChange(e)}
+                required
+                minLength="6"
+                color="secondary"
+                style={{ marginTop: "1rem" }}
+              />
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              spacing={3}
+              justify="center"
+              style={{ padding: "1rem" }}
+            >
+              <Grid item>
+                <Button variant="contained" color="secondary">
+                  <input type="reset" style={{ display: "none" }} />
+                  RESET
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" color="secondary">
+                  <input type="submit" style={{ display: "none" }} />
+                  CONFIRM
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+          <Typography variant="subtitle1" align="center">
+            Already have an Account? <Link to="/login"> Sign In </Link>
+          </Typography>
+        </div>
+      </Modal>
+      <section className="container">{/* <Alerts /> */}</section>
+    </Fragment>
+  );
+};
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { setAlert, register })(Register);
