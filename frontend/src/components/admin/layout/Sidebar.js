@@ -1,6 +1,6 @@
-import { Button, Container } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
+import Footer from "./Footer";
 
 function Sidebar() {
   return (
@@ -8,48 +8,48 @@ function Sidebar() {
       <div className="sidebar">
         <ul>
           <li>
-            <Button variant="text" href="/dashboard">
+            <Button variant="text" href="/admin/dashboard">
               DASHBOARD
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/sale-vehicles">
+            <Button variant="text" href="/admin/appointments">
               APPOINTMENTS
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/online-vehicles">
+            <Button variant="text" href="/admin/animals">
               ANIMALS
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/inquiries">
+            <Button variant="text" href="/admin/reminders">
               REMINDERS
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/appointments">
+            <Button variant="text" href="/admin/inventory">
               INVENTORY
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/reports">
+            <Button variant="text" href="/admin/reports">
               REPORTS
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/employees">
+            <Button variant="text" href="/admin/employees">
               EMPLOYEES
             </Button>
           </li>
           <li>
-            <Button variant="text" href="/employees">
+            <Button variant="text" href="/admin/customers">
               CUSTOMERS
             </Button>
           </li>
         </ul>
-      </div>
-    </div>
+        <Footer/>
+      </div></div>
   );
 }
 
