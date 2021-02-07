@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
-import { Link, Router } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { Fragment } from 'react';
+import { Link, Router } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   AppBar,
   Button,
@@ -14,44 +14,42 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import PetsIcon from "@material-ui/icons/Pets";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import InfoIcon from "@material-ui/icons/Info";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import HomeIcon from "@material-ui/icons/Home";
-import { useStyles } from "./style";
-import { logout } from "../../actions/loginAuth";
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import PetsIcon from '@material-ui/icons/Pets';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import InfoIcon from '@material-ui/icons/Info';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import HomeIcon from '@material-ui/icons/Home';
+import { useStyles } from './style';
+import { logout } from '../../actions/loginAuth';
 
 const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
   const classes = useStyles();
   const authLinks = (
     <ul>
-      <li>
-        <i className="fas fa-user"></i>{" "}
+      {/* <Button variant="text" size="small" color="secondary" href="/profile">
         <span className="hide-sm">{user && user.name}</span>
-      </li>
-      <li>
-        <a onClick={logout} href="#!">
-          <i className="fas fa-sign-out-alt"></i>{" "}
-          <span className="hide-sm">LOGOUT</span>
-        </a>
-      </li>
+      </Button> */}
+      <Button variant="contained" size="small" color="secondary" href="/">
+        Logout
+      </Button>
     </ul>
   );
   const guestLinks = (
     <ul>
-      <li>
-        <Button variant="contained" color="secondary" href="/login">
-          LOGIN
-        </Button>
-      </li>
-      <li>
-        <Button variant="contained" color="secondary" href="/register">
-          SIGN UP
-        </Button>
-      </li>
+      <Button variant="contained" size="small" color="secondary" href="/login">
+        LOGIN
+      </Button>
+      &nbsp; &nbsp;
+      <Button
+        variant="contained"
+        size="small"
+        color="secondary"
+        href="/register"
+      >
+        SIGN UP
+      </Button>
     </ul>
   );
 
@@ -69,24 +67,47 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
     <div style={{ flexGrow: 1 }}>
       <AppBar position="static" className={classes.navbar}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleDrawerOpen}>
-            <MenuIcon fontSize="large" />
+          <IconButton
+            style={{ marginLeft: '-2rem' }}
+            edge="start"
+            color="inherit"
+            onClick={handleDrawerOpen}
+          >
+            <MenuIcon />
           </IconButton>
-          <Typography variant="h5" style={{ flexGrow: 1, paddingLeft: "1rem" }}>
+          <Typography
+            variant="h5"
+            style={{
+              flexGrow: 1,
+              paddingLeft: '0.5rem',
+              fontFamily: 'Potta One',
+            }}
+          >
             <PetsIcon fontSize="large" />
-            &nbsp; SHANE &amp; SHAWN
+            SHANE &amp; SHAWN
           </Typography>
-          <Button variant="contained" color="secondary" href="/register">
+          {/* <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            href="/register"
+          >
             SIGN UP
           </Button>
-          {/* {!loading && (
-            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-          )} */}
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            href="/login"
+          >
+            LOGIN
+          </Button> */}
+          <div>{isAuthenticated ? authLinks : guestLinks}</div>
         </Toolbar>
       </AppBar>
       <Drawer
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.6)",
+          backgroundColor: 'rgba(255, 255, 255, 0.6)',
         }}
         className={classes.drawer}
         variant="persistent"
@@ -102,8 +123,8 @@ const Navbar = ({ auth: { user, isAuthenticated, loading }, logout }) => {
           </IconButton>
         </div>
         <Divider />
-        <List style={{ marginTop: "1rem" }}>
-          {["Home", "Servies", "Appointments", "About Us"].map(
+        <List style={{ marginTop: '1rem' }}>
+          {['Home', 'Servies', 'Appointments', 'About Us'].map(
             (text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>

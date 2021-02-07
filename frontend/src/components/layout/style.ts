@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: Theme) =>
 			justifyItems:'space-between',
 			position:'fixed',
 			justifyContent: 'space-between',
-			padding: '0.3rem 2rem',
+			padding: '0 1rem',
 			top: -5,
 			left:0,
 			height:'10vh',
@@ -18,10 +18,10 @@ export const useStyles = makeStyles((theme: Theme) =>
 		homepageText: {
 			color: '#2f4f4f',
 			// color: '#333',
-			// fontFamily: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,
+			fontFamily: 'Balsamiq Sans',
 			fontWeight:"bold",
 			textAlign: 'center',
-		marginTop:'7rem'
+			marginTop:'7rem'
 		},
 
 		main: {

@@ -6,15 +6,14 @@ const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
+const Customer = require('../models/Customer');
 
-// @route   GET api/loginAuth
+// @route   GET api/user
 // @desc    authenticate registered user
 // @access  Private
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select(
-      '-password'
-    );
+    const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -26,9 +25,11 @@ router.get('/', auth, async (req, res) => {
 // @desc    Register user
 // @access  Public
 router.post(
-  '/',
+  '/register',
   [
     check('email', 'Please include a valid email').isEmail(),
+    check('name', 'Name is required').not().isEmpty(),
+    check('contact', 'Contact No is required').not().isEmpty(),
     check(
       'password',
       'Please enter a password with 6 or more characters'
@@ -40,16 +41,24 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { role, email, password } = req.body;
-
+    const { role, email, password, name, address, contact } = req.body;
     //Check if user already exists
     try {
       let user = await User.findOne({ email });
       if (user) {
-        return res.status(400).json({ errors: [{ msg: 'Account already exists!' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Account already exists!' }] });
       }
 
+      //Create record in user table
       user = new User({ email, password, role });
+
+      //Create record in customer table
+      if (role === 'customer') {
+        customer = new Customer({ name, email, address, contact });
+        await customer.save();
+      }
 
       //Encrypt password
       const salt = await bcrypt.genSalt(10);
@@ -74,7 +83,7 @@ router.post(
   }
 );
 
-// @route   POST api/loginAuth
+// @route   POST api/user
 // @desc    Authenticate user & get token
 // @access  Public
 router.post(
@@ -90,9 +99,8 @@ router.post(
     }
 
     const { email, password } = req.body;
-
     try {
-      let user = await user.findOne({ email });
+      let user = await User.findOne({ email });
 
       if (!user) {
         return res.status(400).json({

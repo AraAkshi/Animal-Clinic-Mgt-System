@@ -1,22 +1,46 @@
-// import React from "react";
-// import PropTypes from "prop-types";
-// import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Snackbar } from '@material-ui/core';
 
-// const Alerts = ({ alerts }) =>
-//   alerts !== null &&
-//   alerts.length > 0 &&
-//   alerts.map((alerts) => (
-//     <div key={alerts.id} className={`alert alert-${alerts.alertType}`}>
-//       {alerts.msg}
-//     </div>
-//   ));
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-// Alerts.propTypes = {
-//   alerts: PropTypes.array.isRequired,
-// };
+const Alerts = ({ alerts }) => {
+  const [open, setOpen] = React.useState(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return (
+    alerts !== null &&
+    // alerts !== undefined &&
+    alerts.length > 0 &&
+    alerts.map((alerts) => (
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={alerts.alertType === 'danger' ? 'error' : alerts.alertType}
+        >
+          {alerts.msg}
+        </Alert>
+      </Snackbar>
+    ))
+  );
+};
 
-// const mapStateToProps = (state) => ({
-//   alerts: state.alerts,
-// });
+Alerts.propTypes = {
+  alerts: PropTypes.array.isRequired,
+};
 
-// export default connect(mapStateToProps)(Alerts);
+const mapStateToProps = (state) => ({
+  alerts: state.alerts,
+});
+
+export default connect(mapStateToProps)(Alerts);

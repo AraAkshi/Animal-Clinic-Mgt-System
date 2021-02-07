@@ -1,21 +1,21 @@
-import React, { Fragment, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { setAlert } from "../actions/alerts";
-import { register } from "../actions/loginAuth";
-import Homepage from "./layout/Homepage";
-import PropTypes from "prop-types";
-import Alerts from "./layout/Alerts";
-import { Modal, Typography, TextField, Button, Grid } from "@material-ui/core";
+import React, { Fragment, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { setAlert } from '../actions/alerts';
+import { register } from '../actions/loginAuth';
+import Homepage from './layout/Homepage';
+import PropTypes from 'prop-types';
+import Alerts from './layout/Alerts';
+import { Modal, Typography, TextField, Button, Grid } from '@material-ui/core';
 
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    address: "",
-    contact: "",
-    password: "",
-    password2: "",
+    name: '',
+    email: '',
+    address: '',
+    contact: '',
+    password: '',
+    password2: '',
   });
 
   const [open, setOpen] = useState(true);
@@ -28,15 +28,16 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     e.preventDefault();
 
     if (password !== password2) {
-      setAlert("Passwords do not match", "danger");
+      setAlert('Passwords do not match', 'danger');
     } else {
-      register({ name, email, address, contact, password });
+      const role = 'customer';
+      await register(role, email, password, name, address, contact);
     }
   };
 
   const handleClose = () => {
     setOpen(false);
-    window.open("/", "_self");
+    window.open('/', '_self');
   };
 
   if (isAuthenticated) {
@@ -45,14 +46,15 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 
   return (
     <Fragment>
+      <Alerts />
       <Homepage />
       <Modal
         open={open}
         onClose={handleClose}
-        style={{ height: "90vh", width: "40vw", margin: "auto" }}
+        style={{ height: '90vh', width: '40vw', margin: 'auto' }}
       >
         <div className="loginModal">
-          <Typography variant="h4" align="center">
+          <Typography variant="h5" align="center">
             SIGN UP
           </Typography>
           <Typography variant="h6" align="center">
@@ -63,10 +65,11 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
               container
               direction="column"
               spacing={1}
-              style={{ padding: "1rem" }}
+              style={{ padding: '1rem' }}
             >
               <TextField
                 name="name"
+                size="small"
                 label="Name"
                 value={name}
                 onChange={(e) => onChange(e)}
@@ -78,25 +81,28 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
               </Typography>
               <TextField
                 name="email"
+                size="small"
                 label="Email"
                 value={email}
                 onChange={(e) => onChange(e)}
                 required
                 color="secondary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: '0.5rem' }}
               />
               <TextField
                 name="address"
                 label="Address"
+                size="small"
                 value={address}
                 onChange={(e) => onChange(e)}
                 multiline
                 rows={2}
                 color="secondary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: '0.5rem' }}
               />
               <TextField
                 type="number"
+                size="small"
                 name="contact"
                 label="Contact No"
                 value={contact}
@@ -104,10 +110,11 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 required
                 minLength="10"
                 color="secondary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: '0.5rem' }}
               />
               <TextField
                 type="password"
+                size="small"
                 name="password"
                 label="Password"
                 value={password}
@@ -115,13 +122,14 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 required
                 minLength="6"
                 color="secondary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: '0.5rem' }}
               />
               <Typography variant="caption" color="textSecondary">
                 *Please enter a password of minimum length of 6 characters
               </Typography>
               <TextField
                 type="password"
+                size="small"
                 name="password2"
                 label="Confirm Password"
                 value={password2}
@@ -129,7 +137,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 required
                 minLength="6"
                 color="secondary"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: '0.5rem' }}
               />
             </Grid>
             <Grid
@@ -137,23 +145,27 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
               direction="row"
               spacing={3}
               justify="center"
-              style={{ padding: "1rem" }}
+              style={{ padding: '1rem' }}
             >
               <Grid item>
-                <Button variant="contained" color="secondary">
-                  <input type="reset" style={{ display: "none" }} />
+                <Button size="small" variant="contained" color="secondary">
+                  <input type="reset" style={{ display: 'none' }} />
                   RESET
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="secondary">
-                  <input type="submit" style={{ display: "none" }} />
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="secondary"
+                  onClick={onSubmit}
+                >
                   CONFIRM
                 </Button>
               </Grid>
             </Grid>
           </form>
-          <Typography variant="subtitle1" align="center">
+          <Typography variant="subtitle2" align="center">
             Already have an Account? <Link to="/login"> Sign In </Link>
           </Typography>
         </div>
