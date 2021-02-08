@@ -39,7 +39,13 @@ const Header = ({ auth: { user, isAuthenticated, loading }, logout }) => {
             <PetsIcon fontSize="large" />
             SHANE &amp; SHAWN
           </Typography>
-          <Button size="small" variant="contained" color="secondary" href="/">
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            href="/"
+            onClick={logout}
+          >
             LOGOUT
           </Button>
         </Toolbar>

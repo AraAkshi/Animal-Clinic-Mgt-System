@@ -1,18 +1,18 @@
-import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Homepage from "./components/layout/Homepage";
-import { Provider } from "react-redux";
-import store from "./store";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Dashboard from "./components/admin/pages/Dashboard";
-import Appointment from "./components/admin/pages/Appointment";
-import Animal from "./components/admin/pages/Animal";
-import Reminder from "./components/admin/pages/Reminder";
-import Inventory from "./components/admin/pages/Inventory";
-import Report from "./components/admin/pages/Report";
-import Employee from "./components/admin/pages/Employee";
-import Customer from "./components/admin/pages/Customer";
+import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Homepage from './components/layout/Homepage';
+import { Provider } from 'react-redux';
+import store from './store';
+import Login from './components/Login';
+import Register from './components/Register';
+import Dashboard from './components/admin/pages/Dashboard';
+import Appointment from './components/admin/pages/appointments/Appointment';
+import Animal from './components/admin/pages/Animal';
+import Reminder from './components/admin/pages/Reminder';
+import Inventory from './components/admin/pages/Inventory';
+import Report from './components/admin/pages/Report';
+import Employee from './components/admin/pages/Employee';
+import Customer from './components/admin/pages/Customer';
 
 function App() {
   return (
