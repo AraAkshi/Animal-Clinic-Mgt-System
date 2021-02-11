@@ -9,46 +9,46 @@ import {
   DELETE_CUSTOMER,
 } from './types';
 
-// //Add Customer
-// export const addCustomer = (name, email, address, contact) => async (
-//   dispatch
-// ) => {
-//   const config = {
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   };
+//Add Customer
+export const addCustomer = (name, email, address, contact) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-//   const formData = JSON.stringify({
-//     name,
-//     email,
-//     address,
-//     contact,
-//   });
-//   console.log(formData);
-//   try {
-//     const res = await axios.post(baseurl + '/api/customer', formData, config);
+  const formData = JSON.stringify({
+    name,
+    email,
+    address,
+    contact,
+  });
+  console.log(formData);
+  try {
+    const res = await axios.post(baseurl + '/api/customer', formData, config);
 
-//     dispatch({
-//       type: GET_CUSTOMER,
-//       payload: res.data,
-//     });
+    dispatch({
+      type: GET_CUSTOMER,
+      payload: res.data,
+    });
 
-//     dispatch(setAlert('Details Added Successfully', 'success'));
-//     // history.push(`/on-sale-vehicles`);
-//   } catch (err) {
-//     const errors = err.response.data.errors;
+    dispatch(setAlert('Details Added Successfully', 'success'));
+    // history.push(`/on-sale-vehicles`);
+  } catch (err) {
+    const errors = err.response.data.errors;
 
-//     if (errors) {
-//       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-//     }
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
 
-//     dispatch({
-//       type: CUSTOMER_ERROR,
-//       payload: { msg: err.response.statusText, status: err.response.status },
-//     });
-//   }
-// };
+    dispatch({
+      type: CUSTOMER_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
 
 //Get Logged User Details
 export const getMyAccount = () => async (dispatch) => {
