@@ -10,7 +10,7 @@ const Appointment = require('../models/Appointment');
 router.post(
   '/',
   [
-    auth,
+    // auth,
     [
       check('scheduleDate', 'Date is required').not().isEmpty(),
       check('scheduleTime', 'Time is required').not().isEmpty(),
@@ -21,10 +21,13 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { scheduleDate, scheduleTime, remarks, animal } = req.body;
-    const userId = req.user.id;
-
+    let userId;
+    if (req.body.user) {
+      userId = req.body.user._id;
+    } else {
+      userId = req.user.id;
+    }
     const appointmentFields = {};
     appointmentFields.customer = userId;
     if (scheduleDate) appointmentFields.scheduleDate = scheduleDate;
@@ -37,7 +40,6 @@ router.post(
       const appointment = new Appointment(appointmentFields);
       await appointment.save();
       res.json(appointment);
-
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -53,10 +55,14 @@ router.get('/my-appointments', auth, async (req, res) => {
     const userId = req.user.id;
     const appointments = await Appointment.find({
       customer: userId,
-    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name']);
+    })
+      .populate('customer', ['name', 'contact', 'email'])
+      .populate('animal', ['species', 'breed', 'gender', 'name']);
 
     if (!appointments) {
-      return res.status(400).json({ msg: 'You have not made any Appointments' });
+      return res
+        .status(400)
+        .json({ msg: 'You have not made any Appointments' });
     }
     res.json(appointments);
   } catch (err) {
@@ -75,9 +81,13 @@ router.get('/:customer_id', auth, async (req, res) => {
   try {
     const appointments = await Appointment.find({
       customer: req.params.customer_id,
-    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
+    })
+      .populate('customer', ['name', 'contact', 'email'])
+      .populate('animal', ['species', 'breed', 'gender', 'name']);
     if (!appointments) {
-      return res.status(400).json({ msg: 'You have not made any Appointments' });
+      return res
+        .status(400)
+        .json({ msg: 'You have not made any Appointments' });
     }
     res.json(appointments);
   } catch (err) {
@@ -90,11 +100,16 @@ router.get('/:customer_id', auth, async (req, res) => {
 });
 
 // @route   GET api/appointments
-// @desc    View all appointments
+// @desc    View all appointments of a day
 // @access  private
-router.get('/', auth, async (req, res) => {
+router.get('/:date', async (req, res) => {
+  console.log(req);
   try {
-    const appointments = await Appointment.find().populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
+    const appointments = await Appointment.find({
+      scheduleDate: req.params.date,
+    })
+      .populate('customer', ['name', 'contact', 'email'])
+      .populate('animal', ['species', 'breed', 'gender', 'name']);
     res.json(appointments);
   } catch (err) {
     console.error(err.message);
@@ -109,7 +124,9 @@ router.get('/:appointment_id', auth, async (req, res) => {
   try {
     const appointment = await Appointment.findOne({
       _id: req.params.appointment_id,
-    }).populate('customer', ['name', 'contact', 'email']).populate('animal', ['species', 'breed', 'gender', 'name'])
+    })
+      .populate('customer', ['name', 'contact', 'email'])
+      .populate('animal', ['species', 'breed', 'gender', 'name']);
     if (!appointment) {
       return res.status(400).json({ msg: 'Appointment Details Not Found' });
     }

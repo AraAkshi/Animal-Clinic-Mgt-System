@@ -25,7 +25,6 @@ export const addCustomer = (name, email, address, contact) => async (
     address,
     contact,
   });
-  console.log(formData);
   try {
     const res = await axios.post(baseurl + '/api/customer', formData, config);
 
@@ -33,7 +32,7 @@ export const addCustomer = (name, email, address, contact) => async (
       type: GET_CUSTOMER,
       payload: res.data,
     });
-
+    return res.data;
     dispatch(setAlert('Details Added Successfully', 'success'));
     // history.push(`/on-sale-vehicles`);
   } catch (err) {

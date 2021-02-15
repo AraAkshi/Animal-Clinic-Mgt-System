@@ -7,7 +7,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/admin/pages/Dashboard';
 import Appointment from './components/admin/pages/appointments/Appointment';
-import Animal from './components/admin/pages/Animal';
+import AddAppointment from './components/admin/pages/appointments/AddAppointment';
+import Animal from './components/admin/pages/animals/Animal';
+import AddAnimal from './components/admin/pages/animals/AddAnimal';
 import Reminder from './components/admin/pages/Reminder';
 import Inventory from './components/admin/pages/Inventory';
 import Report from './components/admin/pages/Report';
@@ -24,7 +26,13 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/admin/dashboard" component={Dashboard} />
           <Route exact path="/admin/appointments" component={Appointment} />
+          <Route
+            exact
+            path="/admin/appointments/add-appointment"
+            component={AddAppointment}
+          />
           <Route exact path="/admin/animals" component={Animal} />
+          <Route exact path="/admin/animals/add-animal" component={AddAnimal} />
           <Route exact path="/admin/reminders" component={Reminder} />
           <Route exact path="/admin/inventory" component={Inventory} />
           <Route exact path="/admin/reports" component={Report} />

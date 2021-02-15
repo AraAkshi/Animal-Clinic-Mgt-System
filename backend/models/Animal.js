@@ -15,7 +15,6 @@ const AnimalSchema = new mongoose.Schema({
   },
   breed: {
     type: String,
-    required: true,
   },
   gender: {
     type: String,
@@ -36,7 +35,4 @@ const AnimalSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Animal = mongoose.model(
-  'animals',
-  AnimalSchema
-);
+module.exports = Animal = mongoose.model('animals', AnimalSchema);

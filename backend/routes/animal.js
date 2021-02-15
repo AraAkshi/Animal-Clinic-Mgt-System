@@ -24,7 +24,16 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, gender, bloodGroup, dateOfBirth, specialRemarks, species, breed, customer } = req.body;
+    const {
+      name,
+      gender,
+      bloodGroup,
+      dateOfBirth,
+      specialRemarks,
+      species,
+      breed,
+      customer,
+    } = req.body;
 
     const animalFields = {};
     if (name) animalFields.name = name;
@@ -41,7 +50,6 @@ router.post(
       const animal = new Animal(animalFields);
       await animal.save();
       res.json(animal);
-
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -54,7 +62,11 @@ router.post(
 // @access  private
 router.get('/', auth, async (req, res) => {
   try {
-    const animal = await Animal.find().populate('customer', ['name', 'contact', 'email'])
+    const animal = await Animal.find().populate('customer', [
+      'name',
+      'contact',
+      'email',
+    ]);
     res.json(animal);
   } catch (err) {
     console.error(err.message);
@@ -69,7 +81,7 @@ router.get('/:animal_id', auth, async (req, res) => {
   try {
     const animal = await Animal.findOne({
       _id: req.params.animal_id,
-    }).populate('customer', ['name', 'contact', 'email'])
+    }).populate('customer', ['name', 'contact', 'email']);
     if (!animal) {
       return res.status(400).json({ msg: 'Animal Details Not Found' });
     }
@@ -124,7 +136,7 @@ router.put(
       species,
       breed,
       gender,
-      customer
+      customer,
     } = req.body;
 
     const animalFields = {};

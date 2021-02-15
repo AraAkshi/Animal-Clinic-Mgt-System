@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const CustomerSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
-    unique: true
+    unique: true,
   },
   name: {
     type: String,
@@ -23,7 +22,4 @@ const CustomerSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Customer = mongoose.model(
-  'customers',
-  CustomerSchema
-);
+module.exports = Customer = mongoose.model('customers', CustomerSchema);

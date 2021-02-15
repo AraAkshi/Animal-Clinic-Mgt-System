@@ -1,62 +1,72 @@
 import { Backdrop, Modal, TextField, Button, Grid } from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import React, { useState } from 'react';
 import { setAlert } from '../../../../actions/alerts';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addCustomer } from '../../../../actions/customer';
-import { addAppointment, formatDate } from '../../../../actions/appointment';
+import { addAnimal } from '../../../../actions/animal';
 import Alerts from '../../../layout/Alerts';
-import Appointment from './Appointment';
+import Animal from './Animal';
+import { getCustomers } from '../../../../actions/customer';
+import { getAnimalTypes } from '../../../../actions/animalType';
 
-const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
+const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
   const [open, setOpen] = useState(true);
+  const customers = async () => await getCustomers();
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
-    address: '',
-    contact: '',
-    scheduleDate: '2021-01-01',
-    scheduleTime: '00:00',
-    animal: '',
-    remarks: '',
+    species: '',
+    breed: '',
+    gender: '',
+    bloodGroup: '',
+    dateOfBirth: '',
+    specialRemarks: '',
+    customer: '',
   });
 
   const {
     name,
-    email,
-    address,
-    contact,
-    scheduleDate,
-    scheduleTime,
-    animal,
-    remarks,
+    species,
+    breed,
+    gender,
+    bloodGroup,
+    dateOfBirth,
+    specialRemarks,
+    customer,
   } = formData;
 
   const onChange = (e) => {
-    const value =
-      e.target.name === 'scheduleDate'
-        ? formatDate(e.target.value)
-        : e.target.value;
-    setFormData({ ...formData, [e.target.name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const resetForm = () => {
     setFormData({
       name: '',
-      email: '',
-      address: '',
-      contact: '',
-      scheduleDate: '2021-01-01',
-      scheduleTime: '00:00',
-      animal: '',
-      remarks: '',
+      species: '',
+      breed: '',
+      gender: '',
+      bloodGroup: '',
+      dateOfBirth: '',
+      specialRemarks: '',
+      customer: '',
     });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const user = await addCustomer(name, email, address, contact);
-    await addAppointment({ scheduleDate, scheduleTime, remarks, animal, user });
+    await addAnimal({
+      name,
+      species,
+      breed,
+      gender,
+      bloodGroup,
+      dateOfBirth,
+      specialRemarks,
+      customer,
+    });
     setOpen(false);
   };
 
@@ -67,7 +77,7 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
   return (
     <div>
       <Alerts />
-      <Appointment />
+      <Animal />
       <Modal
         open={open}
         onClose={handleClose}
@@ -87,31 +97,54 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
               <TextField
                 name="name"
                 size="small"
-                label="Full Name"
+                label="Pet Name"
                 value={name}
                 onChange={(e) => onChange(e)}
                 required
               />
               <TextField
-                name="email"
+                name="species"
                 size="small"
-                label="Email"
-                value={email}
+                label="Pet Type"
+                value={species}
                 onChange={(e) => onChange(e)}
                 style={{ marginTop: '0.5rem' }}
                 required
               />
               <TextField
-                name="address"
-                label="Address"
+                name="breed"
+                label="Breed"
                 size="small"
-                value={address}
+                value={breed}
                 onChange={(e) => onChange(e)}
-                multiline
-                rows={2}
                 style={{ marginTop: '0.5rem' }}
               />
-              <TextField
+              <FormLabel component="legend" style={{ marginTop: '0.5rem' }}>
+                Gender
+              </FormLabel>
+              <RadioGroup
+                name="gender"
+                value={gender}
+                row
+                onChange={(e) => onChange(e)}
+              >
+                <FormControlLabel
+                  value="female"
+                  control={<Radio />}
+                  label="Female"
+                />
+                <FormControlLabel
+                  value="male"
+                  control={<Radio />}
+                  label="Male"
+                />
+                <FormControlLabel
+                  value="other"
+                  control={<Radio />}
+                  label="Other"
+                />
+              </RadioGroup>
+              {/*<TextField
                 type="number"
                 size="small"
                 name="contact"
@@ -122,15 +155,12 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 minLength="10"
                 style={{ marginTop: '0.5rem' }}
               />
-              <TextField
+               <TextField
                 type="date"
                 size="small"
                 name="scheduleDate"
                 label="Appointment Date"
                 value={scheduleDate}
-                inputProps={{
-                  min: `${new Date().toISOString().split('T')[0]}`,
-                }}
                 onChange={(e) => onChange(e)}
                 required
                 minLength="6"
@@ -167,7 +197,7 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 rows={2}
                 minLength="6"
                 style={{ marginTop: '0.5rem' }}
-              />
+              /> */}
             </Grid>
             <Grid
               container
@@ -204,15 +234,16 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
   );
 };
 
-AddAppointment.propTypes = {
+AddAnimal.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  addCustomer: PropTypes.func.isRequired,
-  addAppointment: PropTypes.func.isRequired,
+  addAnimal: PropTypes.func.isRequired,
+  getCustomers: PropTypes.func.isRequired,
+  getAnimalTypes: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
   setAlert,
-  addCustomer,
-  addAppointment,
-})(AddAppointment);
-// export default AddAppointment;
+  addAnimal,
+  getCustomers,
+  getAnimalTypes,
+})(AddAnimal);
