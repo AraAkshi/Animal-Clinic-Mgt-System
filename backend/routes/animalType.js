@@ -9,7 +9,7 @@ const AnimalType = require('../models/AnimalType');
 // @access  private
 router.post(
   '/',
-  [auth, [check('name', 'Name is required').not().isEmpty()]],
+  [[check('name', 'Name is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -37,7 +37,7 @@ router.post(
 // @route   GET api/animal_types
 // @desc    View all Animal Types
 // @access  private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const animalTypes = await AnimalType.find();
     res.json(animalTypes);
@@ -50,7 +50,7 @@ router.get('/', auth, async (req, res) => {
 // @route   GET api/animal_types/:type_id
 // @desc    View a Animal Type
 // @access  private
-router.get('/:type_id', auth, async (req, res) => {
+router.get('/:type_id', async (req, res) => {
   try {
     const animalType = await AnimalType.findOne({
       _id: req.params.type_id,
@@ -71,7 +71,7 @@ router.get('/:type_id', auth, async (req, res) => {
 // @route    DELETE api/animal_types/:type_id
 // @desc     Delete a Animal Type
 // @access   Private
-router.delete('/:type_id', auth, async (req, res) => {
+router.delete('/:type_id', async (req, res) => {
   try {
     await AnimalType.findOneAndRemove({ _id: req.params.type_id });
     res.json({ msg: 'Animal Type deleted' });
@@ -86,7 +86,7 @@ router.delete('/:type_id', auth, async (req, res) => {
 // @access  private
 router.put(
   '/:type_id',
-  [auth, [check('name', 'Name is required').not().isEmpty()]],
+  [[check('name', 'Name is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

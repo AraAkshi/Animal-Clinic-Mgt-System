@@ -9,12 +9,7 @@ const ProductCategory = require('../models/ProductCategory');
 // @access  private
 router.post(
   '/',
-  [
-    auth,
-    [
-      check('name', 'Name is required').not().isEmpty(),
-    ],
-  ],
+  [[check('name', 'Name is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -30,7 +25,6 @@ router.post(
       const productCategory = new ProductCategory(productCategoryFields);
       await productCategory.save();
       res.json(productCategory);
-
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -41,9 +35,9 @@ router.post(
 // @route   GET api/product-categorys
 // @desc    View all Product Categorys
 // @access  private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const productCategorys = await ProductCategory.find()
+    const productCategorys = await ProductCategory.find();
     res.json(productCategorys);
   } catch (err) {
     console.error(err.message);
@@ -54,13 +48,15 @@ router.get('/', auth, async (req, res) => {
 // @route   GET api/product-categorys/:category_id
 // @desc    View a product category
 // @access  private
-router.get('/:category_id', auth, async (req, res) => {
+router.get('/:category_id', async (req, res) => {
   try {
     const productCategory = await ProductCategory.findOne({
       _id: req.params.category_id,
-    })
+    });
     if (!productCategory) {
-      return res.status(400).json({ msg: 'Product Category Details Not Found' });
+      return res
+        .status(400)
+        .json({ msg: 'Product Category Details Not Found' });
     }
     res.json(productCategory);
   } catch (err) {
@@ -75,7 +71,7 @@ router.get('/:category_id', auth, async (req, res) => {
 // @route    DELETE api/product-categorys/:category_id
 // @desc     Delete a product category
 // @access   Private
-router.delete('/:category_id', auth, async (req, res) => {
+router.delete('/:category_id', async (req, res) => {
   try {
     await ProductCategory.findOneAndRemove({ _id: req.params.category_id });
     res.json({ msg: 'Product Category deleted' });
@@ -90,12 +86,7 @@ router.delete('/:category_id', auth, async (req, res) => {
 // @access  private
 router.put(
   '/:category_id',
-  [
-    auth,
-    [
-      check('name', 'Name is required').not().isEmpty(),
-    ],
-  ],
+  [[check('name', 'Name is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

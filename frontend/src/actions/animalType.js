@@ -82,16 +82,14 @@ export const updateAnimalType = (formData, history, animalTypeId) => async (
 
 // Get all Animal Types
 export const getAnimalTypes = () => async (dispatch) => {
-  dispatch({ type: DELETE_ANIMALTYPE });
-
   try {
-    const res = await axios.get(baseurl + 'api/animalType');
-
+    const res = await axios.get(baseurl + '/api/animalType');
     dispatch({
       type: GET_ANIMALTYPES,
       payload: res.data,
     });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: ANIMALTYPE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -102,7 +100,7 @@ export const getAnimalTypes = () => async (dispatch) => {
 // Get animalType by ID
 export const getAnimalTypeById = (animalTypeId) => async (dispatch) => {
   try {
-    const res = await axios.get(baseurl + `api/animalType/${animalTypeId}`);
+    const res = await axios.get(baseurl + `/api/animalType/${animalTypeId}`);
 
     dispatch({
       type: GET_ANIMALTYPE,
@@ -120,7 +118,7 @@ export const getAnimalTypeById = (animalTypeId) => async (dispatch) => {
 export const deletAnimalType = (animalTypeId) => async (dispatch) => {
   if (window.confirm('Are you sure? This can NOT be undone!')) {
     try {
-      await axios.delete(baseurl + `api/ANIMALTYPE/${animalTypeId}`);
+      await axios.delete(baseurl + `/api/animalType/${animalTypeId}`);
 
       dispatch({ type: DELETE_ANIMALTYPE });
 

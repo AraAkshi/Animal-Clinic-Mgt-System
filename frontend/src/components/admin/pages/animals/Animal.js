@@ -52,8 +52,11 @@ function Animal() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Time</TableCell>
-              <TableCell>Title</TableCell>
+              <TableCell>Species</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Breed</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Owner</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

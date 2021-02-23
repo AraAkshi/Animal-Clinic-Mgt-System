@@ -133,7 +133,6 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 }}
                 onChange={(e) => onChange(e)}
                 required
-                minLength="6"
                 style={{ marginTop: '0.6rem' }}
               />
               <TextField
@@ -144,7 +143,6 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 value={scheduleTime}
                 onChange={(e) => onChange(e)}
                 required
-                minLength="6"
                 style={{ marginTop: '0.6rem' }}
               />
               <TextField
@@ -154,7 +152,6 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 value={animal}
                 onChange={(e) => onChange(e)}
                 required
-                minLength="6"
                 style={{ marginTop: '0.5rem' }}
               />
               <TextField
@@ -165,7 +162,6 @@ const AddAppointment = ({ setAlert, addCustomer, addAppointment }) => {
                 onChange={(e) => onChange(e)}
                 multiline
                 rows={2}
-                minLength="6"
                 style={{ marginTop: '0.5rem' }}
               />
             </Grid>

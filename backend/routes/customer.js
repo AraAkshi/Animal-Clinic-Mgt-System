@@ -43,7 +43,7 @@ router.post(
 // @route    GET api/customer/me
 // @desc     Get current users customer
 // @access   Private
-router.get('/me', auth, async (req, res) => {
+router.get('/me', async (req, res) => {
   try {
     const customer = await Customer.findOne({ _id: req.user.id });
     res.json(customer);
@@ -88,7 +88,7 @@ router.get('/', async (req, res) => {
 // @route   POST api/customers
 // @desc    Update customer
 // @access  private
-router.post('/:customer_id', auth, async (req, res) => {
+router.post('/:customer_id', async (req, res) => {
   const { name, email, contact, address } = req.body;
 
   const customerFields = {};
@@ -118,7 +118,7 @@ router.post('/:customer_id', auth, async (req, res) => {
 // @route    DELETE api/customer
 // @desc     Delete user
 // @access   Private
-router.delete('/:customer_id', auth, async (req, res) => {
+router.delete('/:customer_id', async (req, res) => {
   try {
     //Remove User
     await Customer.findOneAndRemove({ _id: req.params.customer_id });

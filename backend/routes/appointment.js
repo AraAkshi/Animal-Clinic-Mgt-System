@@ -10,7 +10,7 @@ const Appointment = require('../models/Appointment');
 router.post(
   '/',
   [
-    // auth,
+    //
     [
       check('scheduleDate', 'Date is required').not().isEmpty(),
       check('scheduleTime', 'Time is required').not().isEmpty(),
@@ -50,7 +50,7 @@ router.post(
 // @route   GET api/appointments/my-appointments
 // @desc    View appointments of logged in user
 // @access  private
-router.get('/my-appointments', auth, async (req, res) => {
+router.get('/my-appointments', async (req, res) => {
   try {
     const userId = req.user.id;
     const appointments = await Appointment.find({
@@ -77,7 +77,7 @@ router.get('/my-appointments', auth, async (req, res) => {
 // @route   GET api/appointments/:customer_id
 // @desc    View appointments of an user
 // @access  private
-router.get('/:customer_id', auth, async (req, res) => {
+router.get('/:customer_id', async (req, res) => {
   try {
     const appointments = await Appointment.find({
       customer: req.params.customer_id,
@@ -120,7 +120,7 @@ router.get('/:date', async (req, res) => {
 // @route   GET api/appointments/:appointment_id
 // @desc    View an appointment
 // @access  private
-router.get('/:appointment_id', auth, async (req, res) => {
+router.get('/:appointment_id', async (req, res) => {
   try {
     const appointment = await Appointment.findOne({
       _id: req.params.appointment_id,
@@ -143,7 +143,7 @@ router.get('/:appointment_id', auth, async (req, res) => {
 // @route    DELETE api/appointments/:appointment_id
 // @desc     Delete appointment
 // @access   Private
-router.delete('/:appointment_id', auth, async (req, res) => {
+router.delete('/:appointment_id', async (req, res) => {
   try {
     await Appointment.findOneAndRemove({ _id: req.params.appointment_id });
     res.json({ msg: 'Appointment deleted' });
@@ -159,7 +159,6 @@ router.delete('/:appointment_id', auth, async (req, res) => {
 router.put(
   '/:appointment_id',
   [
-    auth,
     [
       check('scheduleDate', 'Date is required').not().isEmpty(),
       check('scheduleTime', 'Time is required').not().isEmpty(),

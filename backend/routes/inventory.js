@@ -10,7 +10,6 @@ const Inventory = require('../models/Inventory');
 router.post(
   '/',
   [
-    auth,
     [
       check('productName', 'Product Name is required').not().isEmpty(),
       check('quantity', 'Quantity is required').not().isEmpty(),
@@ -23,7 +22,19 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { productName, productCategory, brand, unitPurchasePrice, unitSellingPrice, quantity, bufferQuantity, purchasedDate, manufacturedDate, expireDate, addedDate } = req.body;
+    const {
+      productName,
+      productCategory,
+      brand,
+      unitPurchasePrice,
+      unitSellingPrice,
+      quantity,
+      bufferQuantity,
+      purchasedDate,
+      manufacturedDate,
+      expireDate,
+      addedDate,
+    } = req.body;
 
     const itemFields = {};
     // itemFields.notifyExpBefore = manufacturedDate.getDate() - ;
@@ -44,7 +55,6 @@ router.post(
       const inventory = new Inventory(itemFields);
       await inventory.save();
       res.json(inventory);
-
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -55,9 +65,9 @@ router.post(
 // @route   GET api/inventory
 // @desc    View all inventory items
 // @access  private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const items = await Inventory.find().populate('productCategory', ['name'])
+    const items = await Inventory.find().populate('productCategory', ['name']);
     res.json(items);
   } catch (err) {
     console.error(err.message);
@@ -68,11 +78,11 @@ router.get('/', auth, async (req, res) => {
 // @route   GET api/inventory/:item_id
 // @desc    View an item in inventory
 // @access  private
-router.get('/:item_id', auth, async (req, res) => {
+router.get('/:item_id', async (req, res) => {
   try {
     const inventory = await Inventory.findOne({
       _id: req.params.item_id,
-    }).populate('productCategory', ['name'])
+    }).populate('productCategory', ['name']);
     if (!inventory) {
       return res.status(400).json({ msg: 'Item Details Not Found' });
     }
@@ -89,7 +99,7 @@ router.get('/:item_id', auth, async (req, res) => {
 // @route    DELETE api/inventory/:item_id
 // @desc     Delete inventory
 // @access   Private
-router.delete('/:item_id', auth, async (req, res) => {
+router.delete('/:item_id', async (req, res) => {
   try {
     await Inventory.findOneAndRemove({ _id: req.params.item_id });
     res.json({ msg: 'Item deleted' });
@@ -105,7 +115,6 @@ router.delete('/:item_id', auth, async (req, res) => {
 router.put(
   '/:item_id',
   [
-    auth,
     [
       check('productName', 'Product Name is required').not().isEmpty(),
       check('quantity', 'Quantity is required').not().isEmpty(),
@@ -127,7 +136,11 @@ router.put(
       quantity,
       bufferQuantity,
       isEmpty,
-      purchasedDate, manufacturedDate, expireDate, notifyExpBefore, addedDate
+      purchasedDate,
+      manufacturedDate,
+      expireDate,
+      notifyExpBefore,
+      addedDate,
     } = req.body;
 
     const itemFields = {};

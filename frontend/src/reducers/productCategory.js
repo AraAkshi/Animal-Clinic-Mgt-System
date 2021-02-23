@@ -12,7 +12,7 @@ const initialState = {
   error: {},
 };
 
-export default function (state = initialState, action: { type: any; payload: any; }) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {

@@ -1,9 +1,18 @@
-import { Backdrop, Modal, TextField, Button, Grid } from '@material-ui/core';
+import {
+  Backdrop,
+  Modal,
+  TextField,
+  Button,
+  Grid,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { setAlert } from '../../../../actions/alerts';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -13,18 +22,24 @@ import Animal from './Animal';
 import { getCustomers } from '../../../../actions/customer';
 import { getAnimalTypes } from '../../../../actions/animalType';
 
-const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
+const AddAnimal = ({
+  petTypes,
+  customer,
+  setAlert,
+  addAnimal,
+  getCustomers,
+  getAnimalTypes,
+}) => {
   const [open, setOpen] = useState(true);
-  const customers = async () => await getCustomers();
   const [formData, setFormData] = useState({
     name: '',
     species: '',
     breed: '',
     gender: '',
     bloodGroup: '',
-    dateOfBirth: '',
-    specialRemarks: '',
-    customer: '',
+    dateOfBirth: '2021-02-28',
+    remarks: '',
+    owner: '',
   });
 
   const {
@@ -34,9 +49,17 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
     gender,
     bloodGroup,
     dateOfBirth,
-    specialRemarks,
-    customer,
+    remarks,
+    owner,
   } = formData;
+
+  useEffect(() => {
+    async function fetchData() {
+      await getCustomers();
+      await getAnimalTypes();
+    }
+    fetchData();
+  }, [0]);
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,9 +72,9 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
       breed: '',
       gender: '',
       bloodGroup: '',
-      dateOfBirth: '',
-      specialRemarks: '',
-      customer: '',
+      dateOfBirth: '2021-02-28',
+      remarks: '',
+      owner: '',
     });
   };
 
@@ -64,8 +87,8 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
       gender,
       bloodGroup,
       dateOfBirth,
-      specialRemarks,
-      customer,
+      remarks,
+      owner,
     });
     setOpen(false);
   };
@@ -82,7 +105,6 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
         open={open}
         onClose={handleClose}
         style={{ height: '90vh', width: '40vw', margin: 'auto' }}
-        aria-describedby="transition-modal-description"
         BackdropComponent={Backdrop}
         BackdropProps={{ timeout: 500 }}
       >
@@ -94,19 +116,29 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
               spacing={1}
               style={{ padding: '1rem' }}
             >
+              <InputLabel id="petName">Pet Type</InputLabel>
+              <Select
+                labelId="petName"
+                name="species"
+                value={species}
+                onChange={(e) => onChange(e)}
+                required
+              >
+                {petTypes.animalTypes.length > 0 ? (
+                  petTypes.animalTypes.map((item) => (
+                    <MenuItem key={item._id} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem>No Pet Types</MenuItem>
+                )}
+              </Select>
               <TextField
                 name="name"
                 size="small"
                 label="Pet Name"
                 value={name}
-                onChange={(e) => onChange(e)}
-                required
-              />
-              <TextField
-                name="species"
-                size="small"
-                label="Pet Type"
-                value={species}
                 onChange={(e) => onChange(e)}
                 style={{ marginTop: '0.5rem' }}
                 required
@@ -125,6 +157,7 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
               <RadioGroup
                 name="gender"
                 value={gender}
+                required
                 row
                 onChange={(e) => onChange(e)}
               >
@@ -138,66 +171,55 @@ const AddAnimal = ({ setAlert, addAnimal, getCustomers, getAnimalTypes }) => {
                   control={<Radio />}
                   label="Male"
                 />
-                <FormControlLabel
-                  value="other"
-                  control={<Radio />}
-                  label="Other"
-                />
               </RadioGroup>
-              {/*<TextField
-                type="number"
+              <TextField
+                name="bloodGroup"
+                label="Blood Group"
                 size="small"
-                name="contact"
-                label="Contact No"
-                value={contact}
+                value={bloodGroup}
                 onChange={(e) => onChange(e)}
-                required
-                minLength="10"
                 style={{ marginTop: '0.5rem' }}
               />
-               <TextField
+              <TextField
                 type="date"
                 size="small"
-                name="scheduleDate"
-                label="Appointment Date"
-                value={scheduleDate}
+                name="dateOfBirth"
+                label="Date of Birth"
+                value={dateOfBirth}
+                inputProps={{
+                  min: `${new Date().toISOString().split('T')[0]}`,
+                }}
                 onChange={(e) => onChange(e)}
-                required
-                minLength="6"
-                style={{ marginTop: '0.6rem' }}
-              />
-              <TextField
-                type="time"
-                size="small"
-                name="scheduleTime"
-                label="Appointment Time"
-                value={scheduleTime}
-                onChange={(e) => onChange(e)}
-                required
-                minLength="6"
-                style={{ marginTop: '0.6rem' }}
-              />
-              <TextField
-                size="small"
-                name="animal"
-                label="Pet Animal Type and Name"
-                value={animal}
-                onChange={(e) => onChange(e)}
-                required
-                minLength="6"
                 style={{ marginTop: '0.5rem' }}
               />
+              <InputLabel id="customer" style={{ marginTop: '0.5rem' }}>
+                Customer Name
+              </InputLabel>
+              <Select
+                labelId="customer"
+                name="customer"
+                value={owner}
+                onChange={(e) => onChange(e)}
+                required
+              >
+                {customer.customers.length > 0 ? (
+                  customer.customers.map((item) => (
+                    <MenuItem key={item._id} value={item._id}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem>No Customers</MenuItem>
+                )}
+              </Select>
               <TextField
-                size="small"
                 name="remarks"
-                label="Additional Remarks"
+                label="Remarks"
+                size="small"
                 value={remarks}
                 onChange={(e) => onChange(e)}
-                multiline
-                rows={2}
-                minLength="6"
                 style={{ marginTop: '0.5rem' }}
-              /> */}
+              />
             </Grid>
             <Grid
               container
@@ -241,7 +263,13 @@ AddAnimal.propTypes = {
   getAnimalTypes: PropTypes.func.isRequired,
 };
 
-export default connect(null, {
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  animalType: state.animalType,
+  customer: state.customer,
+});
+
+export default connect(mapStateToProps, {
   setAlert,
   addAnimal,
   getCustomers,
