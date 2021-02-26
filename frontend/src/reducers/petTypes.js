@@ -1,44 +1,44 @@
 import {
-  GET_APPOINTMENT,
-  DELETE_APPOINTMENT,
-  APPOINTMENT_ERROR,
-  GET_APPOINTMENTS,
+  GET_ANIMALTYPE,
+  ANIMALTYPE_ERROR,
+  DELETE_ANIMALTYPE,
+  GET_ANIMALTYPES,
 } from '../actions/types';
 
 const initialState = {
-  appointment: null,
-  appointments: [],
+  animalType: null,
+  animalTypes: [],
   loading: true,
   error: {},
 };
 
-export default function (state = initialState, action: { type: any; payload: any; }) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_APPOINTMENT:
+    case GET_ANIMALTYPE:
       return {
         ...state,
-        appointment: payload,
+        animalType: payload,
         loading: false,
       };
-    case GET_APPOINTMENTS:
+    case GET_ANIMALTYPES:
       return {
         ...state,
-        appointments: payload,
+        animalTypes: payload,
         loading: false,
       };
-    case APPOINTMENT_ERROR:
+    case ANIMALTYPE_ERROR:
       return {
         ...state,
         error: payload,
         loading: false,
+        animalType: null,
       };
-    case DELETE_APPOINTMENT:
+    case DELETE_ANIMALTYPE:
       return {
         ...state,
-        appointment: null,
-        loading: false,
+        animalType: null,
       };
     default:
       return state;

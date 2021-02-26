@@ -1,44 +1,44 @@
 import {
-  GET_CUSTOMER,
-  CUSTOMER_ERROR,
-  DELETE_CUSTOMER,
-  GET_CUSTOMERS,
+  GET_PRODUCT,
+  PRODUCT_ERROR,
+  DELETE_PRODUCT,
+  GET_PRODUCTS,
 } from '../actions/types';
 
 const initialState = {
-  customer: null,
-  customers: [],
+  product: null,
+  products: [],
   loading: true,
   error: {},
 };
 
-export default function (state = initialState, action: { type: any; payload: any; }) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
-    case GET_CUSTOMER:
+    case GET_PRODUCT:
       return {
         ...state,
-        customer: payload,
+        product: payload,
         loading: false,
       };
-    case GET_CUSTOMERS:
+    case GET_PRODUCTS:
       return {
         ...state,
-        customers: payload,
+        products: payload,
         loading: false,
       };
-    case CUSTOMER_ERROR:
+    case PRODUCT_ERROR:
       return {
         ...state,
         error: payload,
         loading: false,
-        customer: null,
+        product: null,
       };
-    case DELETE_CUSTOMER:
+    case DELETE_PRODUCT:
       return {
         ...state,
-        customer: null,
+        product: null,
       };
     default:
       return state;

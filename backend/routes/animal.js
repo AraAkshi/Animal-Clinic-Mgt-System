@@ -10,7 +10,6 @@ const Animal = require('../models/Animal');
 router.post(
   '/',
   [
-    auth,
     [
       check('name', 'Name is required').not().isEmpty(),
       check('species', 'Species is required').not().isEmpty(),
@@ -24,7 +23,16 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, gender, bloodGroup, dateOfBirth, specialRemarks, species, breed, customer } = req.body;
+    const {
+      name,
+      gender,
+      bloodGroup,
+      dateOfBirth,
+      specialRemarks,
+      species,
+      breed,
+      customer,
+    } = req.body;
 
     const animalFields = {};
     if (name) animalFields.name = name;
@@ -41,7 +49,6 @@ router.post(
       const animal = new Animal(animalFields);
       await animal.save();
       res.json(animal);
-
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -52,9 +59,13 @@ router.post(
 // @route   GET api/animals
 // @desc    View all animals details
 // @access  private
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const animal = await Animal.find().populate('customer', ['name', 'contact', 'email'])
+    const animal = await Animal.find().populate('customer', [
+      'name',
+      'contact',
+      'email',
+    ]);
     res.json(animal);
   } catch (err) {
     console.error(err.message);
@@ -65,11 +76,11 @@ router.get('/', auth, async (req, res) => {
 // @route   GET api/animal/:animal_id
 // @desc    View an animal's details
 // @access  private
-router.get('/:animal_id', auth, async (req, res) => {
+router.get('/:animal_id', async (req, res) => {
   try {
     const animal = await Animal.findOne({
       _id: req.params.animal_id,
-    }).populate('customer', ['name', 'contact', 'email'])
+    }).populate('customer', ['name', 'contact', 'email']);
     if (!animal) {
       return res.status(400).json({ msg: 'Animal Details Not Found' });
     }
@@ -86,7 +97,7 @@ router.get('/:animal_id', auth, async (req, res) => {
 // @route    DELETE api/animal/:animal_id
 // @desc     Delete animal profile
 // @access   Private
-router.delete('/:animal_id', auth, async (req, res) => {
+router.delete('/:animal_id', async (req, res) => {
   try {
     await Animal.findOneAndRemove({ _id: req.params.animal_id });
     res.json({ msg: 'Item deleted' });
@@ -102,7 +113,6 @@ router.delete('/:animal_id', auth, async (req, res) => {
 router.put(
   '/:animal_id',
   [
-    auth,
     [
       check('name', 'Name is required').not().isEmpty(),
       check('species', 'Species is required').not().isEmpty(),
@@ -124,7 +134,7 @@ router.put(
       species,
       breed,
       gender,
-      customer
+      customer,
     } = req.body;
 
     const animalFields = {};

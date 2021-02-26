@@ -13,7 +13,6 @@ const User = require('../models/User');
 router.post(
   '/',
   [
-    auth,
     [
       check('nic', 'Please enter a valid NIC number').isLength({ min: 10 }),
       check('name', 'Name is required').not().isEmpty(),
@@ -106,7 +105,7 @@ router.get('/', async (req, res) => {
 // @route    DELETE api/employee
 // @desc     Delete employee
 // @access   Private
-router.delete('/:employee_id', auth, async (req, res) => {
+router.delete('/:employee_id', async (req, res) => {
   try {
     //Remove employee
     await Employee.findOneAndRemove({ _id: req.params.employee_id });

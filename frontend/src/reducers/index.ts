@@ -8,6 +8,7 @@ import employee from './employee';
 import inventory from './inventory';
 import productCategory from './productCategory';
 import treatment from './treatment';
+import petTypes from './petTypes';
 
 export default combineReducers({
 	alerts,
@@ -18,5 +19,6 @@ export default combineReducers({
 	employee,
 	inventory,
 	productCategory,
-	treatment
+	treatment,
+	petTypes
 });

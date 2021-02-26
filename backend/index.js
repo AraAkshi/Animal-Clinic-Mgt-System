@@ -24,6 +24,7 @@ app.use('/api/appointment', require('./routes/appointment'));
 app.use('/api/employee', require('./routes/employee'));
 app.use('/api/inventory', require('./routes/inventory'));
 app.use('/api/productCategory', require('./routes/productCategory'));
+app.use('/api/animalType', require('./routes/animalType'));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/treatment', require('./routes/treatment'));
 
