@@ -1,6 +1,6 @@
 # compiled output
-backend-new/dist
-backend-new/node_modules
+dist
+node_modules
 
 # Logs
 logs
