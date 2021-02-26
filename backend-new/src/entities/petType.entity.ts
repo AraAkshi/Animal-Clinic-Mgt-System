@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { AnimalEntity } from './animal.entity';
 
 @Entity('petType')
 export class PetTypeEntity {
@@ -7,4 +8,7 @@ export class PetTypeEntity {
 
   @Column({ type: 'varchar' })
   name: string;
+
+  @OneToMany(() => AnimalEntity, (animal) => animal.type)
+  animal: AnimalEntity[];
 }

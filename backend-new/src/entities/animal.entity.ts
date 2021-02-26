@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { AppointmentEntity } from './appointment.entity';
 import { CustomerEntity } from './customer.entity';
+import { PetTypeEntity } from './petType.entity';
 import { TreatmentEntity } from './treatment.entity';
 
 @Entity('animal')
@@ -20,8 +21,8 @@ export class AnimalEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar' })
-  species: string;
+  @ManyToOne(() => PetTypeEntity, (type) => type.animal)
+  type: PetTypeEntity;
 
   @Column({ type: 'varchar' })
   breed: string;
@@ -33,7 +34,7 @@ export class AnimalEntity {
   bloodGroup: string;
 
   @Column({ type: 'varchar' })
-  specialRemarks: string;
+  remarks: string;
 
   @Column()
   dateOfBirth: Date;

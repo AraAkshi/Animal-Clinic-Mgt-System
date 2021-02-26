@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { TreatmentModule } from './treatment/treatment.module';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './user/user.module';
 import { ProductCategoryModule } from './product-category/product-category.module';
 import { PetTypeModule } from './pet-type/pet-type.module';
 import { InventoryModule } from './inventory/inventory.module';
@@ -20,17 +20,19 @@ import { PetTypeEntity } from './entities/petType.entity';
 import { ProductCategoryEntity } from './entities/productCategory.entity';
 import { TreatmentEntity } from './entities/treatment.entity';
 import { UserEntity } from './entities/user.entity';
+import { CustomerModule } from './customer/customer.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './_shared/http-error-filter';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      username: 'postgres',
-      host: 'localhost',
-      database: 'animal-clinic-db',
-      password: 'chamal123',
-      // "password": 'Belpostgre@123',
-      port: 5432,
+      username: process.env.DB_USER,
+      host: process.env.DB_HOST,
+      database: process.env.DB_DATABASE,
+      password: process.env.DB_PASSWORD,
+      port: parseInt(process.env.DB_PORT),
       entities: [
         AnimalEntity,
         AppointmentEntity,
@@ -50,11 +52,18 @@ import { UserEntity } from './entities/user.entity';
     InventoryModule,
     PetTypeModule,
     ProductCategoryModule,
-    UserModule,
+    UsersModule,
     TreatmentModule,
     AuthModule,
+    CustomerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}

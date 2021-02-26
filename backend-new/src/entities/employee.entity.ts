@@ -23,6 +23,9 @@ export class EmployeeEntity {
   @Column({ type: 'varchar' })
   address: string;
 
+  @Column({ type: 'varchar' })
+  designation: string;
+
   @Column({ default: Date.now() })
   enteredDate: Date;
 
