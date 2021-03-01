@@ -37,7 +37,7 @@ export const getOneCategory = async (id: number) => {
 };
 
 //Add a Category
-export const addCategory = async (name: string) => {
+export const addCategory = async (name: string, imagePath: string) => {
 	const response = await fetch(baseurl + 'product-category/add', {
 		method: 'POST',
 		headers: {
@@ -47,6 +47,7 @@ export const addCategory = async (name: string) => {
 		},
 		body: JSON.stringify({
 			name,
+			imagePath,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
@@ -56,7 +57,11 @@ export const addCategory = async (name: string) => {
 };
 
 //Edit an Category
-export const editCategory = async (id: number, name?: string) => {
+export const editCategory = async (
+	id: number,
+	name?: string,
+	imagePath?: string
+) => {
 	const response = await fetch(baseurl + 'product-category/edit', {
 		method: 'PUT',
 		headers: {
@@ -64,7 +69,7 @@ export const editCategory = async (id: number, name?: string) => {
 			'Content-Type': 'application/json',
 			Authorization: token,
 		},
-		body: JSON.stringify({ name, id }),
+		body: JSON.stringify({ name, imagePath, id }),
 	});
 	if (response.status === 200 || response.status === 201) {
 		const data = await response.json();

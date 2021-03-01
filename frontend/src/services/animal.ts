@@ -66,6 +66,7 @@ export const addAnimal = async (
 	type: any,
 	owner: any
 ) => {
+	console.log(name);
 	const response = await fetch(baseurl + 'animal/add', {
 		method: 'POST',
 		headers: {
@@ -103,6 +104,18 @@ export const editAnimal = async (
 	type?: any,
 	owner?: any
 ) => {
+	console.log(
+		name,
+		isActive,
+		gender,
+		bloodGroup,
+		dateOfBirth,
+		remarks,
+		breed,
+		type,
+		owner,
+		id
+	);
 	const response = await fetch(baseurl + 'animal/edit', {
 		method: 'PUT',
 		headers: {

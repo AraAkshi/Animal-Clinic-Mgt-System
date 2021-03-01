@@ -57,11 +57,13 @@ export const getCusAppointment = async (customer: any) => {
 
 //Add an appointment
 export const addAppointment = async (
-	scheduleDateTime: Date,
+	scheduleDate: string,
+	scheduleTime: string,
 	remarks: string,
 	animal: any,
 	customer: any
 ) => {
+	const scheduleDateTime = `${scheduleDate}T${scheduleTime}Z`;
 	const response = await fetch(baseurl + 'appointment/add', {
 		method: 'POST',
 		headers: {
@@ -129,4 +131,16 @@ export const deleteAppointment = async (id: number) => {
 	if (response.status === 200 || response.status === 201) {
 		return 'success';
 	}
+};
+
+export const formatDate = (date: Date) => {
+	let d = new Date(date),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
+
+	if (month.length < 2) month = '0' + month;
+	if (day.length < 2) day = '0' + day;
+
+	return [year, month, day].join('-');
 };

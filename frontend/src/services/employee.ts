@@ -37,14 +37,15 @@ export const getOneEmployee = async (id: number) => {
 };
 
 //Add an employee
-export const addemployee = async (
+export const addEmployee = async (
 	nic: string,
 	name: string,
 	email: string,
 	address: string,
 	designation: string,
 	epfNo: number,
-	contact: number
+	contact: number,
+	joinedDate: Date
 ) => {
 	const response = await fetch(baseurl + 'employee/add', {
 		method: 'POST',
@@ -61,6 +62,7 @@ export const addemployee = async (
 			designation,
 			epfNo,
 			contact,
+			joinedDate,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
@@ -70,7 +72,7 @@ export const addemployee = async (
 };
 
 //Edit an employee
-export const editemployee = async (
+export const editEmployee = async (
 	id: number,
 	isActive?: boolean,
 	nic?: string,
@@ -79,7 +81,8 @@ export const editemployee = async (
 	address?: string,
 	designation?: string,
 	epfNo?: number,
-	contact?: number
+	contact?: number,
+	joinedDate?: Date
 ) => {
 	const response = await fetch(baseurl + 'employee/edit', {
 		method: 'PUT',
@@ -97,6 +100,7 @@ export const editemployee = async (
 			designation,
 			epfNo,
 			contact,
+			joinedDate,
 			id,
 		}),
 	});

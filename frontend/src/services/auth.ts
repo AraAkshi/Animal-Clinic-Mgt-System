@@ -20,6 +20,9 @@ export const login = async (email: string, password: string) => {
 			userrole: string;
 			accessToken: string;
 		} = await response.json();
+		localStorage.setItem('token', data.accessToken);
+		localStorage.setItem('userRole', data.userrole);
+		localStorage.setItem('username', data.name);
 		return data;
 	}
 };
@@ -31,6 +34,7 @@ export const addUser = async (
 	role: string,
 	name: string
 ) => {
+	console.log(email, password, role, name);
 	const response = await fetch(baseurl + 'auth/register', {
 		method: 'POST',
 		headers: {
@@ -48,6 +52,8 @@ export const addUser = async (
 	if (response.status === 200 || response.status === 201) {
 		const data = await response.json();
 		return data;
+	} else {
+		// return response.response.message;
 	}
 };
 
@@ -65,4 +71,10 @@ export const getAllUser = async () => {
 		const data = await response.json();
 		return data;
 	}
+};
+
+//Logout User
+export const logout = () => {
+	localStorage.clear();
+	window.open('/', '_self');
 };

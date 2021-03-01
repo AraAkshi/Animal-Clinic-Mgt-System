@@ -60,6 +60,7 @@ export const addCustomer = async (
 	name: string,
 	email: string,
 	address: string,
+	remarks: string,
 	contact: number
 ) => {
 	const response = await fetch(baseurl + 'customer/add', {
@@ -74,6 +75,7 @@ export const addCustomer = async (
 			email,
 			address,
 			contact,
+			remarks,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
@@ -89,7 +91,8 @@ export const editCustomer = async (
 	name?: string,
 	email?: string,
 	address?: string,
-	contact?: number
+	contact?: number,
+	remarks?: string
 ) => {
 	const response = await fetch(baseurl + 'customer/edit', {
 		method: 'PUT',
@@ -104,6 +107,7 @@ export const editCustomer = async (
 			email,
 			address,
 			contact,
+			remarks,
 			id,
 		}),
 	});

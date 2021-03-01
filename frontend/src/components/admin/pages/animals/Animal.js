@@ -1,5 +1,6 @@
 import {
-	Card,
+	TableContainer,
+	Paper,
 	Grid,
 	Table,
 	TableHead,
@@ -9,22 +10,79 @@ import {
 	Button,
 	TableBody,
 } from '@material-ui/core';
-import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
 import Header from '../../layout/Header';
 import Sidebar from '../../layout/Sidebar';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { getAllAnimals } from '../../../../services/animal';
+import AnimalDetails from './AnimalDetails';
+import Alerts from '../../../layout/Alerts';
+
+const StyledTableCell = withStyles((theme) => ({
+	head: {
+		backgroundColor: theme.palette.common.black,
+		color: theme.palette.common.white,
+	},
+	body: {
+		fontSize: 14,
+	},
+}))(TableCell);
 
 function Animal() {
-	const [open, setOpen] = React.useState(false);
+	const [alert, setAlert] = useState([
+		{ msg: '', alertType: '', state: false },
+	]);
+	const [animals, setAnimals] = useState([
+		{
+			id: 0,
+			isActive: true,
+			name: '',
+			gender: '',
+			bloodGroup: '',
+			dateOfBirth: '',
+			remarks: '',
+			breed: '',
+			enteredDate: '',
+			type: { name: '' },
+			owner: { name: '', id: '' },
+		},
+	]);
+	const [selectedAnimal, setSelectedAnimal] = useState({
+		id: 0,
+		isActive: true,
+		name: '',
+		gender: '',
+		bloodGroup: '',
+		dateOfBirth: '',
+		remarks: '',
+		breed: '',
+		enteredDate: '',
+		type: { name: '' },
+		owner: { name: '', id: '', contact: '' },
+	});
 
 	const addAnimal = () => {
-		setOpen(true);
+		window.open(window.location.origin + '/admin/animals/add-animal', '_self');
 	};
+
+	const handleRowSelect = (item) => {
+		setSelectedAnimal(item);
+	};
+
+	useEffect(() => {
+		async function fetchData() {
+			const res = await getAllAnimals();
+			if (res !== undefined) {
+				setAnimals(res);
+			}
+		}
+		fetchData();
+	}, [0]);
 
 	return (
 		<div>
+			{/* <Alerts alerts={alert} /> */}
 			<Header />
 			<Sidebar />
 			<div className='sidebar-container'>
@@ -37,7 +95,7 @@ function Animal() {
 								</Typography>
 							</Grid>
 							<Grid item>
-								<div className='petStatCard'>10</div>
+								<div className='petStatCard'>{animals.length}</div>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -50,24 +108,53 @@ function Animal() {
 							variant='contained'
 							style={{ margin: '0.5rem' }}
 						>
-							New Pet Details
+							New Pet
 						</Button>
 					</Grid>
 				</Grid>
 				<hr className='seperatorLine' />
-				<Table>
-					<TableHead>
-						<TableRow>
-							<TableCell>Time</TableCell>
-							<TableCell>Title</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						<TableRow>
-							<TableCell></TableCell>
-						</TableRow>
-					</TableBody>
-				</Table>
+				<Grid container direction='row' justify='space-between'>
+					<Grid item xs={7}>
+						<TableContainer component={Paper}>
+							<Table size='small' stickyHeader style={{ maxHeight: '70vh' }}>
+								<TableHead>
+									<TableRow>
+										<StyledTableCell>Type</StyledTableCell>
+										<StyledTableCell>Name</StyledTableCell>
+										<StyledTableCell>Breed</StyledTableCell>
+										<StyledTableCell>Owner</StyledTableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{animals.length > 0 ? (
+										animals.map((item) => (
+											<TableRow
+												hover={true}
+												onClick={() => handleRowSelect(item)}
+												style={{ cursor: 'pointer' }}
+											>
+												<StyledTableCell>{item.type.name}</StyledTableCell>
+												<StyledTableCell>{item.name}</StyledTableCell>
+												<StyledTableCell>{item.breed}</StyledTableCell>
+												<StyledTableCell>{item.owner.name}</StyledTableCell>
+											</TableRow>
+										))
+									) : (
+										<TableRow>
+											<StyledTableCell>No Animals</StyledTableCell>
+										</TableRow>
+									)}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Grid>
+					<Grid item xs={5}>
+						<AnimalDetails
+							selectedAnimal={selectedAnimal}
+							setAlert={setAlert}
+						/>
+					</Grid>
+				</Grid>
 			</div>
 		</div>
 	);

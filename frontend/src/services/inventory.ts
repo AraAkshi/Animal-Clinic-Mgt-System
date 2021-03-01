@@ -66,7 +66,9 @@ export const addItem = async (
 	unitSellingPrice: number,
 	purchasedDate: Date,
 	manufactureDate: Date,
-	expireDate: Date
+	expireDate: Date,
+	notifyBefore: number,
+	batchNo: number
 ) => {
 	const response = await fetch(baseurl + 'inventory/add', {
 		method: 'POST',
@@ -86,6 +88,8 @@ export const addItem = async (
 			purchasedDate,
 			manufactureDate,
 			expireDate,
+			notifyBefore,
+			batchNo,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
@@ -107,7 +111,9 @@ export const editItem = async (
 	unitSellingPrice?: number,
 	purchasedDate?: Date,
 	manufactureDate?: Date,
-	expireDate?: Date
+	expireDate?: Date,
+	notifyBefore?: number,
+	batchNo?: number
 ) => {
 	const response = await fetch(baseurl + 'inventory/edit', {
 		method: 'PUT',
@@ -128,6 +134,8 @@ export const editItem = async (
 			purchasedDate,
 			manufactureDate,
 			expireDate,
+			notifyBefore,
+			batchNo,
 			id,
 		}),
 	});

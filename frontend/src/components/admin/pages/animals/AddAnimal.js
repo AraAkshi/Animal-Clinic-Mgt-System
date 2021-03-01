@@ -13,20 +13,22 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import React, { useState, useEffect } from 'react';
-import { setAlert } from '../../../../actions/alerts';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addAnimal } from '../../../../actions/animal';
 import Alerts from '../../../layout/Alerts';
 import Animal from './Animal';
 import { getAllTypes } from '../../../../services/petType';
+import { getAllCustomers } from '../../../../services/customer';
+import { addAnimal } from '../../../../services/animal';
 
-const AddAnimal = ({ setAlert, addAnimal }) => {
+const AddAnimal = () => {
 	const [open, setOpen] = useState(true);
+	const [alert, setAlert] = useState([
+		{ msg: '', alertType: '', state: false },
+	]);
 	const [petTypes, setPetTypes] = useState([{ id: 0, name: '' }]);
+	const [customers, setCustomers] = useState([]);
 	const [formData, setFormData] = useState({
 		name: '',
-		species: '',
+		type: '',
 		breed: '',
 		gender: '',
 		bloodGroup: '',
@@ -37,7 +39,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 
 	const {
 		name,
-		species,
+		type,
 		breed,
 		gender,
 		bloodGroup,
@@ -48,8 +50,10 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 
 	useEffect(() => {
 		async function fetchData() {
-			await getCustomers();
-			const types = await getAllTypes();
+			const cusRes = await getAllCustomers();
+			const typesRes = await getAllTypes();
+			setCustomers(cusRes);
+			setPetTypes(typesRes);
 		}
 		fetchData();
 	}, [0]);
@@ -61,7 +65,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 	const resetForm = () => {
 		setFormData({
 			name: '',
-			species: '',
+			type: '',
 			breed: '',
 			gender: '',
 			bloodGroup: '',
@@ -73,17 +77,26 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await addAnimal({
+		const res = await addAnimal(
 			name,
-			species,
-			breed,
 			gender,
 			bloodGroup,
 			dateOfBirth,
 			remarks,
-			owner,
-		});
-		setOpen(false);
+			breed,
+			type,
+			owner
+		);
+		if (res !== undefined) {
+			const newAlert = {
+				msg: 'Animal Details Added Successfully',
+				alertType: 'success',
+				state: true,
+			};
+			setAlert({ ...alert, newAlert });
+			window.open(window.location.origin + `/admin/animals`, '_self');
+			setOpen(false);
+		}
 	};
 
 	const handleClose = () => {
@@ -92,14 +105,13 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 
 	return (
 		<div>
-			<Alerts />
+			<Alerts alerts={alert} />
 			<Animal />
 			<Modal
 				open={open}
 				onClose={handleClose}
 				style={{ height: '90vh', width: '40vw', margin: 'auto' }}
 				BackdropComponent={Backdrop}
-				BackdropProps={{ timeout: 500 }}
 			>
 				<div className='addModal'>
 					<form className='form' onSubmit={(e) => onSubmit(e)}>
@@ -109,17 +121,17 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 							spacing={1}
 							style={{ padding: '1rem' }}
 						>
-							<InputLabel id='petName'>Pet Type</InputLabel>
+							<InputLabel id='petName'>Animal Type</InputLabel>
 							<Select
 								labelId='petName'
-								name='species'
-								value={species}
+								name='type'
+								value={type}
 								onChange={(e) => onChange(e)}
 								required
 							>
-								{petTypes.animalTypes.length > 0 ? (
-									petTypes.animalTypes.map((item) => (
-										<MenuItem key={item.id} value={item.name}>
+								{petTypes.length > 0 ? (
+									petTypes.map((item) => (
+										<MenuItem key={item.id} value={item}>
 											{item.name}
 										</MenuItem>
 									))
@@ -131,7 +143,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								name='name'
 								size='small'
 								label='Pet Name'
-								value={name}
+								value={name.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								style={{ marginTop: '0.5rem' }}
 								required
@@ -140,7 +152,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								name='breed'
 								label='Breed'
 								size='small'
-								value={breed}
+								value={breed.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								style={{ marginTop: '0.5rem' }}
 							/>
@@ -155,12 +167,12 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								onChange={(e) => onChange(e)}
 							>
 								<FormControlLabel
-									value='female'
+									value='FEMALE'
 									control={<Radio />}
 									label='Female'
 								/>
 								<FormControlLabel
-									value='male'
+									value='MALE'
 									control={<Radio />}
 									label='Male'
 								/>
@@ -169,7 +181,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								name='bloodGroup'
 								label='Blood Group'
 								size='small'
-								value={bloodGroup}
+								value={bloodGroup.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								style={{ marginTop: '0.5rem' }}
 							/>
@@ -179,25 +191,22 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								name='dateOfBirth'
 								label='Date of Birth'
 								value={dateOfBirth}
-								inputProps={{
-									min: `${new Date().toISOString().split('T')[0]}`,
-								}}
 								onChange={(e) => onChange(e)}
 								style={{ marginTop: '0.5rem' }}
 							/>
 							<InputLabel id='customer' style={{ marginTop: '0.5rem' }}>
-								Customer Name
+								Owner Name
 							</InputLabel>
 							<Select
 								labelId='customer'
-								name='customer'
+								name='owner'
 								value={owner}
 								onChange={(e) => onChange(e)}
 								required
 							>
-								{customer.customers.length > 0 ? (
-									customer.customers.map((item) => (
-										<MenuItem key={item._id} value={item._id}>
+								{customers.length > 0 ? (
+									customers.map((item) => (
+										<MenuItem key={item.id} value={item}>
 											{item.name}
 										</MenuItem>
 									))
@@ -209,7 +218,7 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 								name='remarks'
 								label='Remarks'
 								size='small'
-								value={remarks}
+								value={remarks.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								style={{ marginTop: '0.5rem' }}
 							/>
@@ -249,16 +258,4 @@ const AddAnimal = ({ setAlert, addAnimal }) => {
 	);
 };
 
-AddAnimal.propTypes = {
-	setAlert: PropTypes.func.isRequired,
-	addAnimal: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-	auth: state.auth,
-});
-
-export default connect(mapStateToProps, {
-	setAlert,
-	addAnimal,
-})(AddAnimal);
+export default AddAnimal;
