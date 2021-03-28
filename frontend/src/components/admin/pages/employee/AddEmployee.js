@@ -10,6 +10,8 @@ import {
 	InputLabel,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { addUser } from '../../../../services/auth';
+import { roles } from '../../../../services/datasets/employee-roles.d';
 import { addEmployee } from '../../../../services/employee';
 import Alerts from '../../../layout/Alerts';
 import Employee from './Employee';
@@ -19,12 +21,7 @@ function AddEmployee() {
 	const [alert, setAlert] = useState([
 		{ msg: '', alertType: '', state: false },
 	]);
-	const [roles, setRoles] = useState([
-		{ id: 1, name: 'DOCTOR' },
-		{ id: 2, name: 'NURSE' },
-		{ id: 3, name: 'RECEPTIONIST' },
-		{ id: 4, name: 'HELPING STAFF' },
-	]);
+
 	const [formData, setFormData] = useState({
 		nic: '',
 		name: '',
@@ -33,7 +30,7 @@ function AddEmployee() {
 		designation: '',
 		epfNo: '',
 		contact: '',
-		joinedDate: '2021-01-01',
+		joinedDate: '2021-04-01',
 	});
 
 	const {
@@ -76,7 +73,9 @@ function AddEmployee() {
 			contact,
 			joinedDate
 		);
-		if (res !== undefined) {
+
+		const userRes = await addUser(email, 'user1234', 'employee', name);
+		if (res !== undefined && userRes !== undefined) {
 			const newAlert = {
 				msg: 'Employee Details Added Successfully',
 				alertType: 'success',
@@ -94,7 +93,7 @@ function AddEmployee() {
 
 	return (
 		<div>
-			<Alerts alerts={alert} />
+			{/* <Alerts alerts={alert} /> */}
 			<Employee />
 			<Modal
 				open={open}

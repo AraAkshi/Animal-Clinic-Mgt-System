@@ -58,6 +58,8 @@ export class AnimalController {
       breed?: string;
       type?: any;
       owner?: any;
+      treatments?: any;
+      appointments?: any;
       id: number;
     },
   ): Promise<AnimalEntity> {

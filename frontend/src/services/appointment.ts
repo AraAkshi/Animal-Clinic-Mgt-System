@@ -57,13 +57,13 @@ export const getCusAppointment = async (customer: any) => {
 
 //Add an appointment
 export const addAppointment = async (
-	scheduleDate: string,
+	scheduleDate: Date,
 	scheduleTime: string,
 	remarks: string,
 	animal: any,
 	customer: any
 ) => {
-	const scheduleDateTime = `${scheduleDate}T${scheduleTime}Z`;
+	// const scheduleDateTime = `${scheduleDate}T${scheduleTime}Z`;
 	const response = await fetch(baseurl + 'appointment/add', {
 		method: 'POST',
 		headers: {
@@ -73,7 +73,8 @@ export const addAppointment = async (
 		},
 		body: JSON.stringify({
 			remarks,
-			scheduleDateTime,
+			scheduleDate,
+			scheduleTime,
 			animal,
 			customer,
 		}),
@@ -88,8 +89,9 @@ export const addAppointment = async (
 export const editAppointment = async (
 	id: number,
 	isAttended?: boolean,
+	scheduleDate?: Date,
+	scheduleTime?: Date,
 	remarks?: string,
-	scheduleDateTime?: Date,
 	animal?: any,
 	customer?: any
 ) => {
@@ -103,7 +105,8 @@ export const editAppointment = async (
 		body: JSON.stringify({
 			isAttended,
 			remarks,
-			scheduleDateTime,
+			scheduleDate,
+			scheduleTime,
 			animal,
 			customer,
 			id,
@@ -143,4 +146,17 @@ export const formatDate = (date: Date) => {
 	if (day.length < 2) day = '0' + day;
 
 	return [year, month, day].join('-');
+};
+
+export const formatTime = (date: any) => {
+	// let d = new Date(date),
+	// 	hour = '' + d.getHours(),
+	// 	minute = '' + d.getMinutes();
+
+	// if (hour.length < 2) hour = '0' + hour;
+	// if (minute.length < 2) minute = '0' + minute;
+
+	const time = date.split(':');
+
+	return [time[0].trim(), time[1].trim()].join(':');
 };

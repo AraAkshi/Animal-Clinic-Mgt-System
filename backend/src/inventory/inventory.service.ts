@@ -66,7 +66,7 @@ export class InventoryService {
     expireDate: Date;
     notifyBefore: number;
   }): Promise<InventoryEntity> {
-    Object.assign(data, { addedDate: new Date() });
+    Object.assign(data, { addedDate: new Date(), soldQty: 0 });
     const res = this.repo.create(data);
     await this.repo.save(res);
     this.logger.log(`Successfully Added Item - ${data.name}`);
@@ -82,6 +82,7 @@ export class InventoryService {
     brand?: string;
     unitPurchasePrice?: number;
     bufferQty?: number;
+    soldQty?: number;
     batchNo?: string;
     quantity?: number;
     unitSellingPrice?: number;
@@ -100,6 +101,7 @@ export class InventoryService {
       unitSellingPrice,
       quantity,
       bufferQty,
+      soldQty,
       batchNo,
       purchasedDate,
       manufactureDate,
@@ -113,6 +115,7 @@ export class InventoryService {
     if (unitSellingPrice) res.unitSellingPrice = unitSellingPrice;
     if (quantity) res.quantity = quantity;
     if (bufferQty) res.bufferQty = bufferQty;
+    if (soldQty) res.soldQty = soldQty;
     if (batchNo) res.batchNo = batchNo;
     if (unitPurchasePrice) res.unitPurchasePrice = unitPurchasePrice;
     if (brand) res.brand = brand;

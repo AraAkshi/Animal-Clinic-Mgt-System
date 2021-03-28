@@ -14,7 +14,11 @@ export class TreatmentService {
   //Get all Treatments
   async getAllTreatments(): Promise<TreatmentEntity[]> {
     this.logger.log('Start getting details for all Treatments');
-    const res = await this.repo.find();
+    const res = await getRepository(TreatmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .getMany();
     this.logger.log('Successfully returned All Treatments');
     return res;
   }
@@ -23,7 +27,13 @@ export class TreatmentService {
   //@params - Treatment Id
   async getOneTreatment(id: number): Promise<TreatmentEntity> {
     this.logger.log(`Start getting details for Treatment with Id - ${id}`);
-    const res = await this.repo.findOne(id);
+    const res = await getRepository(TreatmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .where('tbl.id = :id')
+      .setParameter('id', id)
+      .getOne();
     this.logger.log(
       `Successfully returned details for Treatment with Id - ${id}`,
     );
@@ -36,7 +46,13 @@ export class TreatmentService {
     this.logger.log(
       `Start getting details of Treatments of customer - ${customer}`,
     );
-    const res = await this.repo.find({ where: { customer: customer } });
+    const res = await getRepository(TreatmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .where('tbl.customer.id = :id')
+      .setParameter('id', customer)
+      .getMany();
     this.logger.log(
       `Successfully returned details of Treatments of customer - ${customer}`,
     );
@@ -49,21 +65,30 @@ export class TreatmentService {
     this.logger.log(
       `Start getting details of Treatments of animal - ${animal}`,
     );
-    const res = await this.repo.find({ where: { animal: animal } });
+    const res = await getRepository(TreatmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .where('tbl.animal.id = :id')
+      .setParameter('id', animal)
+      .getMany();
     this.logger.log(
       `Successfully returned details of Treatments of animal - ${animal}`,
     );
     return res;
   }
 
+  //Get treatments by Day
+
   //Add New Treatment
   async addTreatment(data: {
     treatmentType: string;
     customer: any;
     animal: any;
+    itemsUsed: any;
     description: string;
     dateReceived: Date;
-    timeReceived: Date;
+    timeReceived: string;
     nextTreatmentDate: Date;
   }): Promise<TreatmentEntity> {
     const res = this.repo.create(data);
@@ -78,9 +103,10 @@ export class TreatmentService {
     treatmentType?: string;
     customer?: any;
     animal?: any;
+    itemsUsed?: any;
     description?: string;
     dateReceived?: Date;
-    timeReceived?: Date;
+    timeReceived?: string;
     nextTreatmentDate?: Date;
     id: number;
   }): Promise<TreatmentEntity> {
@@ -89,6 +115,8 @@ export class TreatmentService {
       treatmentType,
       customer,
       animal,
+      itemsUsed,
+      description,
       dateReceived,
       timeReceived,
       nextTreatmentDate,
@@ -97,6 +125,8 @@ export class TreatmentService {
     if (treatmentType) res.treatmentType = treatmentType;
     if (customer) res.customer = customer;
     if (animal) res.animal = animal;
+    if (itemsUsed) res.itemsUsed = itemsUsed;
+    if (description) res.description = description;
     if (dateReceived) res.dateReceived = dateReceived;
     if (timeReceived) res.timeReceived = timeReceived;
     if (nextTreatmentDate) res.nextTreatmentDate = nextTreatmentDate;

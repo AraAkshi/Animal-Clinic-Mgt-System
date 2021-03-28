@@ -52,8 +52,8 @@ const AddAnimal = () => {
 		async function fetchData() {
 			const cusRes = await getAllCustomers();
 			const typesRes = await getAllTypes();
-			setCustomers(cusRes);
-			setPetTypes(typesRes);
+			if (cusRes !== undefined) setCustomers(cusRes);
+			if (typesRes !== undefined) setPetTypes(typesRes);
 		}
 		fetchData();
 	}, [0]);
@@ -105,7 +105,7 @@ const AddAnimal = () => {
 
 	return (
 		<div>
-			<Alerts alerts={alert} />
+			{/* <Alerts alerts={alert} /> */}
 			<Animal />
 			<Modal
 				open={open}

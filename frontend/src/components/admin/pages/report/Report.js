@@ -7,6 +7,7 @@ function Report() {
 		<div>
 			<Header />
 			<Sidebar />
+			<div className='sidebar-container'></div>
 		</div>
 	);
 }

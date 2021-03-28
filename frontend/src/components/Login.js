@@ -1,9 +1,19 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Homepage from './layout/Homepage';
 import Alerts from './layout/Alerts';
-import { Modal, Typography, TextField, Button, Grid } from '@material-ui/core';
+import {
+	Modal,
+	Typography,
+	TextField,
+	Button,
+	Grid,
+	IconButton,
+	InputAdornment,
+} from '@material-ui/core';
 import { login } from '../services/auth';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const Login = () => {
 	const [formData, setFormData] = useState({
@@ -12,6 +22,7 @@ const Login = () => {
 	});
 	const [open, setOpen] = useState(true);
 	const { email, password } = formData;
+	const [showPassword, setShowPassword] = useState(false);
 
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,6 +42,10 @@ const Login = () => {
 	const handleClose = () => {
 		setOpen(false);
 		window.open('/', '_self');
+	};
+
+	const handlePasswordVisibility = () => {
+		showPassword ? setShowPassword(false) : setShowPassword(true);
 	};
 
 	return (
@@ -66,7 +81,7 @@ const Login = () => {
 								color='secondary'
 							/>
 							<TextField
-								type='password'
+								type={showPassword ? 'text' : 'password'}
 								size='small'
 								name='password'
 								label='Password'
@@ -76,6 +91,15 @@ const Login = () => {
 								minLength='6'
 								color='secondary'
 								style={{ marginTop: '1rem' }}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position='end'>
+											<IconButton onClick={handlePasswordVisibility}>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 						</Grid>
 						<Grid

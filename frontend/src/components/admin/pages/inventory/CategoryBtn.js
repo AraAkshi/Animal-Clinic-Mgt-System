@@ -1,26 +1,25 @@
 import { ButtonBase, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import { imageUrl } from '../../../../utils/imageUrl';
 
 const useStyles = makeStyles((theme) => ({
 	image: {
 		position: 'relative',
-		height: 50,
-		width: 100,
+		height: '10vh',
+		width: '13vw',
+		borderRadius: '1rem',
 		[theme.breakpoints.down('xs')]: {
 			width: '100% !important', // Overrides inline-style
-			height: 100,
+			height: 30,
 		},
 		'&:hover, &$focusVisible': {
 			zIndex: 1,
 			'& $imageBackdrop': {
-				opacity: 0.15,
+				opacity: 0.2,
 			},
 			'& $imageMarked': {
-				opacity: 0,
-			},
-			'& $imageTitle': {
-				border: '4px solid currentColor',
+				opacity: 0.15,
 			},
 		},
 	},
@@ -57,24 +56,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 	imageTitle: {
 		position: 'relative',
+		fontWeight: 'bold',
 		padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${
-			theme.spacing(1) + 6
+			theme.spacing(1) + 3
 		}px`,
-	},
-	imageMarked: {
-		height: 3,
-		width: 18,
-		backgroundColor: theme.palette.common.white,
-		position: 'absolute',
-		bottom: -2,
-		left: 'calc(50% - 9px)',
-		transition: theme.transitions.create('opacity'),
 	},
 }));
 
 function CategoryBtn(props) {
-	const { category } = props;
+	const { cat, handleCatSelect } = props;
+	const { category, items } = cat;
 	const classes = useStyles();
+	const image = `${imageUrl}${category.imagePath}`;
 
 	return (
 		<div>
@@ -83,23 +76,24 @@ function CategoryBtn(props) {
 				key={category.id}
 				className={classes.image}
 				focusVisibleClassName={classes.focusVisible}
+				onClick={() => handleCatSelect(category.id)}
 			>
+				<span className='badge'>{items.length}</span>
 				<span
 					className={classes.imageSrc}
 					style={{
-						backgroundImage: `url(${category.imagePath})`,
+						backgroundImage: `url(${image})`,
 					}}
 				/>
 				<span className={classes.imageBackdrop} />
 				<span className={classes.imageButton}>
 					<Typography
 						component='span'
-						variant='subtitle1'
+						variant='subtitle2'
 						color='inherit'
 						className={classes.imageTitle}
 					>
 						{category.name}
-						<span className={classes.imageMarked} />
 					</Typography>
 				</span>
 			</ButtonBase>

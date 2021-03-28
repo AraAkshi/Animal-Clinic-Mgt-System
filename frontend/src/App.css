@@ -104,6 +104,10 @@
 .sidebar ul li:hover {
 	background-color: #2f4f4f;
 }
+.sidebar ul li:active {
+	background-color: #2f4f4f;
+	color: #f4f4f4;
+}
 .sidebar ul li {
 	line-height: 1.5rem;
 	width: 14vw;
@@ -141,7 +145,7 @@
 }
 
 .addModal {
-	background-color: rgba(152, 220, 247, 0.9);
+	background-color: rgba(152, 220, 247, 0.95);
 	color: rgb(24, 23, 23);
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 	padding: 1rem;
@@ -156,19 +160,20 @@
 .appointmentCard {
 	height: 70vh;
 	overflow: auto;
+	font-family: Arial, Helvetica, sans-serif;
 	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
 		rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 	border-radius: 0.5rem;
-	padding-top: 0.5rem;
+	/* padding-top: 0.5rem; */
 }
 
 .petStatCard {
 	height: 5vh;
 	width: 5vw;
-	background-color: #fff;
+	background-color: rgb(179, 227, 255);
 	box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
 		rgba(17, 17, 26, 0.1) 0px 0px 8px;
-	border-radius: 0.1rem;
+	border-radius: 0.5rem;
 	padding: 0.5rem;
 	margin-left: 1rem;
 	font-size: 2vw;
@@ -191,6 +196,7 @@
 	font-size: 0.9vw;
 	margin-left: 2rem;
 	border-radius: 0.2rem;
+	overflow-y: auto;
 }
 
 .detailCardHeader {
@@ -217,4 +223,82 @@
 	padding-right: 0.5rem;
 	font-weight: bold;
 	color: rgb(86, 86, 86);
+}
+
+.badge {
+	margin: 0;
+	position: absolute;
+	width: 12px;
+	height: 22px;
+	z-index: 5;
+	top: -8px;
+	right: -10px;
+	padding: 5px 10px;
+	border-radius: 50%;
+	font-size: 1.2vw;
+	font-weight: bold;
+	text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: rgb(235, 183, 12);
+	color: #fff;
+	box-shadow: 0 3px 7px 0 rgba(141, 38, 95, 0.6);
+}
+
+.purchase-form {
+	background-color: rgba(152, 220, 247, 0.9);
+	color: rgb(24, 23, 23);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.19), 0 3px 3px rgba(0, 0, 0, 0.23);
+	padding: 1rem;
+	margin: 1rem;
+}
+
+.receipt-header {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	text-align: center;
+	font-size: 1.6vw;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.receipt-desc {
+	text-align: center;
+	font-size: 1vw;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.receipt-datetime {
+	text-align: center;
+	font-size: 1vw;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.dashboard-card {
+	height: 8vh;
+	width: 11vw;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1vw;
+	text-align: center;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	padding-bottom: 1rem;
+	color: #fff;
+	box-shadow: rgba(34, 34, 34, 0.2) 0px 14px 28px,
+		rgba(54, 54, 54, 0.18) 0px 10px 10px;
+	cursor: pointer;
+	margin-bottom: 1rem;
+}
+
+.dashboard-card-value {
+	font-size: 3.2vw;
+	font-weight: bold;
+}
+
+.chart-card {
+	background-color: #f7f7f7;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+		rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+	padding: 0.5rem 0rem;
+	margin-top: 1rem;
 }

@@ -31,7 +31,7 @@ export const getOneAnimal = async (id: number) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -50,7 +50,7 @@ export const getCusAnimals = async (customer: any) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };

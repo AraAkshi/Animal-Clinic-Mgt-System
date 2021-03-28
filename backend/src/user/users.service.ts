@@ -27,6 +27,7 @@ export class UsersService {
     if (!match) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
+
     return user;
   }
 

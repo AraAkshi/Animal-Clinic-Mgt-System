@@ -8,37 +8,71 @@ import {
 	Button,
 	TableBody,
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import React, { useState, useEffect } from 'react';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import Header from '../../layout/Header';
+import Alerts from '../../../layout/Alerts';
 import Sidebar from '../../layout/Sidebar';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
 import {
 	getAllAppointments,
 	formatDate,
 } from '../../../../services/appointment';
+import AppointmentDetail from './AppointmentDetail';
+import { getAllCustomers } from '../../../../services/customer';
+
+const StyledTableCell = withStyles((theme) => ({
+	head: {
+		backgroundColor: theme.palette.common.white,
+		color: theme.palette.common.black,
+	},
+	body: {
+		fontSize: 12,
+	},
+}))(TableCell);
 
 function Appointment() {
+	const [alert, setAlert] = useState([
+		{ msg: '', alertType: '', state: false },
+	]);
 	const date = new Date();
 	const [selectedDate, setSelectedDate] = useState(date);
+	const [customers, setCustomers] = useState([]);
 	const [appointments, setAppointments] = useState([]);
+	const [todayAppoints, setTodayAppoints] = useState([]);
 	const [dayAppointments, setDayAppointments] = useState([]);
+	const [selectedAppoint, setSelectedAppoint] = useState({
+		id: 0,
+		customer: { name: '', id: '', contact: '' },
+		animal: { name: '', breed: '', id: '' },
+		scheduleDate: '',
+		scheduleTime: '',
+		remarks: '',
+	});
 
 	const getAppoints = async (day) => {
 		const dateString = formatDate(day);
 		const dayAppoints = appointments.filter(
-			(item) => item.scheduleDateTime.toLocaleDateString() == dateString
+			(item) => formatDate(item.scheduleDate) === dateString
 		);
 		setDayAppointments(dayAppoints);
-		console.log(dayAppoints);
 	};
 
 	useEffect(async () => {
 		const res = await getAllAppointments();
-		if (res !== undefined) setAppointments(res);
+		if (res !== undefined) {
+			setAppointments(res);
+			const today = formatDate(date);
+			const dayAppoints = res.filter(
+				(item) => formatDate(item.scheduleDate) === today
+			);
+			setTodayAppoints(dayAppoints);
+		}
+
+		const customerRes = await getAllCustomers();
+		if (customerRes !== undefined) setCustomers(customerRes);
 	}, [0]);
 
 	const handleDayClick = (day) => {
@@ -46,82 +80,87 @@ function Appointment() {
 		getAppoints(day);
 	};
 
-	const editAppointment = () => {};
-	const deleteAppointment = () => {};
+	const handleRowSelect = (item) => {
+		setSelectedAppoint(item);
+	};
 
 	return (
 		<div>
+			{/* <Alerts /> */}
 			<Header />
 			<Sidebar />
 			<div className='sidebar-container'>
 				<Grid container direction='row' spacing={1}>
 					<Grid item xs={3}>
 						<Grid container direction='column' spacing={2}>
-							<Button
-								size='small'
-								color='secondary'
-								startIcon={<AddIcon />}
-								href='/admin/appointments/add-appointment'
-								variant='contained'
-								style={{ margin: '0.5rem' }}
-							>
-								New Appointment
-							</Button>
-							<br />
-							<DayPicker onDayClick={handleDayClick} />
+							<Grid item>
+								<Typography variant='body1'>Appointments Today</Typography>
+							</Grid>
+							<Grid item>
+								<Grid container direction='row' justify='center'>
+									<div className='petStatCard'>{todayAppoints.length}</div>
+								</Grid>
+								<br />
+							</Grid>
+							<Grid item>
+								<DayPicker onDayClick={handleDayClick} />
+							</Grid>
+							<Grid item>
+								<Button
+									size='small'
+									color='secondary'
+									startIcon={<AddIcon />}
+									href='/admin/appointments/add-appointment'
+									variant='contained'
+									style={{ margin: '0.5rem' }}
+								>
+									New Appointment
+								</Button>
+							</Grid>
 						</Grid>
 					</Grid>
 					<Grid item xs={4}>
 						<div className='appointmentCard'>
-							<Typography variant='body2'>
+							<div className='detailCardHeader'>
 								APPOINTMENTS ON {selectedDate.toLocaleDateString()}
-							</Typography>
-							<Table size='small'>
+							</div>
+							<Table size='small' stickyHeader style={{ maxHeight: '60vh' }}>
 								<TableHead>
 									<TableRow>
-										<TableCell>Time</TableCell>
-										<TableCell>Title</TableCell>
+										<StyledTableCell>Time</StyledTableCell>
+										<StyledTableCell>Description</StyledTableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									<TableRow>
-										<TableCell></TableCell>
-									</TableRow>
+									{dayAppointments.length > 0 ? (
+										dayAppointments.map((item) => (
+											<TableRow
+												key={item.id}
+												hover={true}
+												onClick={() => handleRowSelect(item)}
+												style={{ cursor: 'pointer' }}
+											>
+												<StyledTableCell>{item.scheduleTime}</StyledTableCell>
+												<StyledTableCell>{item.remarks}</StyledTableCell>
+											</TableRow>
+										))
+									) : (
+										<TableRow>
+											<TableCell>No Appointments</TableCell>
+										</TableRow>
+									)}
 								</TableBody>
 							</Table>
 						</div>
 					</Grid>
 					<Grid item xs={5}>
-						<Grid container direction='column'>
-							<div className='appointmentCard'>
-								<Typography variant='body2'>APPOINTMENTS DETAILS</Typography>
-							</div>
-							<Grid container direction='row' justify='flex-end'>
-								<Button
-									size='small'
-									color='secondary'
-									startIcon={<EditIcon />}
-									onClick={editAppointment}
-									variant='contained'
-									style={{ margin: '0.5rem' }}
-								>
-									Edit
-								</Button>
-								<Button
-									size='small'
-									color='secondary'
-									startIcon={<DeleteIcon />}
-									onClick={deleteAppointment}
-									variant='contained'
-									style={{ margin: '0.5rem' }}
-								>
-									Delete
-								</Button>
-							</Grid>
-						</Grid>
+						<AppointmentDetail
+							selectedAppointment={selectedAppoint}
+							setAlert={setAlert}
+							customers={customers}
+						/>
 					</Grid>
 				</Grid>
-				{/* <AddAppointment setOpen={setOpen} open={open} /> */}
 			</div>
 		</div>
 	);

@@ -1,87 +1,98 @@
-import { Backdrop, Modal, TextField, Button, Grid } from '@material-ui/core';
-import React, { useState } from 'react';
+import {
+	Backdrop,
+	Modal,
+	TextField,
+	Button,
+	Grid,
+	Select,
+	MenuItem,
+	InputLabel,
+} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { getCusAnimals } from '../../../../services/animal';
+import { getAllCustomers } from '../../../../services/customer';
 import Alerts from '../../../layout/Alerts';
 import Appointment from './Appointment';
-import { addAppointment, formatDate } from '../../../../services/appointment';
-import { addCustomer } from '../../../../services/customer';
+import { addAppointment } from '../../../../services/appointment';
 
 const AddAppointment = () => {
 	const [open, setOpen] = useState(true);
+	const [alert, setAlert] = useState([
+		{ msg: '', alertType: '', state: false },
+	]);
+	const [customers, setCustomers] = useState([]);
+	const [animals, setAnimals] = useState([]);
 	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		address: '',
-		contact: '',
+		customer: '',
 		scheduleDate: '2021-01-01',
 		scheduleTime: '00:00',
-		animal: '',
+		animal: null,
 		remarks: '',
 	});
 
-	const {
-		name,
-		email,
-		address,
-		contact,
-		scheduleDate,
-		scheduleTime,
-		animal,
-		remarks,
-	} = formData;
+	const { customer, scheduleDate, scheduleTime, animal, remarks } = formData;
 
-	const onChange = (e) => {
-		const value =
-			e.target.name === 'scheduleDate'
-				? formatDate(e.target.value)
-				: e.target.value;
-		setFormData({ ...formData, [e.target.name]: value });
+	const onChange = async (e) => {
+		if (e.target.name == 'customer') {
+			const animalRes = await getCusAnimals(e.target.value.id);
+			if (animalRes !== undefined) setAnimals(animalRes);
+		}
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const resetForm = () => {
 		setFormData({
-			name: '',
-			email: '',
-			address: '',
-			contact: '',
+			customer: '',
 			scheduleDate: '2021-01-01',
 			scheduleTime: '00:00',
-			animal: '',
+			animal: null,
 			remarks: '',
 		});
 	};
 
+	useEffect(() => {
+		async function fetchData() {
+			const customerRes = await getAllCustomers();
+			if (customerRes !== undefined) setCustomers(customerRes);
+		}
+		fetchData();
+	}, [0]);
+
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		const user = await addCustomer(name, email, address, contact);
-		const res = await addAppointment({
+		const res = await addAppointment(
 			scheduleDate,
 			scheduleTime,
 			remarks,
 			animal,
-			user,
-		});
+			customer
+		);
 		if (res !== undefined) {
-			window.open(window.location.origin + `/admin/appointment`, '_self');
-			alert('Appointment Details Added Successfully');
+			const newAlert = {
+				msg: 'Appointment Details Added Successfully',
+				alertType: 'success',
+				state: true,
+			};
+			setAlert({ ...alert, newAlert });
+			window.open(window.location.origin + `/admin/appointments`, '_self');
+			setOpen(false);
 		}
-		setOpen(false);
 	};
 
 	const handleClose = () => {
 		setOpen(false);
+		window.open(window.location.origin + `/admin/appointments`, '_self');
 	};
 
 	return (
 		<div>
-			<Alerts />
+			{/* <Alerts /> */}
 			<Appointment />
 			<Modal
 				open={open}
 				onClose={handleClose}
 				style={{ height: '90vh', width: '40vw', margin: 'auto' }}
-				aria-describedby='transition-modal-description'
 				BackdropComponent={Backdrop}
-				BackdropProps={{ timeout: 500 }}
 			>
 				<div className='addModal'>
 					<form className='form' onSubmit={(e) => onSubmit(e)}>
@@ -91,43 +102,62 @@ const AddAppointment = () => {
 							spacing={1}
 							style={{ padding: '1rem' }}
 						>
+							<Grid container direction='row' style={{ marginTop: '0.5rem' }}>
+								<Grid item xs={6}>
+									<InputLabel id='customer'>Customer</InputLabel>
+									<Select
+										labelId='customer'
+										name='customer'
+										value={customer}
+										onChange={(e) => onChange(e)}
+										required
+									>
+										{customers.length > 0 ? (
+											customers.map((item) => (
+												<MenuItem key={item.id} value={item}>
+													{item.name}
+												</MenuItem>
+											))
+										) : (
+											<MenuItem>None Available</MenuItem>
+										)}
+									</Select>
+								</Grid>
+								<Grid item xs={6}>
+									<InputLabel id='animal'>Animal</InputLabel>
+									<Select
+										labelId='animal'
+										name='animal'
+										value={animal}
+										onChange={(e) => onChange(e)}
+										required
+									>
+										{animals.length > 0 ? (
+											animals.map((item) => (
+												<MenuItem key={item.id} value={item}>
+													{`${item.breed} - ${item.name}`}
+												</MenuItem>
+											))
+										) : (
+											<MenuItem>None Available</MenuItem>
+										)}
+									</Select>
+								</Grid>
+							</Grid>
 							<TextField
-								name='name'
 								size='small'
-								label='Full Name'
-								value={name}
-								onChange={(e) => onChange(e)}
-								required
-							/>
-							<TextField
-								name='email'
-								size='small'
-								label='Email'
-								value={email}
-								onChange={(e) => onChange(e)}
+								variant='outlined'
+								value={customer.email}
 								style={{ marginTop: '0.5rem' }}
-								required
-							/>
-							<TextField
-								name='address'
-								label='Address'
-								size='small'
-								value={address}
-								onChange={(e) => onChange(e)}
-								multiline
-								rows={2}
-								style={{ marginTop: '0.5rem' }}
+								disabled
 							/>
 							<TextField
 								type='number'
+								variant='outlined'
 								size='small'
-								name='contact'
-								label='Contact No'
-								value={contact}
-								onChange={(e) => onChange(e)}
-								required
-								minLength='10'
+								value={customer.contact}
 								style={{ marginTop: '0.5rem' }}
+								disabled
 							/>
 							<TextField
 								type='date'
@@ -154,18 +184,9 @@ const AddAppointment = () => {
 							/>
 							<TextField
 								size='small'
-								name='animal'
-								label='Pet Animal Type and Name'
-								value={animal}
-								onChange={(e) => onChange(e)}
-								required
-								style={{ marginTop: '0.5rem' }}
-							/>
-							<TextField
-								size='small'
 								name='remarks'
 								label='Additional Remarks'
-								value={remarks}
+								value={remarks.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								multiline
 								rows={2}

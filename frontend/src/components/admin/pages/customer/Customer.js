@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { getAllCustomers } from '../../../../services/customer';
 import CustomerDetails from './CustomerDetails';
 import Alerts from '../../../layout/Alerts';
+import { getCusAnimals } from '../../../../services/animal';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -25,7 +26,7 @@ const StyledTableCell = withStyles((theme) => ({
 		color: theme.palette.common.white,
 	},
 	body: {
-		fontSize: 14,
+		fontSize: 13,
 	},
 }))(TableCell);
 
@@ -44,7 +45,7 @@ function Customer() {
 			enteredDate: '',
 		},
 	]);
-
+	const [customerAnimals, setCustomerAnimals] = useState([]);
 	const [selectedCustomer, setSelectedCustomer] = useState({
 		id: 0,
 		isActive: true,
@@ -62,8 +63,10 @@ function Customer() {
 		);
 	};
 
-	const handleRowSelect = (item) => {
+	const handleRowSelect = async (item) => {
 		setSelectedCustomer(item);
+		const animalRes = await getCusAnimals(item.id);
+		if (animalRes !== undefined) setCustomerAnimals(animalRes);
 	};
 
 	useEffect(() => {
@@ -145,6 +148,7 @@ function Customer() {
 					<Grid item xs={5}>
 						<CustomerDetails
 							selectedCustomer={selectedCustomer}
+							customerAnimals={customerAnimals}
 							setAlert={setAlert}
 						/>
 					</Grid>

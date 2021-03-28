@@ -65,10 +65,23 @@ export class CustomerService {
     address?: string;
     contact?: number;
     remarks?: string;
+    animal?: any;
+    treatments?: any;
+    appointments?: any;
     id: number;
   }): Promise<CustomerEntity> {
     const res = await this.repo.findOne(data.id);
-    const { name, email, address, contact, isActive, remarks } = data;
+    const {
+      name,
+      email,
+      address,
+      contact,
+      isActive,
+      remarks,
+      animal,
+      treatments,
+      appointments,
+    } = data;
 
     if (name) res.name = name;
     if (email) res.email = email;
@@ -76,6 +89,9 @@ export class CustomerService {
     if (address) res.address = address;
     if (isActive) res.isActive = isActive;
     if (remarks) res.remarks = remarks;
+    if (animal) res.animal = animal;
+    if (treatments) res.treatments = treatments;
+    if (appointments) res.appointments = appointments;
 
     await this.repo.save(res);
     this.logger.log(`Successfully Updated details of Customer - ${res.name}`);

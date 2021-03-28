@@ -60,6 +60,7 @@ export class InventoryController {
       batchNo?: string;
       unitPurchasePrice?: number;
       bufferQty?: number;
+      soldQty?: number;
       quantity?: number;
       unitSellingPrice?: number;
       purchasedDate?: Date;
