@@ -20,6 +20,8 @@ export class AnimalService {
       .createQueryBuilder('animal')
       .leftJoinAndSelect('animal.owner', 'owner')
       .leftJoinAndSelect('animal.type', 'type')
+      .leftJoinAndSelect('animal.treatments', 'treatments')
+      .leftJoinAndSelect('animal.appointments', 'appointments')
       .getMany();
 
     this.logger.log('Successfully returned All animals');
@@ -34,6 +36,8 @@ export class AnimalService {
       .createQueryBuilder('animal')
       .leftJoinAndSelect('animal.owner', 'owner')
       .leftJoinAndSelect('animal.type', 'type')
+      .leftJoinAndSelect('animal.treatments', 'treatments')
+      .leftJoinAndSelect('animal.appointments', 'appointments')
       .where('animal.id = :id')
       .setParameter('id', AnimalId)
       .getOne();
@@ -53,6 +57,8 @@ export class AnimalService {
       .createQueryBuilder('animal')
       .leftJoinAndSelect('animal.owner', 'owner')
       .leftJoinAndSelect('animal.type', 'type')
+      .leftJoinAndSelect('animal.treatments', 'treatments')
+      .leftJoinAndSelect('animal.appointments', 'appointments')
       .where('animal.owner.id = :id')
       .setParameter('id', customer)
       .getMany();
@@ -92,6 +98,8 @@ export class AnimalService {
     breed?: string;
     type?: any;
     owner?: any;
+    treatments?: any;
+    appointments?: any;
     id: number;
   }): Promise<AnimalEntity> {
     const animal = await this.repo.findOne(data.id);
@@ -104,6 +112,8 @@ export class AnimalService {
       type,
       breed,
       owner,
+      treatments,
+      appointments,
       isActive,
     } = data;
 
@@ -115,6 +125,8 @@ export class AnimalService {
     if (type) animal.type = type;
     if (breed) animal.breed = breed;
     if (owner) animal.owner = owner;
+    if (treatments) animal.treatments = treatments;
+    if (appointments) animal.appointments = appointments;
     if (isActive) animal.isActive = isActive;
 
     await this.repo.save(animal);

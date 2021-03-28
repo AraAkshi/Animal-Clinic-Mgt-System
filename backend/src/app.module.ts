@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AuthModule } from './auth/auth.module';
 import { TreatmentModule } from './treatment/treatment.module';
 import { UsersModule } from './user/user.module';
@@ -23,6 +24,9 @@ import { UserEntity } from './entities/user.entity';
 import { CustomerModule } from './customer/customer.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './_shared/http-error-filter';
+import { join } from 'path';
+import { SalesEntity } from './entities/sales.entity';
+import { SalesModule } from './sales/sales.module';
 
 @Module({
   imports: [
@@ -43,6 +47,7 @@ import { AllExceptionsFilter } from './_shared/http-error-filter';
         ProductCategoryEntity,
         TreatmentEntity,
         UserEntity,
+        SalesEntity,
       ],
       synchronize: true,
     }),
@@ -56,6 +61,11 @@ import { AllExceptionsFilter } from './_shared/http-error-filter';
     TreatmentModule,
     AuthModule,
     CustomerModule,
+    SalesModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'images'),
+      exclude: ['/api*'],
+    }),
   ],
   controllers: [AppController],
   providers: [

@@ -14,7 +14,10 @@ export class AppointmentEntity {
   animal: AnimalEntity;
 
   @Column()
-  scheduleDateTime: Date;
+  scheduleDate: Date;
+
+  @Column({ type: 'varchar' })
+  scheduleTime: string;
 
   @Column()
   remarks: string;

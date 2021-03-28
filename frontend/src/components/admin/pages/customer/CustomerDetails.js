@@ -1,13 +1,35 @@
 import React, { useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { Button, Grid, Modal, Backdrop } from '@material-ui/core';
+import {
+	Button,
+	Grid,
+	Modal,
+	Backdrop,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	TableContainer,
+	withStyles,
+} from '@material-ui/core';
 import { deleteCustomer } from '../../../../services/customer';
 import { formatDate } from '../../../../services/appointment';
 import EditCustomer from './EditCustomer';
 
+const StyledTableCell = withStyles((theme) => ({
+	head: {
+		backgroundColor: theme.palette.common.black,
+		color: theme.palette.common.white,
+	},
+	body: {
+		fontSize: 11,
+		fontWeight: 'bold',
+	},
+}))(TableCell);
+
 function CustomerDetails(props) {
-	const { selectedCustomer, setAlert } = props;
+	const { selectedCustomer, setAlert, customerAnimals } = props;
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => {
@@ -21,12 +43,14 @@ function CustomerDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteCustomer(selectedCustomer.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Customer Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Customer Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/customers`, '_self');
 		}
 	};
@@ -93,6 +117,40 @@ function CustomerDetails(props) {
 								<div className='detailCardValue'>
 									{selectedCustomer.remarks}
 								</div>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item>
+						<Grid container direction='row'>
+							<Grid item xs={5}>
+								<div className='detailCardItem'>PETS OWNED</div>
+							</Grid>
+							<Grid item xs={7}>
+								<div className='detailCardValue'></div>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item>
+						<Grid container direction='row' justify='center'>
+							<Grid item xs={10}>
+								<TableContainer>
+									<Table size='small' stickyHeader>
+										<TableBody>
+											{customerAnimals.length > 0 ? (
+												customerAnimals.map((item) => (
+													<TableRow key={item.id}>
+														<StyledTableCell>{item.name}</StyledTableCell>
+														<StyledTableCell>{item.breed}</StyledTableCell>
+													</TableRow>
+												))
+											) : (
+												<TableRow>
+													<StyledTableCell>No Pets</StyledTableCell>
+												</TableRow>
+											)}
+										</TableBody>
+									</Table>
+								</TableContainer>
 							</Grid>
 						</Grid>
 					</Grid>

@@ -21,12 +21,14 @@ function EmployeeDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteEmployee(selectedEmployee.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Employee Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Employee Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/employees`, '_self');
 		}
 	};
@@ -42,7 +44,9 @@ function EmployeeDetails(props) {
 								<div className='detailCardItem'>NAME</div>
 							</Grid>
 							<Grid item xs={6}>
-								<div className='detailCardValue'>{selectedEmployee.name}</div>
+								<div className='detailCardValue'>
+									{selectedEmployee.name.toUpperCase()}
+								</div>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -111,7 +115,7 @@ function EmployeeDetails(props) {
 							</Grid>
 							<Grid item xs={6}>
 								<div className='detailCardValue'>
-									{selectedEmployee.address}
+									{selectedEmployee.address.toUpperCase()}
 								</div>
 							</Grid>
 						</Grid>

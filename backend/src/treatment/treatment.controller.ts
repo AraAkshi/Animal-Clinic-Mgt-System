@@ -42,9 +42,10 @@ export class TreatmentController {
       treatmentType: string;
       customer: any;
       animal: any;
+      itemsUsed: any;
       description: string;
       dateReceived: Date;
-      timeReceived: Date;
+      timeReceived: string;
       nextTreatmentDate: Date;
     },
   ): Promise<TreatmentEntity> {
@@ -59,9 +60,10 @@ export class TreatmentController {
       treatmentType?: string;
       customer?: any;
       animal?: any;
+      itemsUsed?: any;
       description?: string;
       dateReceived?: Date;
-      timeReceived?: Date;
+      timeReceived?: string;
       nextTreatmentDate?: Date;
       id: number;
     },

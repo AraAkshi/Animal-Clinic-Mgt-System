@@ -14,7 +14,11 @@ export class AppointmentService {
   //Get all Appointments
   async getAllAppointments(): Promise<AppointmentEntity[]> {
     this.logger.log('Start getting details for all Appointments');
-    const res = await this.repo.find();
+    const res = await getRepository(AppointmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .getMany();
     this.logger.log('Successfully returned All Appointments');
     return res;
   }
@@ -23,7 +27,13 @@ export class AppointmentService {
   //@params - Appointment Id
   async getOneAppointment(AppId: number): Promise<AppointmentEntity> {
     this.logger.log(`Start getting details for Appointment with Id - ${AppId}`);
-    const res = await this.repo.findOne(AppId);
+    const res = await getRepository(AppointmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .where('tbl.id = :id')
+      .setParameter('id', AppId)
+      .getOne();
     this.logger.log(
       `Successfully returned details for Appointment with Id - ${AppId}`,
     );
@@ -33,7 +43,8 @@ export class AppointmentService {
   //Add New Appointment
   async addAppointment(data: {
     remarks: string;
-    scheduleDateTime: Date;
+    scheduleDate: Date;
+    scheduleTime: string;
     animal: any;
     customer: any;
   }): Promise<AppointmentEntity> {
@@ -41,7 +52,7 @@ export class AppointmentService {
     const res = this.repo.create(data);
     await this.repo.save(res);
     this.logger.log(
-      `Successfully Added Appointment - ${res.customer} on ${res.scheduleDateTime}`,
+      `Successfully Added Appointment - ${res.customer} on ${res.scheduleDate}`,
     );
     return res;
   }
@@ -51,15 +62,24 @@ export class AppointmentService {
   async editAppointment(data: {
     isAttended?: boolean;
     remarks?: string;
-    scheduleDateTime?: Date;
+    scheduleDate?: Date;
+    scheduleTime?: string;
     animal?: any;
     customer?: any;
     id: number;
   }): Promise<AppointmentEntity> {
     const res = await this.repo.findOne(data.id);
-    const { scheduleDateTime, animal, customer, remarks, isAttended } = data;
+    const {
+      scheduleDate,
+      scheduleTime,
+      animal,
+      customer,
+      remarks,
+      isAttended,
+    } = data;
 
-    if (scheduleDateTime) res.scheduleDateTime = scheduleDateTime;
+    if (scheduleDate) res.scheduleDate = scheduleDate;
+    if (scheduleTime) res.scheduleTime = scheduleTime;
     if (animal) res.animal = animal;
     if (customer) res.customer = customer;
     if (remarks) res.remarks = remarks;
@@ -89,7 +109,13 @@ export class AppointmentService {
     this.logger.log(
       `Start getting details of Appointment of customer - ${customer}`,
     );
-    const res = await this.repo.find({ where: { customer: customer } });
+    const res = await getRepository(AppointmentEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.customer', 'customer')
+      .leftJoinAndSelect('tbl.animal', 'animal')
+      .where('tbl.customer.id = :id')
+      .setParameter('id', customer)
+      .getMany();
     this.logger.log(
       `Successfully returned details of Appointment of customer - ${customer}`,
     );

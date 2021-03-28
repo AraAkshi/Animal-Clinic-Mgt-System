@@ -1,15 +1,37 @@
 import React, { useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import { Button, Grid, Modal, Backdrop } from '@material-ui/core';
+import {
+	Button,
+	Grid,
+	Modal,
+	Backdrop,
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	TableContainer,
+	withStyles,
+} from '@material-ui/core';
 import { formatDate } from '../../../../services/appointment';
 import { getAllTypes } from '../../../../services/petType';
 import { getAllCustomers } from '../../../../services/customer';
 import { deleteAnimal } from '../../../../services/animal';
 import EditAnimal from './EditAnimal';
 
+const StyledTableCell = withStyles((theme) => ({
+	head: {
+		backgroundColor: theme.palette.common.black,
+		color: theme.palette.common.white,
+	},
+	body: {
+		fontSize: 11,
+		fontWeight: 'bold',
+	},
+}))(TableCell);
+
 function AnimalDetails(props) {
-	const { selectedAnimal, setAlert } = props;
+	const { selectedAnimal, setAlert, treatments } = props;
 	const [open, setOpen] = useState(false);
 	const [petTypes, setPetTypes] = useState([{ id: 0, name: '' }]);
 	const [customers, setCustomers] = useState([]);
@@ -29,12 +51,14 @@ function AnimalDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteAnimal(selectedAnimal.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Animal Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Animal Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/animals`, '_self');
 		}
 	};
@@ -157,6 +181,47 @@ function AnimalDetails(props) {
 							</Grid>
 							<Grid item xs={5}>
 								<div className='detailCardValue'>{selectedAnimal.remarks}</div>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item>
+						<Grid container direction='row'>
+							<Grid item xs={5}>
+								<div className='detailCardItem'>TREATMENTS DONE</div>
+							</Grid>
+							<Grid item xs={7}>
+								<div className='detailCardValue'></div>
+							</Grid>
+						</Grid>
+					</Grid>
+					<Grid item>
+						<Grid container direction='row' justify='center'>
+							<Grid item xs={10}>
+								<TableContainer>
+									<Table size='small' stickyHeader>
+										<TableBody>
+											{treatments.length > 0 ? (
+												treatments.map((item) => (
+													<TableRow key={item.id}>
+														<StyledTableCell>
+															{formatDate(item.dateReceived)}
+														</StyledTableCell>
+														<StyledTableCell>
+															{item.treatmentType}
+														</StyledTableCell>
+														<StyledTableCell>
+															{item.description}
+														</StyledTableCell>
+													</TableRow>
+												))
+											) : (
+												<TableRow>
+													<StyledTableCell>No Treatments</StyledTableCell>
+												</TableRow>
+											)}
+										</TableBody>
+									</Table>
+								</TableContainer>
 							</Grid>
 						</Grid>
 					</Grid>

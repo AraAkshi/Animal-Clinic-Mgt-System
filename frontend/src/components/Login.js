@@ -1,9 +1,19 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Homepage from './layout/Homepage';
 import Alerts from './layout/Alerts';
-import { Modal, Typography, TextField, Button, Grid } from '@material-ui/core';
+import {
+	Modal,
+	Typography,
+	TextField,
+	Button,
+	Grid,
+	IconButton,
+	InputAdornment,
+} from '@material-ui/core';
 import { login } from '../services/auth';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const Login = () => {
 	const [formData, setFormData] = useState({
@@ -12,7 +22,8 @@ const Login = () => {
 	});
 	const [open, setOpen] = useState(true);
 	const { email, password } = formData;
-
+	const [showPassword, setShowPassword] = useState(false);
+	const [alert, setAlert] = useState([]);
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -25,6 +36,15 @@ const Login = () => {
 			} else {
 				window.open(window.location.origin + `/admin/dashboard`, '_self');
 			}
+		} else {
+			const newAlert = [
+				{
+					msg: 'Invalid Login Credentials. Please Try Again!',
+					alertType: 'danger',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 		}
 	};
 
@@ -33,9 +53,13 @@ const Login = () => {
 		window.open('/', '_self');
 	};
 
+	const handlePasswordVisibility = () => {
+		showPassword ? setShowPassword(false) : setShowPassword(true);
+	};
+
 	return (
 		<Fragment>
-			{/* <Alerts /> */}
+			<Alerts alerts={alert} />
 			<Homepage />
 			<Modal
 				open={open}
@@ -66,7 +90,7 @@ const Login = () => {
 								color='secondary'
 							/>
 							<TextField
-								type='password'
+								type={showPassword ? 'text' : 'password'}
 								size='small'
 								name='password'
 								label='Password'
@@ -76,6 +100,15 @@ const Login = () => {
 								minLength='6'
 								color='secondary'
 								style={{ marginTop: '1rem' }}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position='end'>
+											<IconButton onClick={handlePasswordVisibility}>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 						</Grid>
 						<Grid

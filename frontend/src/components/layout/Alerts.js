@@ -8,13 +8,16 @@ function Alert(props) {
 
 const Alerts = (props) => {
 	const { alerts } = props;
-	const [open, setOpen] = React.useState(alerts[0].state);
+	console.log(alerts);
+	const alert = alerts !== undefined ? true : false;
+	const [open, setOpen] = React.useState(alert);
 	const handleClose = () => {
 		setOpen(false);
 	};
+
 	return (
 		alerts !== null &&
-		// alerts !== undefined &&
+		alerts !== undefined &&
 		alerts.length > 0 &&
 		alerts.map((alerts) => (
 			<Snackbar

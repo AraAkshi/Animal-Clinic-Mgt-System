@@ -52,6 +52,9 @@ export class CustomerController {
       address?: string;
       contact?: number;
       remarks?: string;
+      animal?: any;
+      treatments?: any;
+      appointments?: any;
       id: number;
     },
   ): Promise<CustomerEntity> {

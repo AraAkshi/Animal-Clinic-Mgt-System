@@ -2,9 +2,19 @@ import React, { Fragment, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Homepage from './layout/Homepage';
 import Alerts from './layout/Alerts';
-import { Modal, Typography, TextField, Button, Grid } from '@material-ui/core';
+import {
+	Modal,
+	Typography,
+	TextField,
+	Button,
+	Grid,
+	IconButton,
+	InputAdornment,
+} from '@material-ui/core';
 import { addCustomer } from '../services/customer';
 import { addUser } from '../services/auth';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const Register = () => {
 	const [formData, setFormData] = useState({
@@ -15,11 +25,14 @@ const Register = () => {
 		password: '',
 		password2: '',
 	});
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [open, setOpen] = useState(true);
+	const [showPassword, setShowPassword] = useState(false);
 	const { name, email, address, contact, password, password2 } = formData;
+
+	const handlePasswordVisibility = () => {
+		showPassword ? setShowPassword(false) : setShowPassword(true);
+	};
 
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,26 +41,30 @@ const Register = () => {
 		e.preventDefault();
 
 		if (password !== password2) {
-			const newAlert = {
-				msg: 'Passwords do not match',
-				alertType: 'danger',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Passwords do not match',
+					alertType: 'danger',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 		} else {
 			const role = 'customer';
 			const userRes = await addUser(email, password, role, name);
 			const cusRes = await addCustomer(name, email, address, contact);
-			if (userRes !== undefined && cusRes !== undefined)
-				return <Redirect to='/' />;
-			// else {
-			// 	const newAlert = {
-			// 		msg: userRes !== undefined ? cusRes : userRes,
-			// 		alertType: 'danger',
-			// 		state: true,
-			// 	};
-			// 	setAlert({ ...alert, newAlert });
-			// }
+			if (userRes !== undefined && cusRes !== undefined) {
+				window.open(window.location.origin + `/`, '_self');
+			} else {
+				const newAlert = [
+					{
+						msg: userRes !== undefined ? cusRes : userRes,
+						alertType: 'danger',
+						state: true,
+					},
+				];
+				setAlert(newAlert);
+			}
 		}
 	};
 
@@ -135,6 +152,15 @@ const Register = () => {
 								minLength='6'
 								color='secondary'
 								style={{ marginTop: '0.5rem' }}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position='end'>
+											<IconButton onClick={handlePasswordVisibility}>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 							<Typography variant='caption' color='textSecondary'>
 								*Please enter a password of minimum length of 6 characters
@@ -150,6 +176,15 @@ const Register = () => {
 								minLength='6'
 								color='secondary'
 								style={{ marginTop: '0.5rem' }}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position='end'>
+											<IconButton onClick={handlePasswordVisibility}>
+												{showPassword ? <Visibility /> : <VisibilityOff />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 						</Grid>
 						<Grid

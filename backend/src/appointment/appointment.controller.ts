@@ -24,11 +24,13 @@ export class AppointmentController {
     @Body()
     data: {
       remarks: string;
-      scheduleDateTime: Date;
+      scheduleDate: Date;
+      scheduleTime: string;
       animal: any;
       customer: any;
     },
   ): Promise<AppointmentEntity> {
+    console.log(data);
     return await this.service.addAppointment(data);
   }
 
@@ -39,7 +41,8 @@ export class AppointmentController {
     data: {
       isAttended?: boolean;
       remarks?: string;
-      scheduleDateTime?: Date;
+      scheduleDate?: Date;
+      scheduleTime?: string;
       animal?: any;
       customer?: any;
       id: number;

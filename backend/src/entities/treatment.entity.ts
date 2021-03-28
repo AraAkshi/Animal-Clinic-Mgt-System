@@ -13,17 +13,20 @@ export class TreatmentEntity {
   @ManyToOne(() => AnimalEntity, (animal) => animal.treatments)
   animal: AnimalEntity;
 
+  @Column('text', { array: true })
+  itemsUsed: string[];
+
   @Column({ type: 'varchar' })
   treatmentType: string;
 
-  @Column({ type: 'varchar' })
-  decription: string;
+  @Column({ type: 'varchar', nullable: true })
+  description: string;
 
   @Column()
   dateReceived: Date;
 
-  @Column()
-  timeReceived: Date;
+  @Column({ type: 'varchar' })
+  timeReceived: string;
 
   @Column()
   nextTreatmentDate: Date;

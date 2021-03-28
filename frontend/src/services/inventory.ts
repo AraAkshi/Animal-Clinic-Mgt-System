@@ -50,9 +50,20 @@ export const getCategoryItems = async (category: any) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
+};
+
+export const getItemsByCat = async (categories: any[]) => {
+	const categoryList: any[] = [];
+	for (let index in categories) {
+		let category = categories[index];
+		let items = await getCategoryItems(category.id);
+		let data = { category: category, items: items };
+		categoryList.push(data);
+	}
+	return categoryList;
 };
 
 //Add an item
@@ -107,6 +118,7 @@ export const editItem = async (
 	brand?: string,
 	unitPurchasePrice?: number,
 	bufferQty?: number,
+	soldQty?: number,
 	quantity?: number,
 	unitSellingPrice?: number,
 	purchasedDate?: Date,
@@ -129,6 +141,7 @@ export const editItem = async (
 			brand,
 			unitPurchasePrice,
 			bufferQty,
+			soldQty,
 			quantity,
 			unitSellingPrice,
 			purchasedDate,

@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { ProductCategoryEntity } from './productCategory.entity';
+import { TreatmentEntity } from './treatment.entity';
 
 @Entity('inventory')
 export class InventoryEntity {
@@ -26,6 +33,9 @@ export class InventoryEntity {
 
   @Column()
   quantity: number;
+
+  @Column()
+  soldQty: number;
 
   @Column({ default: 10 })
   bufferQty: number;

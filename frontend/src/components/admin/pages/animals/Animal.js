@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { getAllAnimals } from '../../../../services/animal';
 import AnimalDetails from './AnimalDetails';
 import Alerts from '../../../layout/Alerts';
+import { getAnimalTreatments } from '../../../../services/treatment';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -25,14 +26,12 @@ const StyledTableCell = withStyles((theme) => ({
 		color: theme.palette.common.white,
 	},
 	body: {
-		fontSize: 14,
+		fontSize: 12,
 	},
 }))(TableCell);
 
 function Animal() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [animals, setAnimals] = useState([
 		{
 			id: 0,
@@ -48,6 +47,7 @@ function Animal() {
 			owner: { name: '', id: '' },
 		},
 	]);
+	const [treatments, setTreatments] = useState([]);
 	const [selectedAnimal, setSelectedAnimal] = useState({
 		id: 0,
 		isActive: true,
@@ -66,8 +66,10 @@ function Animal() {
 		window.open(window.location.origin + '/admin/animals/add-animal', '_self');
 	};
 
-	const handleRowSelect = (item) => {
+	const handleRowSelect = async (item) => {
 		setSelectedAnimal(item);
+		const treatmentRes = await getAnimalTreatments(item.id);
+		if (treatmentRes !== undefined) setTreatments(treatmentRes);
 	};
 
 	useEffect(() => {
@@ -82,7 +84,7 @@ function Animal() {
 
 	return (
 		<div>
-			{/* <Alerts alerts={alert} /> */}
+			<Alerts alerts={alert} />
 			<Header />
 			<Sidebar />
 			<div className='sidebar-container'>
@@ -114,7 +116,7 @@ function Animal() {
 				</Grid>
 				<hr className='seperatorLine' />
 				<Grid container direction='row' justify='space-between'>
-					<Grid item xs={7}>
+					<Grid item xs={6}>
 						<TableContainer component={Paper}>
 							<Table size='small' stickyHeader style={{ maxHeight: '70vh' }}>
 								<TableHead>
@@ -148,9 +150,10 @@ function Animal() {
 							</Table>
 						</TableContainer>
 					</Grid>
-					<Grid item xs={5}>
+					<Grid item xs={6}>
 						<AnimalDetails
 							selectedAnimal={selectedAnimal}
+							treatments={treatments}
 							setAlert={setAlert}
 						/>
 					</Grid>

@@ -8,13 +8,16 @@ import Appointment from './components/admin/pages/appointments/Appointment';
 import AddAppointment from './components/admin/pages/appointments/AddAppointment';
 import Animal from './components/admin/pages/animals/Animal';
 import AddAnimal from './components/admin/pages/animals/AddAnimal';
-import Reminder from './components/admin/pages/Reminder';
+import Treatment from './components/admin/pages/treatments/Treatment';
 import Inventory from './components/admin/pages/inventory/Inventory';
 import Report from './components/admin/pages/report/Report';
 import Employee from './components/admin/pages/employee/Employee';
 import Customer from './components/admin/pages/customer/Customer';
 import AddCustomer from './components/admin/pages/customer/AddCustomer';
 import AddEmployee from './components/admin/pages/employee/AddEmployee';
+import AddItem from './components/admin/pages/inventory/AddItem';
+import SellItem from './components/admin/pages/inventory/SellItem';
+import AddTreatment from './components/admin/pages/treatments/AddTreatment';
 
 function App() {
 	return (
@@ -32,8 +35,15 @@ function App() {
 				/>
 				<Route exact path='/admin/animals' component={Animal} />
 				<Route exact path='/admin/animals/add-animal' component={AddAnimal} />
-				<Route exact path='/admin/treatments' component={Reminder} />
+				<Route exact path='/admin/treatments' component={Treatment} />
+				<Route
+					exact
+					path='/admin/treatments/add-treatment'
+					component={AddTreatment}
+				/>
 				<Route exact path='/admin/inventory' component={Inventory} />
+				<Route exact path='/admin/inventory/add-item' component={AddItem} />
+				<Route exact path='/admin/inventory/sell-item' component={SellItem} />
 				<Route exact path='/admin/reports' component={Report} />
 				<Route exact path='/admin/employees' component={Employee} />
 				<Route

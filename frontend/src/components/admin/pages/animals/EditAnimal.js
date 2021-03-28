@@ -70,12 +70,14 @@ const EditAnimal = (props) => {
 			owner
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Animal Details Updates Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Animal Details Updates Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/animals`, '_self');
 			setOpen(false);
 		}

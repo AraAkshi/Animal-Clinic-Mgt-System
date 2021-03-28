@@ -31,7 +31,7 @@ export const getOneTreatment = async (id: number) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -50,7 +50,7 @@ export const getAnimalTreatments = async (animal: any) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -69,7 +69,7 @@ export const getCustomerTreatments = async (customer: any) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -79,6 +79,7 @@ export const addTreatment = async (
 	treatmentType: string,
 	customer: any,
 	animal: any,
+	itemsUsed: any,
 	description: string,
 	dateReceived: Date,
 	timeReceived: Date,
@@ -95,6 +96,7 @@ export const addTreatment = async (
 			treatmentType,
 			customer,
 			animal,
+			itemsUsed,
 			description,
 			dateReceived,
 			timeReceived,
@@ -113,6 +115,7 @@ export const editTreatment = async (
 	treatmentType?: string,
 	customer?: any,
 	animal?: any,
+	itemsUsed?: any,
 	description?: string,
 	dateReceived?: Date,
 	timeReceived?: Date,
@@ -129,6 +132,7 @@ export const editTreatment = async (
 			treatmentType,
 			customer,
 			animal,
+			itemsUsed,
 			description,
 			dateReceived,
 			timeReceived,

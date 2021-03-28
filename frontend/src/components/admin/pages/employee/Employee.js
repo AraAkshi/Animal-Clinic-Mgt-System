@@ -25,14 +25,12 @@ const StyledTableCell = withStyles((theme) => ({
 		color: theme.palette.common.white,
 	},
 	body: {
-		fontSize: 14,
+		fontSize: 13,
 	},
 }))(TableCell);
 
 function Employee() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [employees, setEmployees] = useState([
 		{
 			id: 0,
@@ -138,7 +136,9 @@ function Employee() {
 												onClick={() => handleRowSelect(item)}
 												style={{ cursor: 'pointer' }}
 											>
-												<StyledTableCell>{item.name}</StyledTableCell>
+												<StyledTableCell>
+													{item.name.toUpperCase()}
+												</StyledTableCell>
 												<StyledTableCell>{item.contact}</StyledTableCell>
 												<StyledTableCell>{item.email}</StyledTableCell>
 												<StyledTableCell>{item.epfNo}</StyledTableCell>
