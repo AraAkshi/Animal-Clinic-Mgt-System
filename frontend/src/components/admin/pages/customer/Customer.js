@@ -31,9 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Customer() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [customers, setCustomers] = useState([
 		{
 			id: 0,

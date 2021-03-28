@@ -23,7 +23,7 @@ const Login = () => {
 	const [open, setOpen] = useState(true);
 	const { email, password } = formData;
 	const [showPassword, setShowPassword] = useState(false);
-
+	const [alert, setAlert] = useState([]);
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -36,6 +36,15 @@ const Login = () => {
 			} else {
 				window.open(window.location.origin + `/admin/dashboard`, '_self');
 			}
+		} else {
+			const newAlert = [
+				{
+					msg: 'Invalid Login Credentials. Please Try Again!',
+					alertType: 'danger',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 		}
 	};
 
@@ -50,7 +59,7 @@ const Login = () => {
 
 	return (
 		<Fragment>
-			{/* <Alerts /> */}
+			<Alerts alerts={alert} />
 			<Homepage />
 			<Modal
 				open={open}

@@ -22,12 +22,14 @@ function AppointmentDetail(props) {
 	const handleDelete = async () => {
 		const res = await deleteAppointment(selectedAppointment.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Appointment Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Appointment Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/appointments`, '_self');
 		}
 	};

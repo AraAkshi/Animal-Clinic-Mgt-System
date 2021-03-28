@@ -43,12 +43,14 @@ function CustomerDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteCustomer(selectedCustomer.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Customer Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Customer Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/customers`, '_self');
 		}
 	};

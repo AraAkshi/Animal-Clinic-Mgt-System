@@ -30,9 +30,7 @@ import { Autocomplete } from '@material-ui/lab';
 
 function AddTreatment() {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [customers, setCustomers] = useState([]);
 	const [animals, setAnimals] = useState([]);
 	const [items, setItems] = useState([]);
@@ -120,12 +118,14 @@ function AddTreatment() {
 				nextTreatmentDate
 			);
 			if (animalRes !== undefined) {
-				const newAlert = {
-					msg: 'Treatment Details Added Successfully',
-					alertType: 'success',
-					state: true,
-				};
-				setAlert({ ...alert, newAlert });
+				const newAlert = [
+					{
+						msg: 'Treatment Details Added Successfully',
+						alertType: 'success',
+						state: true,
+					},
+				];
+				setAlert(newAlert);
 				window.open(window.location.origin + `/admin/treatments`, '_self');
 				setOpen(false);
 			}

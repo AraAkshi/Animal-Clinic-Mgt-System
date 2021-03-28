@@ -105,12 +105,14 @@ function EditItem(props) {
 			batchNo
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Item Details Updates Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Item Details Updates Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/inventory`, '_self');
 			setOpen(false);
 		}

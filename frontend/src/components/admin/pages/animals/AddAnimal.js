@@ -21,9 +21,7 @@ import { addAnimal } from '../../../../services/animal';
 
 const AddAnimal = () => {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [petTypes, setPetTypes] = useState([{ id: 0, name: '' }]);
 	const [customers, setCustomers] = useState([]);
 	const [formData, setFormData] = useState({
@@ -88,12 +86,14 @@ const AddAnimal = () => {
 			owner
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Animal Details Added Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Animal Details Added Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/animals`, '_self');
 			setOpen(false);
 		}
@@ -105,7 +105,7 @@ const AddAnimal = () => {
 
 	return (
 		<div>
-			{/* <Alerts alerts={alert} /> */}
+			<Alerts alerts={alert} />
 			<Animal />
 			<Modal
 				open={open}

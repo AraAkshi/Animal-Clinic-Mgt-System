@@ -25,9 +25,7 @@ const Register = () => {
 		password: '',
 		password2: '',
 	});
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [open, setOpen] = useState(true);
 	const [showPassword, setShowPassword] = useState(false);
 	const { name, email, address, contact, password, password2 } = formData;
@@ -43,26 +41,30 @@ const Register = () => {
 		e.preventDefault();
 
 		if (password !== password2) {
-			const newAlert = {
-				msg: 'Passwords do not match',
-				alertType: 'danger',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Passwords do not match',
+					alertType: 'danger',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 		} else {
 			const role = 'customer';
 			const userRes = await addUser(email, password, role, name);
 			const cusRes = await addCustomer(name, email, address, contact);
-			if (userRes !== undefined && cusRes !== undefined)
-				return <Redirect to='/' />;
-			// else {
-			// 	const newAlert = {
-			// 		msg: userRes !== undefined ? cusRes : userRes,
-			// 		alertType: 'danger',
-			// 		state: true,
-			// 	};
-			// 	setAlert({ ...alert, newAlert });
-			// }
+			if (userRes !== undefined && cusRes !== undefined) {
+				window.open(window.location.origin + `/`, '_self');
+			} else {
+				const newAlert = [
+					{
+						msg: userRes !== undefined ? cusRes : userRes,
+						alertType: 'danger',
+						state: true,
+					},
+				];
+				setAlert(newAlert);
+			}
 		}
 	};
 

@@ -32,9 +32,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Treatment() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [treatments, setTreatments] = useState([
 		{
 			id: 0,

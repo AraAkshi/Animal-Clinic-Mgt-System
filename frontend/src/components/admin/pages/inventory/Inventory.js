@@ -43,9 +43,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 function Inventory() {
 	const [open, setOpen] = useState(false);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [categories, setCategories] = useState([
 		{ category: { id: 0, name: '', imagePath: '' }, items: [] },
 	]);

@@ -76,12 +76,14 @@ function EditEmployee(props) {
 			joinedDate
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Employee Details Updates Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Employee Details Updates Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/employees`, '_self');
 			setOpen(false);
 		}

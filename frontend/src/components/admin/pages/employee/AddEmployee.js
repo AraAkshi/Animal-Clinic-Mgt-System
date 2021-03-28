@@ -18,9 +18,7 @@ import Employee from './Employee';
 
 function AddEmployee() {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 
 	const [formData, setFormData] = useState({
 		nic: '',
@@ -76,12 +74,14 @@ function AddEmployee() {
 
 		const userRes = await addUser(email, 'user1234', 'employee', name);
 		if (res !== undefined && userRes !== undefined) {
-			const newAlert = {
-				msg: 'Employee Details Added Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Employee Details Added Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/employees`, '_self');
 			setOpen(false);
 		}

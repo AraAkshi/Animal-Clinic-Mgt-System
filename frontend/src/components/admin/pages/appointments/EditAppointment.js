@@ -73,12 +73,14 @@ function EditAppointment(props) {
 			customer
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Appointment Details Updated Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Appointment Details Updated Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/appointments`, '_self');
 			setOpen(false);
 		}

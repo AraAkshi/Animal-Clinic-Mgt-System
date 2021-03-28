@@ -34,9 +34,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Appointment() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const date = new Date();
 	const [selectedDate, setSelectedDate] = useState(date);
 	const [customers, setCustomers] = useState([]);

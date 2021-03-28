@@ -51,12 +51,14 @@ function AnimalDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteAnimal(selectedAnimal.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Animal Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Animal Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/animals`, '_self');
 		}
 	};
@@ -214,7 +216,7 @@ function AnimalDetails(props) {
 												))
 											) : (
 												<TableRow>
-													<StyledTableCell>No Pets</StyledTableCell>
+													<StyledTableCell>No Treatments</StyledTableCell>
 												</TableRow>
 											)}
 										</TableBody>

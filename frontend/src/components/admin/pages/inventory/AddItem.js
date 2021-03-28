@@ -16,9 +16,7 @@ import { addItem } from '../../../../services/inventory';
 
 function AddItem() {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [categories, setCategories] = useState([{ id: 0, name: '' }]);
 	const [formData, setFormData] = useState({
 		name: '',
@@ -96,12 +94,14 @@ function AddItem() {
 			batchNo
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Item Details Added Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Item Details Added Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/inventory`, '_self');
 			setOpen(false);
 		}

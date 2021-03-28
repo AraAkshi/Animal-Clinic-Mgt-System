@@ -43,12 +43,14 @@ function TreatmentDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteTreatment(selectedTreatment.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Treatment Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Treatment Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/treatments`, '_self');
 		}
 	};

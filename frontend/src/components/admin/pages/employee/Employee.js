@@ -30,9 +30,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Employee() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [employees, setEmployees] = useState([
 		{
 			id: 0,

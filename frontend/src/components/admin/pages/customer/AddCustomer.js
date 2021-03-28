@@ -13,9 +13,7 @@ import { addCustomer } from '../../../../services/customer';
 
 function AddCustomer() {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -44,12 +42,14 @@ function AddCustomer() {
 		e.preventDefault();
 		const res = await addCustomer(name, email, address, remarks, contact);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Customer Details Added Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Customer Details Added Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/customers`, '_self');
 			setOpen(false);
 		}

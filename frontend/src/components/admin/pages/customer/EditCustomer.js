@@ -42,12 +42,14 @@ function EditCustomer(props) {
 			remarks
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Customer Details Updates Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Customer Details Updates Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/customers`, '_self');
 			setOpen(false);
 		}

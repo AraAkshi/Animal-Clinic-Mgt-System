@@ -31,9 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Animal() {
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [animals, setAnimals] = useState([
 		{
 			id: 0,
@@ -86,7 +84,7 @@ function Animal() {
 
 	return (
 		<div>
-			{/* <Alerts alerts={alert} /> */}
+			<Alerts alerts={alert} />
 			<Header />
 			<Sidebar />
 			<div className='sidebar-container'>

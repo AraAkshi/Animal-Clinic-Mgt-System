@@ -17,9 +17,7 @@ import { addAppointment } from '../../../../services/appointment';
 
 const AddAppointment = () => {
 	const [open, setOpen] = useState(true);
-	const [alert, setAlert] = useState([
-		{ msg: '', alertType: '', state: false },
-	]);
+	const [alert, setAlert] = useState([]);
 	const [customers, setCustomers] = useState([]);
 	const [animals, setAnimals] = useState([]);
 	const [formData, setFormData] = useState({
@@ -68,12 +66,14 @@ const AddAppointment = () => {
 			customer
 		);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Appointment Details Added Successfully',
-				alertType: 'success',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Appointment Details Added Successfully',
+					alertType: 'success',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/appointments`, '_self');
 			setOpen(false);
 		}

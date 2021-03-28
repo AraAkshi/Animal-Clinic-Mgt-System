@@ -120,12 +120,14 @@ function EditTreatment(props) {
 				nextTreatmentDate
 			);
 			if (animalRes !== undefined) {
-				const newAlert = {
-					msg: 'Treatment Details Updated Successfully',
-					alertType: 'success',
-					state: true,
-				};
-				setAlert({ ...alert, newAlert });
+				const newAlert = [
+					{
+						msg: 'Treatment Details Updated Successfully',
+						alertType: 'success',
+						state: true,
+					},
+				];
+				setAlert(newAlert);
 				window.open(window.location.origin + `/admin/treatments`, '_self');
 				setOpen(false);
 			}

@@ -21,12 +21,14 @@ function EmployeeDetails(props) {
 	const handleDelete = async () => {
 		const res = await deleteEmployee(selectedEmployee.id);
 		if (res !== undefined) {
-			const newAlert = {
-				msg: 'Employee Details Deleted Successfully',
-				alertType: 'warning',
-				state: true,
-			};
-			setAlert({ ...alert, newAlert });
+			const newAlert = [
+				{
+					msg: 'Employee Details Deleted Successfully',
+					alertType: 'warning',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
 			window.open(window.location.origin + `/admin/employees`, '_self');
 		}
 	};
