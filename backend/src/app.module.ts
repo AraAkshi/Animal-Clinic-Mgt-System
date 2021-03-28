@@ -35,7 +35,7 @@ import { SalesModule } from './sales/sales.module';
       username: process.env.DB_USER || 'postgres',
       host: process.env.DB_HOST || 'localhost',
       database: process.env.DB_DATABASE || 'animal-clinic-db',
-      password: process.env.DB_PASSWORD || 'chamal123',
+      password: process.env.DB_PASSWORD || 'Ish@1996',
       port: parseInt(process.env.DB_PORT) || 5432,
       entities: [
         AnimalEntity,
