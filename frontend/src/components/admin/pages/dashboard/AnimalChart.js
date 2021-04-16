@@ -24,7 +24,7 @@ function AnimalChart(props) {
 		labels: Object.keys(groupedData),
 	};
 
-	var myPieChart = new Chart(ctx, {
+	let myPieChart = new Chart(ctx, {
 		type: 'pie',
 		data: data,
 	});

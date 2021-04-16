@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Homepage from './layout/Homepage';
 import Alerts from './layout/Alerts';
 import {
@@ -11,8 +11,8 @@ import {
 	IconButton,
 	InputAdornment,
 } from '@material-ui/core';
-import { addCustomer } from '../services/customer';
-import { addUser } from '../services/auth';
+import { addCustomer } from '../../services/customer';
+import { addUser } from '../../services/auth';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -74,7 +74,7 @@ const Register = () => {
 	};
 
 	return (
-		<Fragment>
+		<div>
 			<Alerts alerts={alert} />
 			<Homepage />
 			<Modal
@@ -87,7 +87,7 @@ const Register = () => {
 						SIGN UP
 					</Typography>
 					<Typography variant='h6' align='center'>
-						<i className='fas fa-user'></i>Create Your Account
+						Create Your Account
 					</Typography>
 					<form className='form' onSubmit={(e) => onSubmit(e)}>
 						<Grid
@@ -217,7 +217,7 @@ const Register = () => {
 					</Typography>
 				</div>
 			</Modal>
-		</Fragment>
+		</div>
 	);
 };
 

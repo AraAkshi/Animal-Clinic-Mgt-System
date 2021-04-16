@@ -71,4 +71,25 @@ export class UsersService {
   async allUsers() {
     return await this.repo.find();
   }
+
+  async editUser(
+    email: string,
+    name: string,
+    role: string,
+  ): Promise<UserEntity> {
+    // check if the user exists in the db
+    const userInDb = await this.repo.findOne({
+      where: { email },
+    });
+    if (!userInDb) {
+      throw new HttpException('User Not Found!', HttpStatus.BAD_REQUEST);
+    }
+
+    if (name) userInDb.name = name;
+    if (email) userInDb.email = email;
+    if (role) userInDb.role = role;
+
+    await this.repo.save(userInDb);
+    return userInDb;
+  }
 }

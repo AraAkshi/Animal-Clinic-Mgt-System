@@ -22,7 +22,7 @@ import { getAllCustomers } from '../../../../services/customer';
 import { treatmentTypes } from '../../../../services/datasets/treatment-types.d';
 import { editItem, getCategoryItems } from '../../../../services/inventory';
 import { addTreatment } from '../../../../services/treatment';
-import Alerts from '../../../layout/Alerts';
+import Alerts from '../../../client/layout/Alerts';
 import Treatment from './Treatment';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';

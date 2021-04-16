@@ -13,7 +13,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import React, { useState, useEffect } from 'react';
-import Alerts from '../../../layout/Alerts';
+import Alerts from '../../../client/layout/Alerts';
 import Animal from './Animal';
 import { getAllTypes } from '../../../../services/petType';
 import { getAllCustomers } from '../../../../services/customer';

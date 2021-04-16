@@ -70,23 +70,23 @@ function EditItem(props) {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		let item = {
-			id: selectedItem.id,
-			isEmpty: isEmpty,
-			name: name,
-			category: category,
-			brand: brand,
-			unitPurchasePrice: unitPurchasePrice,
-			bufferQty: bufferQty,
-			soldQty: soldQty,
-			quantity: quantity,
-			unitSellingPrice: unitSellingPrice,
-			purchasedDate: purchasedDate,
-			manufactureDate: manufactureDate,
-			expireDate: expireDate,
-			notifyBefore: notifyBefore,
-			batchNo: batchNo,
-		};
+		// let item = {
+		// 	id: selectedItem.id,
+		// 	isEmpty: isEmpty,
+		// 	name: name,
+		// 	category: category,
+		// 	brand: brand,
+		// 	unitPurchasePrice: unitPurchasePrice,
+		// 	bufferQty: bufferQty,
+		// 	soldQty: soldQty,
+		// 	quantity: quantity,
+		// 	unitSellingPrice: unitSellingPrice,
+		// 	purchasedDate: purchasedDate,
+		// 	manufactureDate: manufactureDate,
+		// 	expireDate: expireDate,
+		// 	notifyBefore: notifyBefore,
+		// 	batchNo: batchNo,
+		// };
 		const res = await editItem(
 			selectedItem.id,
 			isEmpty,

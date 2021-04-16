@@ -2,14 +2,19 @@ import React from 'react';
 import { AppBar, Button, Grid, Toolbar, Typography } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
 import PersonIcon from '@material-ui/icons/Person';
-import { useStyles } from '../../layout/style';
+import { useStyles } from '../../../style';
 import { logout } from '../../../services/auth';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const Header = () => {
 	const classes = useStyles();
 
 	const handleLogout = () => {
 		logout();
+	};
+
+	const handleHome = () => {
+		window.open('/', '_self');
 	};
 
 	return (
@@ -24,14 +29,21 @@ const Header = () => {
 									flexGrow: 1,
 									marginLeft: '-2rem',
 									fontFamily: 'Potta One',
+									cursor: 'pointer',
 								}}
+								onClick={handleHome}
 							>
 								<PetsIcon fontSize='large' />
 								SHANE &amp; SHAWN
 							</Typography>
 						</Grid>
 						<Grid item>
-							<Grid container direction='row' spacing={3}>
+							<Grid
+								container
+								direction='row'
+								spacing={3}
+								style={{ paddingTop: '0.5rem' }}
+							>
 								<Grid item>
 									<Grid
 										container
@@ -55,6 +67,7 @@ const Header = () => {
 										color='secondary'
 										href='/'
 										onClick={handleLogout}
+										endIcon={<ExitToAppIcon fontSize='small' />}
 									>
 										LOGOUT
 									</Button>

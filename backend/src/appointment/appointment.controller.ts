@@ -30,7 +30,6 @@ export class AppointmentController {
       customer: any;
     },
   ): Promise<AppointmentEntity> {
-    console.log(data);
     return await this.service.addAppointment(data);
   }
 

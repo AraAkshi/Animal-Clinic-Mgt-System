@@ -25,6 +25,6 @@ export class AppointmentEntity {
   @Column()
   addedDate: Date;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isAttended: boolean;
 }

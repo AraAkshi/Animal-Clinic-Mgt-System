@@ -63,7 +63,7 @@ export class AnimalService {
       .setParameter('id', customer)
       .getMany();
     this.logger.log(
-      `Successfully returned details of animals od Customer - ${customer}`,
+      `Successfully returned details of animals of Customer - ${customer}`,
     );
     return animal;
   }

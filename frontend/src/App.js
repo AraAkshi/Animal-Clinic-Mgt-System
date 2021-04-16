@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Homepage from './components/layout/Homepage';
-import Login from './components/Login';
-import Register from './components/Register';
+import Homepage from './components/client/layout/Homepage';
+import Login from './components/client/Login';
+import Register from './components/client/Register';
 import Dashboard from './components/admin/pages/dashboard/Dashboard';
 import Appointment from './components/admin/pages/appointments/Appointment';
 import AddAppointment from './components/admin/pages/appointments/AddAppointment';
@@ -18,44 +18,78 @@ import AddEmployee from './components/admin/pages/employee/AddEmployee';
 import AddItem from './components/admin/pages/inventory/AddItem';
 import SellItem from './components/admin/pages/inventory/SellItem';
 import AddTreatment from './components/admin/pages/treatments/AddTreatment';
+import ClientAppointment from './components/client/appointments/ClientAppointment';
+import ClientPrivateRoute from './components/routing/ClientPrivateRoute';
+import EmpPrivateRoute from './components/routing/EmpPrivateRoute';
+import AdminPrivateRoute from './components/routing/AdminPrivateRoute';
+import Forbidden from './components/common/forbidden';
 
 function App() {
 	return (
 		<Router>
 			<Switch>
+				{/* Public Accessible Routes Routes */}
 				<Route exact path='/' component={Homepage} />
 				<Route exact path='/login' component={Login} />
 				<Route exact path='/register' component={Register} />
-				<Route exact path='/admin/dashboard' component={Dashboard} />
-				<Route exact path='/admin/appointments' component={Appointment} />
-				<Route
+				<Route exact path='/access-denied' component={Forbidden} />
+
+				{/* Client Private Routes */}
+				<ClientPrivateRoute
+					exact
+					path='/client/appointments'
+					component={ClientAppointment}
+				/>
+
+				{/* Employee Private Routes */}
+				<EmpPrivateRoute exact path='/admin/dashboard' component={Dashboard} />
+				<EmpPrivateRoute
+					exact
+					path='/admin/appointments'
+					component={Appointment}
+				/>
+				<EmpPrivateRoute
 					exact
 					path='/admin/appointments/add-appointment'
 					component={AddAppointment}
 				/>
-				<Route exact path='/admin/animals' component={Animal} />
-				<Route exact path='/admin/animals/add-animal' component={AddAnimal} />
-				<Route exact path='/admin/treatments' component={Treatment} />
-				<Route
+				<EmpPrivateRoute exact path='/admin/animals' component={Animal} />
+				<EmpPrivateRoute
+					exact
+					path='/admin/animals/add-animal'
+					component={AddAnimal}
+				/>
+				<EmpPrivateRoute exact path='/admin/treatments' component={Treatment} />
+				<EmpPrivateRoute
 					exact
 					path='/admin/treatments/add-treatment'
 					component={AddTreatment}
 				/>
-				<Route exact path='/admin/inventory' component={Inventory} />
-				<Route exact path='/admin/inventory/add-item' component={AddItem} />
-				<Route exact path='/admin/inventory/sell-item' component={SellItem} />
-				<Route exact path='/admin/reports' component={Report} />
-				<Route exact path='/admin/employees' component={Employee} />
-				<Route
+				<EmpPrivateRoute exact path='/admin/inventory' component={Inventory} />
+				<EmpPrivateRoute
 					exact
-					path='/admin/employees/add-employee'
-					component={AddEmployee}
+					path='/admin/inventory/add-item'
+					component={AddItem}
 				/>
-				<Route exact path='/admin/customers' component={Customer} />
-				<Route
+				<EmpPrivateRoute
+					exact
+					path='/admin/inventory/sell-item'
+					component={SellItem}
+				/>
+				<EmpPrivateRoute exact path='/admin/customers' component={Customer} />
+				<EmpPrivateRoute
 					exact
 					path='/admin/customers/add-customer'
 					component={AddCustomer}
+				/>
+
+				{/* Admin Private Routes */}
+				<AdminPrivateRoute exact path='/admin/reports' component={Report} />
+				<AdminPrivateRoute exact path='/admin/employees' component={Employee} />
+				<AdminPrivateRoute
+					exact
+					path='/admin/employees/add-employee'
+					component={AddEmployee}
 				/>
 			</Switch>
 		</Router>

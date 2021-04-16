@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Homepage from './layout/Homepage';
 import Alerts from './layout/Alerts';
@@ -11,7 +11,7 @@ import {
 	IconButton,
 	InputAdornment,
 } from '@material-ui/core';
-import { login } from '../services/auth';
+import { login } from '../../services/auth';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -58,7 +58,7 @@ const Login = () => {
 	};
 
 	return (
-		<Fragment>
+		<div>
 			<Alerts alerts={alert} />
 			<Homepage />
 			<Modal
@@ -71,7 +71,7 @@ const Login = () => {
 						LOGIN
 					</Typography>
 					<Typography variant='h6' align='center'>
-						<i className='fas fa-user'></i>Sign into Your Account
+						Sign into Your Account
 					</Typography>
 					<form className='form' onSubmit={(e) => onSubmit(e)}>
 						<Grid
@@ -145,8 +145,7 @@ const Login = () => {
 					</Typography>
 				</div>
 			</Modal>
-			<section className='container'>{/* <Alerts /> */}</section>
-		</Fragment>
+		</div>
 	);
 };
 

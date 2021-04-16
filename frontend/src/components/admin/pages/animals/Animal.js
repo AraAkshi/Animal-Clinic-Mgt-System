@@ -17,7 +17,7 @@ import Sidebar from '../../layout/Sidebar';
 import AddIcon from '@material-ui/icons/Add';
 import { getAllAnimals } from '../../../../services/animal';
 import AnimalDetails from './AnimalDetails';
-import Alerts from '../../../layout/Alerts';
+import Alerts from '../../../client/layout/Alerts';
 import { getAnimalTreatments } from '../../../../services/treatment';
 
 const StyledTableCell = withStyles((theme) => ({

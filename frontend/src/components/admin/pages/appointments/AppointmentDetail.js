@@ -9,7 +9,7 @@ import {
 import EditAppointment from './EditAppointment';
 
 function AppointmentDetail(props) {
-	const { selectedAppointment, setAlert, customers } = props;
+	const { selectedAppointment, setAlert, customers, appointments } = props;
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => {
@@ -36,7 +36,7 @@ function AppointmentDetail(props) {
 
 	return (
 		<div>
-			<div className='detailCard'>
+			<div className='detailCard' style={{ marginLeft: 0 }}>
 				<div className='detailCardHeader'>APPOINTMENT DETAILS</div>
 				<Grid container direction='column'>
 					<Grid item>
@@ -72,7 +72,7 @@ function AppointmentDetail(props) {
 							</Grid>
 							<Grid item xs={7}>
 								<div className='detailCardValue'>
-									{selectedAppointment.remarks}
+									{selectedAppointment.remarks.toUpperCase()}
 								</div>
 							</Grid>
 						</Grid>
@@ -156,6 +156,7 @@ function AppointmentDetail(props) {
 					setAlert={setAlert}
 					setOpen={setOpen}
 					customers={customers}
+					appointments={appointments}
 				/>
 			</Modal>
 		</div>

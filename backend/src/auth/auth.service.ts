@@ -81,6 +81,26 @@ export class AuthService {
     return status;
   }
 
+  async editUser(
+    email: string,
+    role: string,
+    name: string,
+  ): Promise<RegistrationStatus> {
+    let status: RegistrationStatus = {
+      success: true,
+      message: 'details updated',
+    };
+    try {
+      await this.usersService.editUser(email, name, role);
+    } catch (err) {
+      status = {
+        success: false,
+        message: err,
+      };
+    }
+    return status;
+  }
+
   async getAllUsers() {
     return await this.usersService.allUsers();
   }

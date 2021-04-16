@@ -197,7 +197,7 @@ function EmployeeDetails(props) {
 			<Modal
 				open={open}
 				onClose={handleClose}
-				style={{ height: '90vh', width: '40vw', margin: 'auto' }}
+				style={{ height: '90vh', width: '40vw', margin: 'auto', top: '-1rem' }}
 				BackdropComponent={Backdrop}
 			>
 				<EditEmployee

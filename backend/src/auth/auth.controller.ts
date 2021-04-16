@@ -47,12 +47,29 @@ export class AuthController {
   }
 
   @Post('changePassword')
+  // @UseGuards(JwtAuthGuard)
   async chanegPW(
     @Body() data: { email: string; password: string },
   ): Promise<RegistrationStatus> {
     const result: RegistrationStatus = await this.authService.changePassword(
       data.email,
       data.password,
+    );
+    if (!result.success) {
+      throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+    }
+    return result;
+  }
+
+  @Post('editUser')
+  // @UseGuards(JwtAuthGuard)
+  async edit(
+    @Body() data: { email: string; name: string; role: string },
+  ): Promise<RegistrationStatus> {
+    const result: RegistrationStatus = await this.authService.editUser(
+      data.email,
+      data.role,
+      data.name,
     );
     if (!result.success) {
       throw new HttpException(result.message, HttpStatus.BAD_REQUEST);

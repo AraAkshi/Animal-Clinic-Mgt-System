@@ -1,6 +1,7 @@
 import React from 'react';
 import {
 	AppBar,
+	Grid,
 	Button,
 	IconButton,
 	Toolbar,
@@ -14,12 +15,15 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PetsIcon from '@material-ui/icons/Pets';
+import PersonIcon from '@material-ui/icons/Person';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import InfoIcon from '@material-ui/icons/Info';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import HomeIcon from '@material-ui/icons/Home';
-import { useStyles } from './style';
-import { logout } from '../../services/auth';
+import { useStyles } from '../../../style';
+import { logout } from '../../../services/auth';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const Navbar = () => {
 	const classes = useStyles();
@@ -27,19 +31,46 @@ const Navbar = () => {
 		logout();
 	};
 	const authLinks = (
-		<ul>
-			{/* <Button variant="text" size="small" color="secondary" href="/profile">
-        <span className="hide-sm">{user && user.name}</span>
-      </Button> */}
-			<Button
-				variant='contained'
-				size='small'
-				color='secondary'
-				onClick={handleLogout}
-			>
-				Logout
-			</Button>
-		</ul>
+		<Grid container direction='row' spacing={3} alignItems='middle'>
+			<Grid item>
+				{localStorage.userRole === 'admin' ||
+				localStorage.userRole === 'employee' ? (
+					<Button
+						variant='contained'
+						size='small'
+						color='secondary'
+						href='/admin/dashboard'
+						startIcon={<SupervisorAccountIcon fontSize='small' />}
+					>
+						ADMIN
+					</Button>
+				) : (
+					<Grid container direction='row' style={{ marginTop: '0.3rem' }}>
+						<Grid item>
+							<PersonIcon fontSize='small' />
+						</Grid>
+						<Grid item>
+							<Typography variant='body2'>
+								{localStorage.token && localStorage.username
+									? `HI ${localStorage.username.toUpperCase()}`
+									: ''}
+							</Typography>
+						</Grid>
+					</Grid>
+				)}
+			</Grid>
+			<Grid item>
+				<Button
+					variant='contained'
+					size='small'
+					color='secondary'
+					onClick={handleLogout}
+					endIcon={<ExitToAppIcon fontSize='small' />}
+				>
+					LOGOUT
+				</Button>
+			</Grid>
+		</Grid>
 	);
 	const guestLinks = (
 		<ul>
@@ -91,22 +122,6 @@ const Navbar = () => {
 						<PetsIcon fontSize='large' />
 						SHANE &amp; SHAWN
 					</Typography>
-					{/* <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            href="/register"
-          >
-            SIGN UP
-          </Button>
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            href="/login"
-          >
-            LOGIN
-          </Button> */}
 					<div>
 						{localStorage.token && localStorage.username
 							? authLinks

@@ -12,24 +12,29 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import { getCusAnimals } from '../../../../services/animal';
-import {
-	editAppointment,
-	formatDate,
-	formatTime,
-} from '../../../../services/appointment';
+import { editAppointment, formatDate } from '../../../../services/appointment';
+import { times } from '../../../../services/datasets/appointment-times.d';
+import _ from 'lodash';
 
 function EditAppointment(props) {
-	const { selectedAppointment, setAlert, setOpen, customers } = props;
+	const {
+		selectedAppointment,
+		setAlert,
+		setOpen,
+		customers,
+		appointments,
+	} = props;
 	const [animals, setAnimals] = useState([]);
 	const [formData, setFormData] = useState({
 		id: selectedAppointment.id,
 		customer: selectedAppointment.customer,
 		scheduleDate: formatDate(selectedAppointment.scheduleDate),
-		scheduleTime: formatTime(selectedAppointment.scheduleTime),
+		scheduleTime: selectedAppointment.scheduleTime,
 		animal: selectedAppointment.animal,
 		remarks: selectedAppointment.remarks,
 		isAttended: selectedAppointment.isAttended,
 	});
+	const [availableTimes, setAvailableTimes] = useState([]);
 
 	const {
 		id,
@@ -42,11 +47,27 @@ function EditAppointment(props) {
 	} = formData;
 
 	const onChange = async (e) => {
-		if (e.target.name == 'customer') {
+		if (e.target.name.toString() === 'customer') {
 			const animalRes = await getCusAnimals(e.target.value.id);
 			if (animalRes !== undefined) setAnimals(animalRes);
 		}
 		setFormData({ ...formData, [e.target.name]: e.target.value });
+
+		if (e.target.name === 'scheduleDate') {
+			console.log(appointments);
+			const dayAppointments = appointments.filter(
+				(item) => formatDate(item.scheduleDate) === formatDate(e.target.value)
+			);
+			const notAvailTImes = [];
+			for (let i = 0; i < dayAppointments.length; i++) {
+				const time = times.find(
+					(item) => item.time === dayAppointments[i].scheduleTime
+				);
+				notAvailTImes.push(time);
+			}
+			const availTimes = _.difference(times, notAvailTImes);
+			setAvailableTimes(availTimes);
+		}
 	};
 
 	const resetForm = () => {
@@ -54,7 +75,7 @@ function EditAppointment(props) {
 			id: selectedAppointment.id,
 			customer: selectedAppointment.customer,
 			scheduleDate: formatDate(selectedAppointment.scheduleDate),
-			scheduleTime: formatTime(selectedAppointment.scheduleTime),
+			scheduleTime: selectedAppointment.scheduleTime,
 			animal: selectedAppointment.animal,
 			remarks: selectedAppointment.remarks,
 			isAttended: selectedAppointment.isAttended,
@@ -97,7 +118,9 @@ function EditAppointment(props) {
 				>
 					<Grid container direction='row' style={{ marginTop: '0.5rem' }}>
 						<Grid item xs={6}>
-							<InputLabel id='customer'>Customer</InputLabel>
+							<InputLabel id='customer' style={{ fontSize: '1vw' }}>
+								Customer*
+							</InputLabel>
 							<Select
 								labelId='customer'
 								name='customer'
@@ -117,7 +140,9 @@ function EditAppointment(props) {
 							</Select>
 						</Grid>
 						<Grid item xs={6}>
-							<InputLabel id='animal'>Animal</InputLabel>
+							<InputLabel id='animal' style={{ fontSize: '1vw' }}>
+								Animal*
+							</InputLabel>
 							<Select
 								labelId='animal'
 								name='animal'
@@ -152,29 +177,49 @@ function EditAppointment(props) {
 						style={{ marginTop: '0.5rem' }}
 						disabled
 					/>
-					<TextField
-						type='date'
-						size='small'
-						name='scheduleDate'
-						label='Appointment Date'
-						value={scheduleDate}
-						inputProps={{
-							min: `${new Date().toISOString().split('T')[0]}`,
-						}}
-						onChange={(e) => onChange(e)}
-						required
-						style={{ marginTop: '0.6rem' }}
-					/>
-					<TextField
-						type='time'
-						size='small'
-						name='scheduleTime'
-						label='Appointment Time'
-						value={scheduleTime}
-						onChange={(e) => onChange(e)}
-						required
-						style={{ marginTop: '0.6rem' }}
-					/>
+					<Grid
+						container
+						direction='row'
+						style={{ marginTop: '0.5rem' }}
+						spacing={2}
+					>
+						<Grid item xs={6}>
+							<TextField
+								type='date'
+								size='small'
+								name='scheduleDate'
+								label='Appointment Date'
+								value={scheduleDate}
+								inputProps={{
+									min: `${new Date().toISOString().split('T')[0]}`,
+								}}
+								onChange={(e) => onChange(e)}
+								required
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<InputLabel id='scheduleTime' style={{ fontSize: '1vw' }}>
+								Appointment Time*
+							</InputLabel>
+							<Select
+								labelId='scheduleTime'
+								name='scheduleTime'
+								value={scheduleTime}
+								onChange={(e) => onChange(e)}
+								required
+							>
+								{availableTimes.length > 0 ? (
+									availableTimes.map((item) => (
+										<MenuItem key={item.id} value={item.time}>
+											{item.time}
+										</MenuItem>
+									))
+								) : (
+									<MenuItem>None Available</MenuItem>
+								)}
+							</Select>
+						</Grid>
+					</Grid>
 					<TextField
 						size='small'
 						name='remarks'

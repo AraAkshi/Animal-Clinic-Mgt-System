@@ -1,79 +1,15 @@
-.bg-image {
-	background: url('./images/vector-background-with-decorative-puppy-icons.jpg')
-		no-repeat center center/cover;
-	background-color: rgba(255, 255, 255, 0.4);
-	background-blend-mode: screen;
-	top: 0;
-	left: 0;
-	height: 100vh;
-	width: 100vw;
-	position: fixed;
-	z-index: -1;
-}
-
-.body {
+body {
 	background-color: rgb(231, 231, 231);
-}
-
-.homepage-container {
-	margin: auto;
-	display: flex;
-}
-
-.homepage-text {
-	color: #2f4f4f;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	text-align: center;
-	margin: auto;
-}
-
-.landingItem {
-	padding: 0;
-	border-radius: 1rem;
-	cursor: pointer;
-	height: 45vh;
-	width: 30vw;
-	box-shadow: 0 5px 10px rgba(22, 22, 22, 0.4);
-}
-
-.landingItemImage {
-	height: 45vh;
-	width: 30vw;
 	margin: 0;
-	border-radius: 1rem;
+	padding: 0;
 }
 
-.landingItem:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(94, 51, 51, 0.3);
-}
-
-.landingItemText {
-	/* position: absolute; */
-	font-size: 2vw;
-	padding: 0.5rem 0;
-	font-family: 'Balsamiq Sans';
-	z-index: 10;
-	margin-top: -10rem;
-	text-align: center;
-	color: rgb(255, 255, 255);
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
+/* Admin styles */
 .footer {
 	width: 100%;
 	height: 8vh;
 	bottom: 0;
 	margin-top: 12rem;
-}
-
-.container {
-	max-width: 1200px;
-	position: relative;
-	margin: auto;
-	overflow: hidden;
-	padding: 0 2rem;
-	margin-top: 10px;
 }
 
 .sidebar {
@@ -137,18 +73,12 @@
 	margin-right: auto;
 }
 
-.loginModal {
-	background-color: rgba(180, 229, 248, 0.8);
-	color: rgb(24, 23, 23);
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	padding: 1rem;
-}
-
 .addModal {
 	background-color: rgba(152, 220, 247, 0.95);
 	color: rgb(24, 23, 23);
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 	padding: 1rem;
+	overflow-y: auto;
 }
 
 .form {
@@ -159,12 +89,18 @@
 
 .appointmentCard {
 	height: 70vh;
+	background-color: rgb(250, 250, 250);
 	overflow: auto;
 	font-family: Arial, Helvetica, sans-serif;
 	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
 		rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 	border-radius: 0.5rem;
 	/* padding-top: 0.5rem; */
+}
+
+.calender {
+	background-color: #fff;
+	border-radius: 0.5rem;
 }
 
 .petStatCard {
@@ -301,4 +237,180 @@
 		rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 	padding: 0.5rem 0rem;
 	margin-top: 1rem;
+}
+
+/* Client side styles */
+.bg-image {
+	background: url('./images/vector-background-with-decorative-puppy-icons.jpg')
+		no-repeat center center/cover;
+	background-color: rgba(255, 255, 255, 0.4);
+	background-blend-mode: screen;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	z-index: -1;
+}
+
+.loginModal {
+	background-color: rgba(180, 229, 248, 0.8);
+	color: rgb(24, 23, 23);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	padding: 1rem;
+}
+
+.container {
+	max-width: 85vw;
+	height: 75vh;
+	position: relative;
+	margin: auto;
+	overflow: hidden;
+	padding: 1rem;
+	margin-top: 5rem;
+	background-color: rgba(203, 237, 247, 0.8);
+}
+
+.homepage-container {
+	margin: auto;
+	display: flex;
+}
+
+.homepage-text {
+	color: #2f4f4f;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	text-align: center;
+	margin: auto;
+}
+
+.landingItem {
+	padding: 0;
+	border-radius: 1rem;
+	cursor: pointer;
+	height: 45vh;
+	width: 30vw;
+	box-shadow: 0 5px 10px rgba(22, 22, 22, 0.4);
+}
+
+.landingItemImage {
+	height: 45vh;
+	width: 30vw;
+	margin: 0;
+	border-radius: 1rem;
+}
+
+.landingItem:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4), 0 10px 10px rgba(94, 51, 51, 0.3);
+}
+
+.landingItemText {
+	/* position: absolute; */
+	font-size: 2vw;
+	padding: 0.5rem 0;
+	font-family: 'Balsamiq Sans';
+	z-index: 10;
+	margin-top: -10rem;
+	text-align: center;
+	color: rgb(255, 255, 255);
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.container-header {
+	text-align: center;
+	font-size: 1.3vw;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #036983;
+	color: #fff;
+	margin-bottom: 1rem;
+	padding: 0.5rem;
+}
+
+.container-detail {
+	text-align: left;
+	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-size: 1.1vw;
+	padding: 0.5rem;
+}
+
+/* Error page styles */
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono|Montserrat:700');
+
+.error-body {
+	background-image: linear-gradient(120deg, #006d88 0%, #000000 100%);
+	height: 100vh;
+	margin: -50;
+	padding: 0;
+	border: 0;
+	/* top: 0;
+	left: 0; */
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	box-sizing: border-box;
+	color: inherit;
+}
+
+.error-no {
+	margin: auto;
+	font-size: 45vw;
+	text-align: center;
+	position: fixed;
+	width: 100vw;
+	z-index: 1;
+	color: #ffffff26;
+	text-shadow: 0 0 50px rgba(0, 0, 0, 0.07);
+	top: 50%;
+	transform: translateY(-50%);
+	font-family: 'Montserrat', monospace;
+}
+
+.error-msg {
+	background: rgba(0, 0, 0, 0);
+	width: 70vw;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0 auto;
+	padding: 30px 30px 10px;
+	box-shadow: 0 0 150px -20px rgba(0, 0, 0, 0.5);
+	z-index: 3;
+}
+
+.error-msg P {
+	font-family: 'Share Tech Mono', monospace;
+	color: #f5f5f5;
+	margin: 0 0 20px;
+	font-size: 17px;
+	line-height: 1.2;
+}
+
+.error-msg span {
+	color: #f0c674;
+}
+
+i {
+	color: #e0f5f2;
+}
+
+.error-msg a {
+	text-decoration: none;
+	color: #ccf8f2;
+}
+
+.error-msg b {
+	color: #81a2be;
+}
+
+@keyframes slide {
+	from {
+		right: -100px;
+		transform: rotate(360deg);
+		opacity: 0;
+	}
+	to {
+		right: 15px;
+		transform: rotate(0deg);
+		opacity: 1;
+	}
 }
