@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import _ from 'lodash';
 import {
 	TextField,
 	Button,
@@ -5,26 +7,19 @@ import {
 	Select,
 	MenuItem,
 	InputLabel,
-	RadioGroup,
-	FormLabel,
-	FormControlLabel,
-	Radio,
 } from '@material-ui/core';
-import React, { useState } from 'react';
-import { getCusAnimals } from '../../../../services/animal';
-import { editAppointment, formatDate } from '../../../../services/appointment';
-import { times } from '../../../../services/datasets/appointment-times.d';
-import _ from 'lodash';
+import { formatDate, editAppointment } from '../../../services/appointment';
+import { times } from '../../../services/datasets/appointment-times.d';
 
-function EditAppointment(props) {
+function EditClientAppoinment(props) {
 	const {
 		selectedAppointment,
 		setAlert,
 		setOpen,
-		customers,
 		appointments,
+		animals,
 	} = props;
-	const [animals, setAnimals] = useState([]);
+
 	const [formData, setFormData] = useState({
 		id: selectedAppointment.id,
 		customer: selectedAppointment.customer,
@@ -47,10 +42,6 @@ function EditAppointment(props) {
 	} = formData;
 
 	const onChange = async (e) => {
-		if (e.target.name.toString() === 'customer') {
-			const animalRes = await getCusAnimals(e.target.value.id);
-			if (animalRes !== undefined) setAnimals(animalRes);
-		}
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
 		if (e.target.name === 'scheduleDate') {
@@ -67,18 +58,6 @@ function EditAppointment(props) {
 			const availTimes = _.difference(times, notAvailTImes);
 			setAvailableTimes(availTimes);
 		}
-	};
-
-	const resetForm = () => {
-		setFormData({
-			id: selectedAppointment.id,
-			customer: selectedAppointment.customer,
-			scheduleDate: formatDate(selectedAppointment.scheduleDate),
-			scheduleTime: selectedAppointment.scheduleTime,
-			animal: selectedAppointment.animal,
-			remarks: selectedAppointment.remarks,
-			isAttended: selectedAppointment.isAttended,
-		});
 	};
 
 	const onSubmit = async (e) => {
@@ -101,7 +80,7 @@ function EditAppointment(props) {
 				},
 			];
 			setAlert(newAlert);
-			window.open(window.location.origin + `/admin/appointments`, '_self');
+			window.open(window.location.origin + `/my-profile`, '_self');
 			setOpen(false);
 		}
 	};
@@ -116,28 +95,6 @@ function EditAppointment(props) {
 					style={{ padding: '1rem' }}
 				>
 					<Grid container direction='row' style={{ marginTop: '0.5rem' }}>
-						<Grid item xs={6}>
-							<InputLabel id='customer' style={{ fontSize: '1vw' }}>
-								Customer*
-							</InputLabel>
-							<Select
-								labelId='customer'
-								name='customer'
-								value={customer}
-								onChange={(e) => onChange(e)}
-								required
-							>
-								{customers.length > 0 ? (
-									customers.map((item) => (
-										<MenuItem key={item.id} value={item}>
-											{item.name}
-										</MenuItem>
-									))
-								) : (
-									<MenuItem>None Available</MenuItem>
-								)}
-							</Select>
-						</Grid>
 						<Grid item xs={6}>
 							<InputLabel id='animal' style={{ fontSize: '1vw' }}>
 								Animal*
@@ -161,21 +118,6 @@ function EditAppointment(props) {
 							</Select>
 						</Grid>
 					</Grid>
-					<TextField
-						size='small'
-						variant='outlined'
-						value={customer.email}
-						style={{ marginTop: '0.5rem' }}
-						disabled
-					/>
-					<TextField
-						type='number'
-						variant='outlined'
-						size='small'
-						value={customer.contact}
-						style={{ marginTop: '0.5rem' }}
-						disabled
-					/>
 					<Grid
 						container
 						direction='row'
@@ -229,37 +171,13 @@ function EditAppointment(props) {
 						rows={2}
 						style={{ marginTop: '0.5rem' }}
 					/>
-					<FormLabel component='legend' style={{ marginTop: '0.5rem' }}>
-						Is Attended
-					</FormLabel>
-					<RadioGroup
-						name='isAttended'
-						value={isAttended}
-						required
-						row
-						onChange={onChange}
-					>
-						<FormControlLabel value={true} control={<Radio />} label='Yes' />
-						<FormControlLabel value={false} control={<Radio />} label='No' />
-					</RadioGroup>
 				</Grid>
 				<Grid
 					container
 					direction='row'
-					spacing={3}
 					justify='center'
 					style={{ padding: '1rem' }}
 				>
-					<Grid item>
-						<Button
-							size='small'
-							variant='contained'
-							color='secondary'
-							onClick={resetForm}
-						>
-							RESET
-						</Button>
-					</Grid>
 					<Grid item>
 						<Button
 							size='small'
@@ -276,4 +194,4 @@ function EditAppointment(props) {
 	);
 }
 
-export default EditAppointment;
+export default EditClientAppoinment;

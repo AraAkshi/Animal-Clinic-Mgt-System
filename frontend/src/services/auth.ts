@@ -33,7 +33,8 @@ export const addUser = async (
 	email: string,
 	password: string,
 	role: string,
-	name: string
+	name: string,
+	sendMail: boolean
 ) => {
 	const response = await fetch(baseurl + 'auth/register', {
 		method: 'POST',
@@ -47,6 +48,7 @@ export const addUser = async (
 			password,
 			role,
 			name,
+			sendMail,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
@@ -70,6 +72,28 @@ export const editUser = async (email: string, role: string, name: string) => {
 			email,
 			role,
 			name,
+		}),
+	});
+	if (response.status === 200 || response.status === 201) {
+		const data = await response.json();
+		return data;
+	} else {
+		// return response.response.message;
+	}
+};
+
+//Change Password
+export const changePassword = async (email: string, password: string) => {
+	const response = await fetch(baseurl + 'auth/changePassword', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+		body: JSON.stringify({
+			email,
+			password,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {

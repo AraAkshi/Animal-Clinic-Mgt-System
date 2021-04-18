@@ -27,6 +27,7 @@ import { AllExceptionsFilter } from './_shared/http-error-filter';
 import { join } from 'path';
 import { SalesEntity } from './entities/sales.entity';
 import { SalesModule } from './sales/sales.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { SalesModule } from './sales/sales.module';
     AuthModule,
     CustomerModule,
     SalesModule,
+    MailModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'images'),
       exclude: ['/api*'],

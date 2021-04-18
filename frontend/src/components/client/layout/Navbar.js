@@ -27,9 +27,23 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const Navbar = () => {
 	const classes = useStyles();
+
 	const handleLogout = () => {
 		logout();
 	};
+
+	const handleHome = () => {
+		window.open('/', '_self');
+	};
+
+	const handleMenuSelect = (index) => {
+		if (index === 0) window.open('/', '_self');
+		else if (index === 1) window.open('/services', '_self');
+		else if (index === 2) window.open('/client/appointments', '_self');
+		else if (index === 3) window.open('/about-us', '_self');
+		else window.open('/my-profile', '_self');
+	};
+
 	const authLinks = (
 		<Grid container direction='row' spacing={3} alignItems='middle'>
 			<Grid item>
@@ -45,17 +59,20 @@ const Navbar = () => {
 						ADMIN
 					</Button>
 				) : (
-					<Grid container direction='row' style={{ marginTop: '0.3rem' }}>
-						<Grid item>
-							<PersonIcon fontSize='small' />
-						</Grid>
-						<Grid item>
-							<Typography variant='body2'>
-								{localStorage.token && localStorage.username
-									? `HI ${localStorage.username.toUpperCase()}`
-									: ''}
-							</Typography>
-						</Grid>
+					<Grid item>
+						{localStorage.token && localStorage.username ? (
+							<Button
+								size='small'
+								variant='text'
+								color='inherit'
+								startIcon={<PersonIcon fontSize='small' />}
+								href='/my-profile'
+							>
+								HI {localStorage.username.toUpperCase()}
+							</Button>
+						) : (
+							''
+						)}
 					</Grid>
 				)}
 			</Grid>
@@ -117,7 +134,9 @@ const Navbar = () => {
 							flexGrow: 1,
 							paddingLeft: '0.5rem',
 							fontFamily: 'Potta One',
+							cursor: 'pointer',
 						}}
+						onClick={handleHome}
 					>
 						<PetsIcon fontSize='large' />
 						SHANE &amp; SHAWN
@@ -148,9 +167,13 @@ const Navbar = () => {
 				</div>
 				<Divider />
 				<List style={{ marginTop: '1rem' }}>
-					{['Home', 'Servies', 'Appointments', 'About Us'].map(
+					{['Home', 'Servies', 'Appointments', 'About Us', 'My Profile'].map(
 						(text, index) => (
-							<ListItem button key={text}>
+							<ListItem
+								button
+								key={text}
+								onClick={() => handleMenuSelect(index)}
+							>
 								<ListItemIcon>
 									{index === 0 ? (
 										<HomeIcon />
@@ -158,8 +181,10 @@ const Navbar = () => {
 										<PetsIcon />
 									) : index === 2 ? (
 										<ScheduleIcon />
-									) : (
+									) : index === 3 ? (
 										<InfoIcon />
+									) : (
+										<PersonIcon />
 									)}
 								</ListItemIcon>
 								<ListItemText primary={text} />

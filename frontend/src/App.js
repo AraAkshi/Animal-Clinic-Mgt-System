@@ -23,6 +23,8 @@ import ClientPrivateRoute from './components/routing/ClientPrivateRoute';
 import EmpPrivateRoute from './components/routing/EmpPrivateRoute';
 import AdminPrivateRoute from './components/routing/AdminPrivateRoute';
 import Forbidden from './components/common/forbidden';
+import ClientProfile from './components/client/profile/ClientProfile';
+import ChangePassword from './components/client/profile/ChangePassword';
 
 function App() {
 	return (
@@ -39,6 +41,16 @@ function App() {
 					exact
 					path='/client/appointments'
 					component={ClientAppointment}
+				/>
+				<ClientPrivateRoute
+					exact
+					path='/my-profile'
+					component={ClientProfile}
+				/>
+				<ClientPrivateRoute
+					exact
+					path='/my-profile/change-password'
+					component={ChangePassword}
 				/>
 
 				{/* Employee Private Routes */}

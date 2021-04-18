@@ -1,7 +1,6 @@
 import {
 	Grid,
 	Chip,
-	Avatar,
 	TextField,
 	Select,
 	MenuItem,
@@ -102,7 +101,7 @@ function ClientAppointment() {
 				},
 			];
 			setAlert(newAlert);
-			window.open(window.location.origin + `/`, '_self');
+			window.open(window.location.origin + `/my-profile`, '_self');
 		}
 	};
 

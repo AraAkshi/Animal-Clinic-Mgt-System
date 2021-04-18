@@ -31,7 +31,7 @@ export const getOneAppointment = async (id: number) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -50,7 +50,7 @@ export const getCusAppointment = async (customer: any) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };
@@ -146,6 +146,33 @@ export const formatDate = (date: Date) => {
 	if (day.length < 2) day = '0' + day;
 
 	return [year, month, day].join('-');
+};
+
+export const isDateDue = (d: Date) => {
+	const date = new Date(d);
+	const today = new Date();
+
+	if (date.getFullYear() > today.getFullYear()) {
+		return true;
+	} else {
+		if (date.getFullYear() === today.getFullYear()) {
+			if (date.getMonth() > today.getMonth()) {
+				return true;
+			} else {
+				if (date.getMonth() === today.getMonth()) {
+					if (date.getDate() >= today.getDate()) {
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 };
 
 export const formatTime = (date: any) => {

@@ -10,6 +10,8 @@ import React, { useState } from 'react';
 import Alerts from '../../../client/layout/Alerts';
 import Customer from './Customer';
 import { addCustomer } from '../../../../services/customer';
+import { addUser } from '../../../../services/auth';
+const generator = require('generate-password');
 
 function AddCustomer() {
 	const [open, setOpen] = useState(true);
@@ -40,8 +42,16 @@ function AddCustomer() {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
+
+		//Auto Generate Password
+		const password = generator.generate({
+			length: 6,
+			numbers: true,
+			symbols: true,
+		});
 		const res = await addCustomer(name, email, address, remarks, contact);
-		if (res !== undefined) {
+		const userRes = await addUser(email, password, 'customer', name, true);
+		if (res !== undefined && userRes !== undefined) {
 			const newAlert = [
 				{
 					msg: 'Customer Details Added Successfully',

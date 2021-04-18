@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Homepage from './layout/Homepage';
-import Alerts from './layout/Alerts';
 import {
 	Modal,
 	Typography,
@@ -11,53 +8,37 @@ import {
 	IconButton,
 	InputAdornment,
 } from '@material-ui/core';
-import { addCustomer } from '../../services/customer';
-import { addUser } from '../../services/auth';
+import { changePassword } from '../../../services/auth';
+import Alerts from '../layout/Alerts';
+import ClientProfile from './ClientProfile';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import MuiAlert from '@material-ui/lab/Alert';
+import { Snackbar } from '@material-ui/core';
 
-const Register = () => {
+function Alert(props) {
+	return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
+
+function ChangePassword() {
+	const [openAlert, setOpenAlert] = useState(false);
 	const [formData, setFormData] = useState({
-		name: '',
-		email: '',
-		address: '',
-		contact: '',
+		email: localStorage.email,
 		password: '',
 		password2: '',
 	});
-	const [alert, setAlert] = useState([]);
 	const [open, setOpen] = useState(true);
+	const { email, password, password2 } = formData;
 	const [showPassword1, setShowPassword1] = useState(false);
 	const [showPassword2, setShowPassword2] = useState(false);
-	const { name, email, address, contact, password, password2 } = formData;
-
-	//Handle Password Visibility
-	const handlePasswordVisibility = (e) => {
-		if (e === 'password')
-			showPassword1 ? setShowPassword1(false) : setShowPassword1(true);
-		if (e === 'password2')
-			showPassword2 ? setShowPassword2(false) : setShowPassword2(true);
-	};
-
-	//reset form
-	const resetForm = () => {
-		setFormData({
-			name: '',
-			email: '',
-			address: '',
-			contact: '',
-			password: '',
-			password2: '',
-		});
-	};
+	const [alert, setAlert] = useState([]);
+	const [alertMsg, setAlertMsg] = useState();
 
 	const onChange = (e) =>
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 
-	//Handle Form Submit
 	const onSubmit = async (e) => {
 		e.preventDefault();
-
 		//Check password match
 		if (password !== password2) {
 			const newAlert = [
@@ -68,45 +49,76 @@ const Register = () => {
 				},
 			];
 			setAlert(newAlert);
+			setAlertMsg('Passwords do not match. Please Try Again!');
+			setOpenAlert(true);
+			window.open(
+				window.location.origin + `/my-profile/change-password`,
+				'_self'
+			);
 		} else {
-			const role = 'customer';
-			const userRes = await addUser(email, password, role, name, false);
-			const cusRes = await addCustomer(name, email, address, contact);
-			if (userRes !== undefined && cusRes !== undefined) {
-				window.open(window.location.origin + `/`, '_self');
+			const res = await changePassword(email, password);
+			if (res !== undefined) {
+				const newAlert = [
+					{
+						msg: 'Password Changed Successfully',
+						alertType: 'success',
+						state: true,
+					},
+				];
+				setAlert(newAlert);
+				window.open(window.location.origin + `/my-profile`, '_self');
 			} else {
 				const newAlert = [
 					{
-						msg: userRes !== undefined ? cusRes : userRes,
+						msg: 'Invalid Email. Please Try Again!',
 						alertType: 'danger',
 						state: true,
 					},
 				];
 				setAlert(newAlert);
+				window.open(window.location.origin + `/my-profile`, '_self');
 			}
 		}
 	};
 
 	const handleClose = () => {
 		setOpen(false);
-		window.open('/', '_self');
+		window.open('/my-profile', '_self');
 	};
 
+	//Alert Close
+	const handleAlertClose = () => {
+		setOpenAlert(false);
+	};
+
+	const handlePasswordVisibility = (e) => {
+		if (e === 'password')
+			showPassword1 ? setShowPassword1(false) : setShowPassword1(true);
+		if (e === 'password2')
+			showPassword2 ? setShowPassword2(false) : setShowPassword2(true);
+	};
 	return (
 		<div>
 			<Alerts alerts={alert} />
-			<Homepage />
+			<ClientProfile />
+			<Snackbar
+				open={openAlert}
+				autoHideDuration={6000}
+				onClose={handleAlertClose}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<Alert onClose={handleAlertClose} severity='error'>
+					{alertMsg}
+				</Alert>
+			</Snackbar>
 			<Modal
 				open={open}
 				onClose={handleClose}
-				style={{ height: '90vh', width: '40vw', margin: 'auto' }}
+				style={{ height: '50vh', width: '40vw', margin: 'auto' }}
 			>
-				<div className='loginModal'>
-					<Typography variant='h5' align='center'>
-						SIGN UP
-					</Typography>
+				<div className='addModal'>
 					<Typography variant='h6' align='center'>
-						Create Your Account
+						Change Password
 					</Typography>
 					<form className='form' onSubmit={(e) => onSubmit(e)}>
 						<Grid
@@ -116,51 +128,18 @@ const Register = () => {
 							style={{ padding: '1rem' }}
 						>
 							<TextField
-								name='name'
-								size='small'
-								label='Name'
-								value={name}
-								onChange={(e) => onChange(e)}
-								required
-							/>
-							<Typography variant='caption' color='textSecondary'>
-								*Please enter your First Name and Last Name
-							</Typography>
-							<TextField
 								name='email'
 								size='small'
 								label='Email'
 								value={email}
 								onChange={(e) => onChange(e)}
 								required
-								style={{ marginTop: '0.5rem' }}
-							/>
-							<TextField
-								name='address'
-								label='Address'
-								size='small'
-								value={address}
-								onChange={(e) => onChange(e)}
-								multiline
-								rows={2}
-								style={{ marginTop: '0.5rem' }}
-							/>
-							<TextField
-								type='number'
-								size='small'
-								name='contact'
-								label='Contact No'
-								value={contact}
-								onChange={(e) => onChange(e)}
-								required
-								minLength='10'
-								style={{ marginTop: '0.5rem' }}
 							/>
 							<TextField
 								type={showPassword1 ? 'text' : 'password'}
 								size='small'
 								name='password'
-								label='Password'
+								label='New Password'
 								value={password}
 								onChange={(e) => onChange(e)}
 								required
@@ -216,9 +195,9 @@ const Register = () => {
 									size='small'
 									variant='contained'
 									color='secondary'
-									onClick={resetForm}
+									href='/my-profile'
 								>
-									RESET
+									CANCEL
 								</Button>
 							</Grid>
 							<Grid item>
@@ -228,18 +207,15 @@ const Register = () => {
 									color='secondary'
 									onClick={onSubmit}
 								>
-									CONFIRM
+									SUBMIT
 								</Button>
 							</Grid>
 						</Grid>
 					</form>
-					<Typography variant='subtitle2' align='center'>
-						Already have an Account? <Link to='/login'> Sign In </Link>
-					</Typography>
 				</div>
 			</Modal>
 		</div>
 	);
-};
+}
 
-export default Register;
+export default ChangePassword;
