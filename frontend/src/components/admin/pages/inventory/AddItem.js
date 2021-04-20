@@ -13,8 +13,11 @@ import Alerts from '../../../client/layout/Alerts';
 import Inventory from './Inventory';
 import { getAllCategories } from '../../../../services/productCategory';
 import { addItem } from '../../../../services/inventory';
+import { formatDate } from '../../../../services/appointment';
 
 function AddItem() {
+	const d = new Date();
+	const date = formatDate(d);
 	const [open, setOpen] = useState(true);
 	const [alert, setAlert] = useState([]);
 	const [categories, setCategories] = useState([{ id: 0, name: '' }]);
@@ -26,9 +29,9 @@ function AddItem() {
 		bufferQty: '',
 		quantity: '',
 		unitSellingPrice: '',
-		purchasedDate: '2021-01-01',
-		manufactureDate: '2021-01-01',
-		expireDate: '2021-01-01',
+		purchasedDate: date,
+		manufactureDate: date,
+		expireDate: date,
 		notifyBefore: '',
 		batchNo: '',
 	});
@@ -69,9 +72,9 @@ function AddItem() {
 			bufferQty: '',
 			quantity: '',
 			unitSellingPrice: '',
-			purchasedDate: '2021-01-01',
-			manufactureDate: '2021-01-01',
-			expireDate: '2021-01-01',
+			purchasedDate: date,
+			manufactureDate: date,
+			expireDate: date,
 			notifyBefore: '',
 			batchNo: '',
 		});

@@ -31,6 +31,11 @@ export class UsersService {
     return user;
   }
 
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    const user = await this.repo.findOne({ where: { email } });
+    return user;
+  }
+
   async findByPayload({ email }: any): Promise<UserEntity> {
     return await this.findOne({ where: { email } });
   }

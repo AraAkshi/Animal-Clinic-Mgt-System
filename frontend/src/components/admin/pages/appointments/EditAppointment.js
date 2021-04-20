@@ -23,8 +23,9 @@ function EditAppointment(props) {
 		setOpen,
 		customers,
 		appointments,
+		cusAnimals,
 	} = props;
-	const [animals, setAnimals] = useState([]);
+	const [animals, setAnimals] = useState(cusAnimals);
 	const [formData, setFormData] = useState({
 		id: selectedAppointment.id,
 		customer: selectedAppointment.customer,
@@ -34,7 +35,7 @@ function EditAppointment(props) {
 		remarks: selectedAppointment.remarks,
 		isAttended: selectedAppointment.isAttended,
 	});
-	const [availableTimes, setAvailableTimes] = useState([]);
+	const [availableTimes, setAvailableTimes] = useState(times);
 
 	const {
 		id,
@@ -47,15 +48,27 @@ function EditAppointment(props) {
 	} = formData;
 
 	const onChange = async (e) => {
-		if (e.target.name.toString() === 'customer') {
-			const animalRes = await getCusAnimals(e.target.value.id);
+		//Get objects of the select components based on the value(id)
+		const value =
+			e.target.name === 'customer'
+				? customers.find((item) => item.id === e.target.value)
+				: e.target.name === 'animal'
+				? animals.find((item) => item.id === e.target.value)
+				: e.target.value;
+
+		//Get Animls of the selected customer
+		if (e.target.name === 'customer') {
+			const animalRes = await getCusAnimals(value.id);
 			if (animalRes !== undefined) setAnimals(animalRes);
 		}
-		setFormData({ ...formData, [e.target.name]: e.target.value });
 
+		//Set form data
+		setFormData({ ...formData, [e.target.name]: value });
+
+		//Get Available times for the selected date
 		if (e.target.name === 'scheduleDate') {
 			const dayAppointments = appointments.filter(
-				(item) => formatDate(item.scheduleDate) === formatDate(e.target.value)
+				(item) => formatDate(item.scheduleDate) === formatDate(value)
 			);
 			const notAvailTImes = [];
 			for (let i = 0; i < dayAppointments.length; i++) {
@@ -123,13 +136,13 @@ function EditAppointment(props) {
 							<Select
 								labelId='customer'
 								name='customer'
-								value={customer}
+								value={customer.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{customers.length > 0 ? (
 									customers.map((item) => (
-										<MenuItem key={item.id} value={item}>
+										<MenuItem key={item.id} value={item.id}>
 											{item.name}
 										</MenuItem>
 									))
@@ -145,13 +158,13 @@ function EditAppointment(props) {
 							<Select
 								labelId='animal'
 								name='animal'
-								value={animal}
+								value={animal.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{animals.length > 0 ? (
 									animals.map((item) => (
-										<MenuItem key={item.id} value={item}>
+										<MenuItem key={item.id} value={item.id}>
 											{`${item.breed} - ${item.name}`}
 										</MenuItem>
 									))
@@ -237,7 +250,7 @@ function EditAppointment(props) {
 						value={isAttended}
 						required
 						row
-						onChange={onChange}
+						onChange={(e) => onChange(e)}
 					>
 						<FormControlLabel value={true} control={<Radio />} label='Yes' />
 						<FormControlLabel value={false} control={<Radio />} label='No' />

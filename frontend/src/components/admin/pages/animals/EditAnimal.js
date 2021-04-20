@@ -39,7 +39,14 @@ const EditAnimal = (props) => {
 	} = formData;
 
 	const onChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		const value =
+			e.target.name === 'type'
+				? petTypes.find((item) => item.id === e.target.value)
+				: e.target.name === 'owner'
+				? customers.find((item) => item.id === e.target.value)
+				: e.target.value;
+
+		setFormData({ ...formData, [e.target.name]: value });
 	};
 
 	const resetForm = () => {
@@ -96,13 +103,13 @@ const EditAnimal = (props) => {
 					<Select
 						labelId='petName'
 						name='type'
-						value={type}
+						value={type.id}
 						onChange={(e) => onChange(e)}
 						required
 					>
 						{petTypes.length > 0 ? (
 							petTypes.map((item) => (
-								<MenuItem key={item.id} value={item}>
+								<MenuItem key={item.id} value={item.id}>
 									{item.name}
 								</MenuItem>
 							))
@@ -167,13 +174,13 @@ const EditAnimal = (props) => {
 					<Select
 						labelId='customer'
 						name='owner'
-						value={owner}
+						value={owner.id}
 						onChange={(e) => onChange(e)}
 						required
 					>
 						{customers.length > 0 ? (
 							customers.map((item) => (
-								<MenuItem key={item.id} value={item}>
+								<MenuItem key={item.id} value={item.id}>
 									{item.name}
 								</MenuItem>
 							))

@@ -17,6 +17,26 @@ export const getAllRecords = async () => {
 	}
 };
 
+//Get Sales records within a date range
+export const getSalesByDate = async (startDate: Date, endDate: Date) => {
+	const response = await fetch(baseurl + 'sales/getItemsByDate', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+		body: JSON.stringify({
+			startDate,
+			endDate,
+		}),
+	});
+	if (response.status === 200 || response.status === 201) {
+		const data = await response.json();
+		return data;
+	}
+};
+
 //Get category Records @params - category
 export const getCategoryRecords = async (category: any) => {
 	const response = await fetch(baseurl + 'sales/getCategoryItems', {

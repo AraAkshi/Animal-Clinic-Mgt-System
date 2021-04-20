@@ -225,7 +225,7 @@ function Inventory() {
 								</TableHead>
 								<TableBody>
 									{searchItem !== null && searchItem !== undefined ? (
-										<TableRow hover={true}>
+										<TableRow hover={true} key={searchItem.id}>
 											<StyledTableCell>
 												{searchItem.category.name}
 											</StyledTableCell>
@@ -268,7 +268,7 @@ function Inventory() {
 										</TableRow>
 									) : catItems.length > 0 ? (
 										catItems.map((item) => (
-											<TableRow hover={true}>
+											<TableRow hover={true} key={item.id}>
 												<StyledTableCell>{item.category.name}</StyledTableCell>
 												<StyledTableCell>{item.batchNo}</StyledTableCell>
 												<StyledTableCell>{item.name}</StyledTableCell>
@@ -310,7 +310,7 @@ function Inventory() {
 										))
 									) : items.length > 0 ? (
 										items.map((item) => (
-											<TableRow hover={true}>
+											<TableRow hover={true} key={item.id}>
 												<StyledTableCell>{item.category.name}</StyledTableCell>
 												<StyledTableCell>{item.batchNo}</StyledTableCell>
 												<StyledTableCell>{item.name}</StyledTableCell>

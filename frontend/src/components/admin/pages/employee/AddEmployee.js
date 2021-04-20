@@ -16,8 +16,11 @@ import { accesssLevels } from '../../../../services/datasets/access-levels.d';
 import { addEmployee } from '../../../../services/employee';
 import Alerts from '../../../client/layout/Alerts';
 import Employee from './Employee';
+import { formatDate } from '../../../../services/appointment';
 
 function AddEmployee() {
+	const d = new Date();
+	const date = formatDate(d);
 	const [open, setOpen] = useState(true);
 	const [alert, setAlert] = useState([]);
 
@@ -30,7 +33,7 @@ function AddEmployee() {
 		epfNo: '',
 		contact: '',
 		role: '',
-		joinedDate: '2021-04-01',
+		joinedDate: date,
 	});
 
 	const {
@@ -59,7 +62,7 @@ function AddEmployee() {
 			epfNo: '',
 			contact: '',
 			role: '',
-			joinedDate: '2021-01-01',
+			joinedDate: date,
 		});
 	};
 

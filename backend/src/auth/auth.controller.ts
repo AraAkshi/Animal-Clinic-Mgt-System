@@ -48,6 +48,16 @@ export class AuthController {
     return result;
   }
 
+  @Post('getUserByEmail')
+  // @UseGuards(JwtAuthGuard)
+  async getUserByEmail(@Body() data: { email: string }): Promise<UserEntity> {
+    const result: UserEntity = await this.authService.getOneUser(data.email);
+    // if (!result.success) {
+    //   throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
+    // }
+    return result;
+  }
+
   @Post('changePassword')
   // @UseGuards(JwtAuthGuard)
   async chanegPW(

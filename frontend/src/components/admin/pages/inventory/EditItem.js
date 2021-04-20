@@ -47,7 +47,11 @@ function EditItem(props) {
 	} = formData;
 
 	const onChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		const value =
+			e.target.name === 'category'
+				? categories.find((item) => item.id === e.target.value)
+				: e.target.value;
+		setFormData({ ...formData, [e.target.name]: value });
 	};
 
 	const resetForm = () => {
@@ -67,26 +71,8 @@ function EditItem(props) {
 			expireDate: formatDate(selectedItem.expireDate),
 		});
 	};
-
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		// let item = {
-		// 	id: selectedItem.id,
-		// 	isEmpty: isEmpty,
-		// 	name: name,
-		// 	category: category,
-		// 	brand: brand,
-		// 	unitPurchasePrice: unitPurchasePrice,
-		// 	bufferQty: bufferQty,
-		// 	soldQty: soldQty,
-		// 	quantity: quantity,
-		// 	unitSellingPrice: unitSellingPrice,
-		// 	purchasedDate: purchasedDate,
-		// 	manufactureDate: manufactureDate,
-		// 	expireDate: expireDate,
-		// 	notifyBefore: notifyBefore,
-		// 	batchNo: batchNo,
-		// };
 		const res = await editItem(
 			selectedItem.id,
 			isEmpty,
@@ -133,14 +119,14 @@ function EditItem(props) {
 							<Select
 								labelId='category'
 								name='category'
-								value={category}
+								value={category.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{categories.length > 0 ? (
 									categories.map((item) => (
-										<MenuItem key={item.id} value={item}>
-											{item.name}
+										<MenuItem key={item.category.id} value={item.category.id}>
+											{item.category.name}
 										</MenuItem>
 									))
 								) : (

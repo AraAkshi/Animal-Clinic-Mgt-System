@@ -18,8 +18,11 @@ import Animal from './Animal';
 import { getAllTypes } from '../../../../services/petType';
 import { getAllCustomers } from '../../../../services/customer';
 import { addAnimal } from '../../../../services/animal';
+import { formatDate } from '../../../../services/appointment';
 
 const AddAnimal = () => {
+	const d = new Date();
+	const date = formatDate(d);
 	const [open, setOpen] = useState(true);
 	const [alert, setAlert] = useState([]);
 	const [petTypes, setPetTypes] = useState([{ id: 0, name: '' }]);
@@ -30,7 +33,7 @@ const AddAnimal = () => {
 		breed: '',
 		gender: '',
 		bloodGroup: '',
-		dateOfBirth: '2021-02-28',
+		dateOfBirth: date,
 		remarks: '',
 		owner: '',
 	});
@@ -67,7 +70,7 @@ const AddAnimal = () => {
 			breed: '',
 			gender: '',
 			bloodGroup: '',
-			dateOfBirth: '2021-02-28',
+			dateOfBirth: date,
 			remarks: '',
 			owner: '',
 		});
