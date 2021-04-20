@@ -22,6 +22,8 @@ import { times } from '../../../../services/datasets/appointment-times.d';
 import _ from 'lodash';
 
 const AddAppointment = () => {
+	const d = new Date();
+	const date = formatDate(d);
 	const [open, setOpen] = useState(true);
 	const [alert, setAlert] = useState([]);
 	const [appointments, setAppointments] = useState([]);
@@ -29,7 +31,7 @@ const AddAppointment = () => {
 	const [animals, setAnimals] = useState([]);
 	const [formData, setFormData] = useState({
 		customer: '',
-		scheduleDate: '2021-04-23',
+		scheduleDate: date,
 		scheduleTime: '',
 		animal: null,
 		remarks: '',
@@ -65,7 +67,7 @@ const AddAppointment = () => {
 	const resetForm = () => {
 		setFormData({
 			customer: '',
-			scheduleDate: '2021-04-23',
+			scheduleDate: date,
 			scheduleTime: '',
 			animal: null,
 			remarks: '',

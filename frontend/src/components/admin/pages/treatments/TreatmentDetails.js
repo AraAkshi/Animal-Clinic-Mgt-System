@@ -29,7 +29,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function TreatmentDetails(props) {
-	const { selectedTreatment, setAlert, customers, items } = props;
+	const { selectedTreatment, setAlert, customers, items, cusAnimals } = props;
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => {
@@ -224,6 +224,7 @@ function TreatmentDetails(props) {
 					setOpen={setOpen}
 					customers={customers}
 					items={items}
+					cusAnimals={cusAnimals}
 				/>
 			</Modal>
 		</div>

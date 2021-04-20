@@ -64,7 +64,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     CustomerModule,
     SalesModule,
-    MailModule,
+    // MailModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'images'),
       exclude: ['/api*'],

@@ -14,6 +14,8 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import { getAllCustomers } from '../../../../services/customer';
 import { formatDate } from '../../../../services/appointment';
 import { getAllTreatments } from '../../../../services/treatment';
@@ -22,6 +24,7 @@ import Alerts from '../../../client/layout/Alerts';
 import Sidebar from '../../layout/Sidebar';
 import TreatmentDetails from './TreatmentDetails';
 import { getCategoryItems } from '../../../../services/inventory';
+import { getCusAnimals } from '../../../../services/animal';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -34,8 +37,9 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 function Treatment() {
+	const d = new Date();
+	const date = formatDate(d);
 	const [alert, setAlert] = useState([]);
-	const date = new Date().toDateString();
 	const [selectedDate, setSelectedDate] = useState(date);
 	const [treatments, setTreatments] = useState([
 		{
@@ -65,6 +69,7 @@ function Treatment() {
 	]);
 	const [items, setItems] = useState([]);
 	const [customers, setCustomers] = useState([]);
+	const [cusAnimals, setCusAnimals] = useState([]);
 	const [selectedTreatment, setSelectedTreatment] = useState({
 		id: 0,
 		treatmentType: '',
@@ -94,8 +99,12 @@ function Treatment() {
 		);
 	};
 
-	const handleRowSelect = (item) => {
+	const handleRowSelect = async (item) => {
 		setSelectedTreatment(item);
+
+		//Get Animals of the Customer
+		const animalRes = await getCusAnimals(item.customer.id);
+		if (animalRes !== undefined) setCusAnimals(animalRes);
 	};
 
 	useEffect(() => {
@@ -133,7 +142,7 @@ function Treatment() {
 								</Typography>
 							</Grid>
 							<Grid item>
-								<div className='petStatCard'>{treatments.length}</div>
+								<div className='petStatCard'>{todayTreatments.length}</div>
 							</Grid>
 						</Grid>
 					</Grid>
@@ -155,7 +164,7 @@ function Treatment() {
 					<Grid item xs={6}>
 						<Grid container direction='row' justif='flex-start' spacing={2}>
 							<Grid item>
-								<Typography variant='subtitle2'>Select Date</Typography>
+								<Typography variant='subtitle2'>Select Date: </Typography>
 							</Grid>
 							<Grid item>
 								<TextField
@@ -216,6 +225,7 @@ function Treatment() {
 							setAlert={setAlert}
 							customers={customers}
 							items={items}
+							cusAnimals={cusAnimals}
 						/>
 					</Grid>
 				</Grid>

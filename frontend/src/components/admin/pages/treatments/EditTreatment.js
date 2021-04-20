@@ -25,8 +25,15 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Autocomplete } from '@material-ui/lab';
 
 function EditTreatment(props) {
-	const { selectedTreatment, setAlert, setOpen, customers, items } = props;
-	const [animals, setAnimals] = useState([]);
+	const {
+		selectedTreatment,
+		setAlert,
+		setOpen,
+		customers,
+		items,
+		cusAnimals,
+	} = props;
+	const [animals, setAnimals] = useState(cusAnimals);
 	const [selectedItem, setselectedItem] = useState();
 	const [selectedItems, setselectedItems] = useState(
 		selectedTreatment.itemsUsed
@@ -56,11 +63,18 @@ function EditTreatment(props) {
 	} = formData;
 
 	const onChange = async (e) => {
+		const value =
+			e.target.name === 'customer'
+				? customers.find((item) => item.id === e.target.value)
+				: e.target.name === 'animal'
+				? animals.find((item) => item.id === e.target.value)
+				: e.target.value;
+
 		if (e.target.name == 'customer') {
-			const animalRes = await getCusAnimals(e.target.value.id);
+			const animalRes = await getCusAnimals(value.id);
 			if (animalRes !== undefined) setAnimals(animalRes);
 		}
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		setFormData({ ...formData, [e.target.name]: value });
 	};
 
 	const resetForm = () => {
@@ -170,13 +184,13 @@ function EditTreatment(props) {
 							<Select
 								labelId='customer'
 								name='customer'
-								value={customer}
+								value={customer.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{customers.length > 0 ? (
 									customers.map((item) => (
-										<MenuItem key={item.id} value={item}>
+										<MenuItem key={item.id} value={item.id}>
 											{item.name}
 										</MenuItem>
 									))
@@ -190,13 +204,13 @@ function EditTreatment(props) {
 							<Select
 								labelId='animal'
 								name='animal'
-								value={animal}
+								value={animal.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{animals.length > 0 ? (
 									animals.map((item) => (
-										<MenuItem key={item.id} value={item}>
+										<MenuItem key={item.id} value={item.id}>
 											{`${item.breed}-${item.name}`}
 										</MenuItem>
 									))

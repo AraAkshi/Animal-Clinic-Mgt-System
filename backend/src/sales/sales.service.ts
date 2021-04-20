@@ -21,6 +21,26 @@ export class SalesService {
     return res;
   }
 
+  //Get records of a given period
+  //@params - start date and end date
+  async getRecordsByDate(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<SalesEntity[]> {
+    this.logger.log(`Start getting details from ${startDate} to ${endDate}`);
+    const res = await getRepository(SalesEntity)
+      .createQueryBuilder('tbl')
+      .leftJoinAndSelect('tbl.category', 'category')
+      .where('tbl.soldDate >= :startDate')
+      .andWhere('tbl.soldDate <= :endDate')
+      .setParameters({ startDate: startDate, endDate: endDate })
+      .getMany();
+    this.logger.log(
+      `Successfully returned details from ${startDate} to ${endDate}`,
+    );
+    return res;
+  }
+
   //Get records of the same Category
   //@params - category
   async getCatItems(category: any): Promise<SalesEntity[]> {

@@ -20,6 +20,14 @@ export class SalesController {
     return await this.service.getCatItems(data.category);
   }
 
+  @Post('/getItemsByDate')
+  // @UseGuards(JwtAuthGuard)
+  async getItemsByDate(
+    @Body() data: { startDate: Date; endDate: Date },
+  ): Promise<SalesEntity[]> {
+    return await this.service.getRecordsByDate(data.startDate, data.endDate);
+  }
+
   @Post('/add')
   // @UseGuards(JwtAuthGuard)
   async add(

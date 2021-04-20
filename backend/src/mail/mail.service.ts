@@ -14,7 +14,7 @@ export class MailService {
       subject: 'Welcome to Shane & Shawn Animal Clinic! ',
       template: 'confirmation', // `.hbs` extension is appended automatically
       context: {
-        // ✏️ filling curly brackets with content
+        //filling curly brackets with content
         name: user.name,
         url,
         password,

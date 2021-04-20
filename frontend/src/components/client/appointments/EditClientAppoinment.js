@@ -29,7 +29,7 @@ function EditClientAppoinment(props) {
 		remarks: selectedAppointment.remarks,
 		isAttended: selectedAppointment.isAttended,
 	});
-	const [availableTimes, setAvailableTimes] = useState([]);
+	const [availableTimes, setAvailableTimes] = useState(times);
 
 	const {
 		id,
@@ -42,11 +42,19 @@ function EditClientAppoinment(props) {
 	} = formData;
 
 	const onChange = async (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		//Get objects of the select components based on the value(id)
+		const value =
+			e.target.name === 'animal'
+				? animals.find((item) => item.id === e.target.value)
+				: e.target.value;
 
+		//Get Animls of the selected customer
+		setFormData({ ...formData, [e.target.name]: value });
+
+		//Get Available times for the selected date
 		if (e.target.name === 'scheduleDate') {
 			const dayAppointments = appointments.filter(
-				(item) => formatDate(item.scheduleDate) === formatDate(e.target.value)
+				(item) => formatDate(item.scheduleDate) === formatDate(value)
 			);
 			const notAvailTImes = [];
 			for (let i = 0; i < dayAppointments.length; i++) {
@@ -102,13 +110,13 @@ function EditClientAppoinment(props) {
 							<Select
 								labelId='animal'
 								name='animal'
-								value={animal}
+								value={animal.id}
 								onChange={(e) => onChange(e)}
 								required
 							>
 								{animals.length > 0 ? (
 									animals.map((item) => (
-										<MenuItem key={item.id} value={item}>
+										<MenuItem key={item.id} value={item.id}>
 											{`${item.breed} - ${item.name}`}
 										</MenuItem>
 									))

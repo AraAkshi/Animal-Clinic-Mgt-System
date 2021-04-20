@@ -19,7 +19,7 @@ function EditEmployee(props) {
 	const [formData, setFormData] = useState({
 		name: selectedEmployee.name,
 		nic: selectedEmployee.nic,
-		degination: selectedEmployee.degination,
+		designation: selectedEmployee.designation,
 		joinedDate: formatDate(selectedEmployee.joinedDate),
 		email: selectedEmployee.email,
 		role: selectedEmployee.role,
@@ -41,7 +41,6 @@ function EditEmployee(props) {
 		contact,
 		joinedDate,
 	} = formData;
-
 	const onChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
@@ -50,7 +49,7 @@ function EditEmployee(props) {
 		setFormData({
 			name: selectedEmployee.name,
 			nic: selectedEmployee.nic,
-			degination: selectedEmployee.degination,
+			designation: selectedEmployee.designation,
 			joinedDate: formatDate(selectedEmployee.joinedDate),
 			email: selectedEmployee.email,
 			role: selectedEmployee.role,
@@ -60,7 +59,6 @@ function EditEmployee(props) {
 			isActive: selectedEmployee.isActive,
 		});
 	};
-
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		const res = await editEmployee(
@@ -175,7 +173,7 @@ function EditEmployee(props) {
 						{roles.length > 0 ? (
 							roles.map((item) => (
 								<MenuItem key={item.id} value={item.name}>
-									{designation !== '' ? designation : item.name}
+									{item.name}
 								</MenuItem>
 							))
 						) : (

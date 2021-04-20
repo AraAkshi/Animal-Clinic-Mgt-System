@@ -70,6 +70,19 @@ export class AuthService {
     return status;
   }
 
+  async getOneUser(email: string): Promise<UserEntity> {
+    let status: RegistrationStatus = {
+      success: true,
+      message: 'Found User by Email',
+    };
+    try {
+      const res = await this.usersService.getUserByEmail(email);
+      return res;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async changePassword(
     email: string,
     password: string,

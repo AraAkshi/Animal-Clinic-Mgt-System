@@ -21,7 +21,7 @@ function AddCustomer() {
 		email: '',
 		address: '',
 		remarks: '',
-		contact: 0,
+		contact: '',
 	});
 
 	const { name, email, address, contact, remarks } = formData;
@@ -36,7 +36,7 @@ function AddCustomer() {
 			email: '',
 			address: '',
 			remarks: '',
-			contact: 0,
+			contact: '',
 		});
 	};
 
@@ -51,7 +51,7 @@ function AddCustomer() {
 		});
 		const res = await addCustomer(name, email, address, remarks, contact);
 		const userRes = await addUser(email, password, 'customer', name, true);
-		if (res !== undefined && userRes !== undefined) {
+		if (res !== undefined) {
 			const newAlert = [
 				{
 					msg: 'Customer Details Added Successfully',

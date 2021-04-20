@@ -18,6 +18,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Alerts from '../../../client/layout/Alerts';
 import { getAllEmployees } from '../../../../services/employee';
 import EmployeeDetails from './EmployeeDetails';
+import { getUserByEmail } from '../../../../services/auth';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -68,8 +69,12 @@ function Employee() {
 		);
 	};
 
-	const handleRowSelect = (item) => {
-		setSelectedEmployee(item);
+	const handleRowSelect = async (item) => {
+		const userRes = await getUserByEmail(item.email);
+		if (userRes !== undefined) {
+			Object.assign(item, { role: userRes.role });
+			setSelectedEmployee(item);
+		}
 	};
 
 	useEffect(() => {

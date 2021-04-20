@@ -24,6 +24,7 @@ import AppointmentDetail from './AppointmentDetail';
 import { getAllCustomers } from '../../../../services/customer';
 import { times } from '../../../../services/datasets/appointment-times.d';
 import _ from 'lodash';
+import { getCusAnimals } from '../../../../services/animal';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -51,6 +52,7 @@ function Appointment() {
 		scheduleTime: '',
 		remarks: '',
 	});
+	const [cusAnimals, setCusAnimals] = useState([]);
 
 	//Get Appointments of the Selected date
 	const getAppoints = async (day) => {
@@ -93,8 +95,12 @@ function Appointment() {
 	};
 
 	//set selected appointment
-	const handleRowSelect = (item) => {
+	const handleRowSelect = async (item) => {
 		setSelectedAppoint(item);
+
+		//Get Animals of the Customer
+		const animalRes = await getCusAnimals(item.customer.id);
+		if (animalRes !== undefined) setCusAnimals(animalRes);
 	};
 
 	//Calender Stylings
@@ -196,6 +202,7 @@ function Appointment() {
 							setAlert={setAlert}
 							customers={customers}
 							appointments={appointments}
+							cusAnimals={cusAnimals}
 						/>
 					</Grid>
 				</Grid>

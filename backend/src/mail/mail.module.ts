@@ -22,7 +22,7 @@ import { join } from 'path';
           '"Shane & Shawn Animal Clinic" <shanenshawnanimalclinic@gmail.com>',
       },
       template: {
-        dir: join(__dirname, 'templates'),
+        dir: __dirname + '/templates',
         adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,

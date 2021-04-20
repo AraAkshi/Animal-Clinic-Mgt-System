@@ -9,7 +9,13 @@ import {
 import EditAppointment from './EditAppointment';
 
 function AppointmentDetail(props) {
-	const { selectedAppointment, setAlert, customers, appointments } = props;
+	const {
+		selectedAppointment,
+		setAlert,
+		customers,
+		appointments,
+		cusAnimals,
+	} = props;
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => {
@@ -157,6 +163,7 @@ function AppointmentDetail(props) {
 					setOpen={setOpen}
 					customers={customers}
 					appointments={appointments}
+					cusAnimals={cusAnimals}
 				/>
 			</Modal>
 		</div>

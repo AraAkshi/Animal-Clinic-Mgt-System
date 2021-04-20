@@ -120,6 +120,25 @@ export const getAllUser = async () => {
 	}
 };
 
+//Get User by Email
+export const getUserByEmail = async (email: string) => {
+	const response = await fetch(baseurl + 'auth/getUserByEmail', {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			Authorization: token,
+		},
+		body: JSON.stringify({
+			email,
+		}),
+	});
+	if (response.status === 200 || response.status === 201) {
+		const data = await response.json();
+		return data;
+	}
+};
+
 //Logout User
 export const logout = () => {
 	localStorage.clear();
