@@ -3,10 +3,8 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
-  OneToMany,
 } from 'typeorm';
 import { ProductCategoryEntity } from './productCategory.entity';
-import { TreatmentEntity } from './treatment.entity';
 
 @Entity('inventory')
 export class InventoryEntity {
@@ -28,7 +26,7 @@ export class InventoryEntity {
   @Column()
   unitSellingPrice: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar' , nullable: true})
   batchNo: string;
 
   @Column()
@@ -43,16 +41,16 @@ export class InventoryEntity {
   @Column({ default: false })
   isEmpty: boolean;
 
-  @Column()
+  @Column({nullable: true})
   purchasedDate: Date;
 
-  @Column()
+  @Column({nullable: true})
   manufactureDate: Date;
 
-  @Column()
+  @Column({nullable: true})
   notifyBefore: number;
 
-  @Column()
+  @Column({nullable: true})
   expireDate: Date;
 
   @Column()

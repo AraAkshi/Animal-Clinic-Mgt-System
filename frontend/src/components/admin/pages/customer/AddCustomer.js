@@ -49,8 +49,14 @@ function AddCustomer() {
 			numbers: true,
 			symbols: true,
 		});
-		const res = await addCustomer(name, email, address, remarks, contact);
-		const userRes = await addUser(email, password, 'customer', name, true);
+		const res = await addCustomer(
+			name.toUpperCase(),
+			email,
+			address.toUpperCase(),
+			remarks.toUpperCase(),
+			contact
+		);
+		const userRes = await addUser(email, 'user123', 'customer', name, true);
 		if (res !== undefined) {
 			const newAlert = [
 				{
