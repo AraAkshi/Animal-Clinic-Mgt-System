@@ -53,8 +53,8 @@ function AddCustomer() {
       name.toUpperCase(),
       email,
       address.toUpperCase(),
-      remarks.toUpperCase(),
-      contact
+      contact,
+      remarks
     );
     const userRes = await addUser(email, 'user123', 'customer', name, true);
     if (res !== undefined) {
