@@ -95,6 +95,7 @@ export const editAppointment = async (
 	animal?: any,
 	customer?: any
 ) => {
+	console.log(isAttended);
 	const response = await fetch(baseurl + 'appointment/edit', {
 		method: 'PUT',
 		headers: {

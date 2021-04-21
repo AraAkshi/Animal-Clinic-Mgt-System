@@ -83,7 +83,7 @@ export class AppointmentService {
     if (animal) res.animal = animal;
     if (customer) res.customer = customer;
     if (remarks) res.remarks = remarks;
-    if (isAttended) res.isAttended = isAttended;
+    res.isAttended = isAttended ? isAttended : false;
 
     await this.repo.save(res);
     this.logger.log(`Successfully Updated details of Appointment - ${res.id}`);

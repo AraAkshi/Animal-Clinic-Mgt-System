@@ -14,8 +14,6 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import { getAllCustomers } from '../../../../services/customer';
 import { formatDate } from '../../../../services/appointment';
 import { getAllTreatments } from '../../../../services/treatment';
@@ -113,8 +111,9 @@ function Treatment() {
 			if (res !== undefined) {
 				setTreatments(res);
 				const todayTreatments = res.filter(
-					(item) => item.dateReceived === selectedDate
+					(item) => formatDate(item.dateReceived) === selectedDate
 				);
+				console.log(todayTreatments, selectedDate);
 				setTodayTreatments(todayTreatments);
 			}
 

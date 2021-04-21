@@ -87,7 +87,7 @@ export class CustomerService {
     if (email) res.email = email;
     if (contact) res.contact = contact;
     if (address) res.address = address;
-    if (isActive) res.isActive = isActive;
+    res.isActive = isActive ? isActive : false;
     if (remarks) res.remarks = remarks;
     if (animal) res.animal = animal;
     if (treatments) res.treatments = treatments;

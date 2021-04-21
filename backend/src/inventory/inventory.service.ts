@@ -123,7 +123,7 @@ export class InventoryService {
     if (manufactureDate) res.manufactureDate = manufactureDate;
     if (expireDate) res.expireDate = expireDate;
     if (notifyBefore) res.notifyBefore = notifyBefore;
-    if (isEmpty) res.isEmpty = isEmpty;
+    res.isEmpty = isEmpty ? isEmpty : false;
 
     await this.repo.save(res);
     this.logger.log(`Successfully Updated details of Item - ${res.name}`);
