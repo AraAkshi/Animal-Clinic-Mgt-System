@@ -117,8 +117,8 @@ function Animal() {
         <hr className="seperatorLine" />
         <Grid container direction="row" justify="space-between">
           <Grid item xs={6}>
-            <TableContainer component={Paper}>
-              <Table size="small" stickyHeader style={{ maxHeight: '70vh' }}>
+            <TableContainer component={Paper} style={{ maxHeight: '70vh' }}>
+              <Table size="small" stickyHeader>
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Type</StyledTableCell>

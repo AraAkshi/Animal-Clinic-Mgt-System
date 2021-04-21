@@ -13,7 +13,7 @@ export class TreatmentEntity {
   @ManyToOne(() => AnimalEntity, (animal) => animal.treatments)
   animal: AnimalEntity;
 
-  @Column('text', { array: true })
+  @Column('text', { array: true, nullable:true })
   itemsUsed: string[];
 
   @Column({ type: 'varchar' })

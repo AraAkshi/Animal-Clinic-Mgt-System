@@ -31,6 +31,7 @@ export class InventoryService {
       .where('tbl.id = :id')
       .setParameter('id', id)
       .getOne();
+      console.log(res)
     this.logger.log(`Successfully returned details for Item with Id - ${id}`);
     return res;
   }

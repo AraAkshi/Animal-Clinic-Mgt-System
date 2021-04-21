@@ -67,7 +67,9 @@ function Inventory() {
 			addedDate: '',
 		},
 	]);
+
 	const [catItems, setCatItems] = useState([]);
+
 	const [selectedItem, setSelectedItem] = useState({
 		id: 0,
 		isEmpty: false,
