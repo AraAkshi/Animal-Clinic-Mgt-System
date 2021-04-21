@@ -15,6 +15,7 @@ export class InventoryController {
   @Post('/getOne')
   // @UseGuards(JwtAuthGuard)
   async getOne(@Body() data: { id: number }): Promise<InventoryEntity> {
+    console.log(data)
     return await this.service.getOneItem(data.id);
   }
 

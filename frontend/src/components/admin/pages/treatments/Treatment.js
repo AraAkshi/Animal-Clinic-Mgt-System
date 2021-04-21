@@ -21,7 +21,7 @@ import Header from '../../layout/Header';
 import Alerts from '../../../client/layout/Alerts';
 import Sidebar from '../../layout/Sidebar';
 import TreatmentDetails from './TreatmentDetails';
-import { getCategoryItems } from '../../../../services/inventory';
+import { getCategoryItems, getOneItem } from '../../../../services/inventory';
 import { getCusAnimals } from '../../../../services/animal';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -98,37 +98,34 @@ function Treatment() {
   };
 
   const handleRowSelect = async (item) => {
+    //Get Items used treatment
+    const items = [];
+    for (let i in item.itemsUsed) {
+      const treatmentDetails = item.itemsUsed[i].split('-');
+      const treatmentId = treatmentDetails[0];
+      const treatmentQty = treatmentDetails[1];
+      const treatmentRes = await getOneItem(treatmentId);
+      if (treatmentRes !== undefined) {
+        items.push(Object.assign(treatmentRes, { usedQty: treatmentQty }));
+      }
+    }
+    item.itemsUsed = items;
     setSelectedTreatment(item);
-
     //Get Animals of the Customer
     const animalRes = await getCusAnimals(item.customer.id);
     if (animalRes !== undefined) setCusAnimals(animalRes);
   };
 
-<<<<<<< HEAD
   useEffect(() => {
     async function fetchData() {
       const res = await getAllTreatments();
       if (res !== undefined) {
         setTreatments(res);
         const todayTreatments = res.filter(
-          (item) => item.dateReceived === selectedDate
+          (item) => formatDate(item.dateReceived) === selectedDate
         );
         setTodayTreatments(todayTreatments);
       }
-=======
-	useEffect(() => {
-		async function fetchData() {
-			const res = await getAllTreatments();
-			if (res !== undefined) {
-				setTreatments(res);
-				const todayTreatments = res.filter(
-					(item) => formatDate(item.dateReceived) === selectedDate
-				);
-				console.log(todayTreatments, selectedDate);
-				setTodayTreatments(todayTreatments);
-			}
->>>>>>> af814cc7280624c5068107e4e075beef53d5e96e
 
       const customerRes = await getAllCustomers();
       if (customerRes !== undefined) setCustomers(customerRes);
@@ -193,7 +190,6 @@ function Treatment() {
               style={{
                 marginTop: '0.5rem',
                 maxHeight: '70vh',
-                overflowY: 'auto',
               }}
             >
               <Table size="small" stickyHeader>
