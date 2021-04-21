@@ -80,6 +80,7 @@ function Appointment() {
 					(item) => formatDate(item.scheduleDate) === today
 				);
 				setTodayAppoints(dayAppoints);
+				setDayAppointments(dayAppoints);
 			}
 
 			const customerRes = await getAllCustomers();

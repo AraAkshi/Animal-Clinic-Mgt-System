@@ -105,6 +105,7 @@ function Treatment() {
     if (animalRes !== undefined) setCusAnimals(animalRes);
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     async function fetchData() {
       const res = await getAllTreatments();
@@ -115,6 +116,19 @@ function Treatment() {
         );
         setTodayTreatments(todayTreatments);
       }
+=======
+	useEffect(() => {
+		async function fetchData() {
+			const res = await getAllTreatments();
+			if (res !== undefined) {
+				setTreatments(res);
+				const todayTreatments = res.filter(
+					(item) => formatDate(item.dateReceived) === selectedDate
+				);
+				console.log(todayTreatments, selectedDate);
+				setTodayTreatments(todayTreatments);
+			}
+>>>>>>> af814cc7280624c5068107e4e075beef53d5e96e
 
       const customerRes = await getAllCustomers();
       if (customerRes !== undefined) setCustomers(customerRes);

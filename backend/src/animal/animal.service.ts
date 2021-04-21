@@ -127,7 +127,7 @@ export class AnimalService {
     if (owner) animal.owner = owner;
     if (treatments) animal.treatments = treatments;
     if (appointments) animal.appointments = appointments;
-    if (isActive) animal.isActive = isActive;
+    animal.isActive = isActive ? isActive : false;
 
     await this.repo.save(animal);
     this.logger.log(`Successfully Updated details of Animal - ${animal.name}`);

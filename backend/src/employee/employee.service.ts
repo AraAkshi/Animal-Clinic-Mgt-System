@@ -83,7 +83,7 @@ export class EmployeeService {
     if (address) res.address = address;
     if (nic) res.nic = nic;
     if (joinedDate) res.joinedDate = joinedDate;
-    if (isActive) res.isActive = isActive;
+    res.isActive = isActive ? isActive : false;
 
     await this.repo.save(res);
     this.logger.log(`Successfully Updated details of Employee - ${res.name}`);

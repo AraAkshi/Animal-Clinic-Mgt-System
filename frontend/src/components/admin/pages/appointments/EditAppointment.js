@@ -33,7 +33,7 @@ function EditAppointment(props) {
 		scheduleTime: selectedAppointment.scheduleTime,
 		animal: selectedAppointment.animal,
 		remarks: selectedAppointment.remarks,
-		isAttended: selectedAppointment.isAttended,
+		isAttended: selectedAppointment.isAttended === true ? 'true' : 'false',
 	});
 	const [availableTimes, setAvailableTimes] = useState(times);
 
@@ -90,15 +90,15 @@ function EditAppointment(props) {
 			scheduleTime: selectedAppointment.scheduleTime,
 			animal: selectedAppointment.animal,
 			remarks: selectedAppointment.remarks,
-			isAttended: selectedAppointment.isAttended,
+			isAttended: selectedAppointment.isAttended === true ? 'true' : 'false',
 		});
 	};
-
+	console.log(isAttended);
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		const res = await editAppointment(
 			id,
-			isAttended,
+			isAttended === 'true' ? true : false,
 			scheduleDate,
 			scheduleTime,
 			remarks,
@@ -252,8 +252,8 @@ function EditAppointment(props) {
 						row
 						onChange={(e) => onChange(e)}
 					>
-						<FormControlLabel value={true} control={<Radio />} label='Yes' />
-						<FormControlLabel value={false} control={<Radio />} label='No' />
+						<FormControlLabel value='true' control={<Radio />} label='Yes' />
+						<FormControlLabel value='false' control={<Radio />} label='No' />
 					</RadioGroup>
 				</Grid>
 				<Grid
