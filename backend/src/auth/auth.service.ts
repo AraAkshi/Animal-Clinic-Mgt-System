@@ -1,17 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { EmailService } from 'src/email/email.service';
 import { UserEntity } from 'src/entities/user.entity';
-import { MailService } from 'src/mail/mail.service';
 import { UsersService } from 'src/user/users.service';
 import { LoginStatus, JwtPayload, RegistrationStatus } from './JwtPayload.dto';
-import { join } from 'path';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private mailService: MailService,
+    private mailService: EmailService,
   ) {}
 
   async login(email: string, password: string): Promise<LoginStatus> {
@@ -57,9 +56,13 @@ export class AuthService {
     };
     try {
       const user = await this.usersService.create(email, password, name, role);
-      console.log(password);
       if (sendMail === true) {
-        await this.mailService.sendUserConfirmation(user, password);
+        await this.mailService.sendUserConfirmation(
+          email,
+          name,
+          password,
+          'localhost:3000/login',
+        );
       }
     } catch (err) {
       status = {

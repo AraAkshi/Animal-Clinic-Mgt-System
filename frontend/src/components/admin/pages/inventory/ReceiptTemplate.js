@@ -1,45 +1,45 @@
-import React, { useRef } from 'react';
-import ReactToPrint from 'react-to-print';
-// import Pdf from 'react-to-pdf';
-import { Button, Grid } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import ReceiptTemplate from './ReceiptTemplate';
+import React from 'react';
+import {
+	Table,
+	TableHead,
+	TableBody,
+	TableCell,
+	TableRow,
+	TableContainer,
+	Grid,
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-function Receipt(props) {
-	const { selectedItems } = props;
+const StyledTableCell = withStyles((theme) => ({
+	head: {
+		fontSize: 13,
+		fontWeight: 'bold',
+	},
+	body: {
+		fontSize: 12,
+	},
+}))(TableCell);
 
-	const componentRef = useRef();
-	return (
-		<div
-			style={{
-				backgroundColor: '#fff',
-				padding: '0.5rem',
-			}}
-		>
-			<ReactToPrint
-				trigger={() => (
-					<Grid container direction='row' justify='center'>
-						<Button
-							variant='contained'
-							color='default'
-							startIcon={<GetAppIcon />}
-						>
-							Get Receipt
-						</Button>
-					</Grid>
-				)}
-				content={() => componentRef.current}
-			/>
-			<ReceiptTemplate ref={componentRef} data={selectedItems} />
-			{/* <div
-				ref={ref}
+export default class ReceiptTemplate extends React.PureComponent {
+	render() {
+		const selectedItems = this.props.data;
+		const date = new Date().toLocaleDateString();
+		const time = new Date().toLocaleTimeString();
+		const itemAmount = selectedItems.map(
+			(item) => item.unitSellingPrice * item.newSales
+		);
+		const billTotal = itemAmount.reduce((item1, item2) => item1 + item2);
+
+		return (
+			<div
 				style={{
-					margin: '0.2rem',
-					minHeight: '90vh',
+					margin: '1.5rem',
+					padding: '2rem',
 					backgroundColor: '#fff',
 				}}
 			>
 				<TableContainer>
+					<p className='receipt-header'>BILL INVOICE</p>
 					<p className='receipt-header'>SHANE &amp; SHAWN ANIMAL CLINIC</p>
 					<Grid container direction='row' justify='space-evenly'>
 						<p className='receipt-desc'>
@@ -52,7 +52,7 @@ function Receipt(props) {
 					<Table
 						size='small'
 						stickyHeader
-						style={{ width: '45vw', margin: 'auto', marginTop: '1rem' }}
+						style={{ margin: 'auto', marginTop: '1rem' }}
 					>
 						<TableHead>
 							<TableRow>
@@ -88,23 +88,7 @@ function Receipt(props) {
 						</TableBody>
 					</Table>
 				</TableContainer>
-			</div> */}
-			{/* <Pdf targetRef={ref} filename='Receipt.pdf'>
-				{({ toPdf }) => (
-					<Grid container direction='row' justify='center'>
-						<Button
-							onClick={toPdf}
-							variant='contained'
-							color='default'
-							startIcon={<GetAppIcon />}
-						>
-							Get Receipt
-						</Button>
-					</Grid>
-				)}
-			</Pdf> */}
-		</div>
-	);
+			</div>
+		);
+	}
 }
-
-export default Receipt;

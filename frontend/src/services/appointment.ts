@@ -95,7 +95,6 @@ export const editAppointment = async (
 	animal?: any,
 	customer?: any
 ) => {
-	console.log(isAttended);
 	const response = await fetch(baseurl + 'appointment/edit', {
 		method: 'PUT',
 		headers: {
@@ -147,6 +146,17 @@ export const formatDate = (date: Date) => {
 	if (day.length < 2) day = '0' + day;
 
 	return [year, month, day].join('-');
+};
+
+export const dateDiff = (date1: Date, date2: Date) => {
+	const d1 = new Date(date1);
+	const d2 = new Date(date2);
+	// To calculate the time difference of two dates
+	let diffInTime = d2.getTime() - d1.getTime();
+
+	// To calculate the no. of days between two dates
+	let diffInDays = diffInTime / (1000 * 3600 * 24);
+	return diffInDays;
 };
 
 export const isDateDue = (d: Date) => {

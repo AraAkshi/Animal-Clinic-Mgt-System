@@ -17,6 +17,7 @@ import { addEmployee } from '../../../../services/employee';
 import Alerts from '../../../client/layout/Alerts';
 import Employee from './Employee';
 import { formatDate } from '../../../../services/appointment';
+const generator = require('generate-password');
 
 function AddEmployee() {
 	const d = new Date();
@@ -78,8 +79,13 @@ function AddEmployee() {
 			contact,
 			joinedDate
 		);
-
-		const userRes = await addUser(email, 'user1234', role, name);
+		//Auto Generate Password
+		const password = generator.generate({
+			length: 8,
+			numbers: true,
+			symbols: true,
+		});
+		const userRes = await addUser(email, password, role, name, true);
 		if (res !== undefined && userRes !== undefined) {
 			const newAlert = [
 				{

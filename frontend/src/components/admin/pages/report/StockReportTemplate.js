@@ -23,17 +23,10 @@ const StyledTableCell = withStyles((theme) => ({
 	},
 }))(TableCell);
 
-export default class SaleReportTemplate extends React.PureComponent {
+export default class StockReportTemplate extends React.PureComponent {
 	render() {
 		const date = new Date().toLocaleDateString();
 		const time = new Date().toLocaleTimeString();
-
-		const itemAmount =
-			this.props.data.length > 0
-				? this.props.data.map((item) => item.amount)
-				: [0];
-		const billTotal = itemAmount.reduce((item1, item2) => item1 + item2);
-
 		return (
 			<div
 				// ref={ref}
@@ -45,12 +38,12 @@ export default class SaleReportTemplate extends React.PureComponent {
 					minHeight: '86%',
 				}}
 			>
-				<p className='receipt-header'>SALES REPORT</p>
+				<p className='receipt-header'>INVENTORY REPORT</p>
 				<p className='receipt-header'>SHANE &amp; SHAWN ANIMAL CLINIC</p>
-				<p className='receipt-subheader'>
+				{/* <p className='receipt-subheader'>
 					FROM {formatDate(this.props.StartDate)} TO{' '}
 					{formatDate(this.props.EndDate)}
-				</p>
+				</p> */}
 				<Grid container direction='row' justify='space-evenly'>
 					<p className='receipt-desc'>
 						No 50. Molamure Rd, Kegalle - 071 054 3085 | 076 778 8839
@@ -67,22 +60,28 @@ export default class SaleReportTemplate extends React.PureComponent {
 					>
 						<TableHead>
 							<TableRow>
+								<StyledTableCell>Batch No</StyledTableCell>
+								<StyledTableCell>Brand</StyledTableCell>
 								<StyledTableCell>Name</StyledTableCell>
-								<StyledTableCell>Sold Date</StyledTableCell>
-								<StyledTableCell>Quantity</StyledTableCell>
-								<StyledTableCell>Sales Amount</StyledTableCell>
+								<StyledTableCell>Sold Quantity</StyledTableCell>
+								<StyledTableCell>Remaining Quantity</StyledTableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{this.props.data.length > 0 ? (
 								this.props.data.map((item) => (
-									<TableRow key={item.id}>
+									<TableRow
+										key={item.id}
+										style={{
+											backgroundColor:
+												item.quantity <= item.bufferQty ? '#ff6961' : '',
+										}}
+									>
+										<StyledTableCell>{item.batchNo}</StyledTableCell>
+										<StyledTableCell>{item.brand}</StyledTableCell>
 										<StyledTableCell>{item.name}</StyledTableCell>
-										<StyledTableCell>
-											{formatDate(item.soldDate)}
-										</StyledTableCell>
 										<StyledTableCell>{item.soldQty}</StyledTableCell>
-										<StyledTableCell>{item.amount}</StyledTableCell>
+										<StyledTableCell>{item.quantity}</StyledTableCell>
 									</TableRow>
 								))
 							) : (
@@ -90,12 +89,12 @@ export default class SaleReportTemplate extends React.PureComponent {
 									<StyledTableCell>No Items</StyledTableCell>
 								</TableRow>
 							)}
-							<TableRow>
-								<StyledTableCell>TOTAL SALES</StyledTableCell>
-								<StyledTableCell></StyledTableCell>
-								<StyledTableCell></StyledTableCell>
-								<StyledTableCell>{billTotal}</StyledTableCell>
-							</TableRow>
+							{/* <TableRow>
+							<StyledTableCell>TOTAL AMOUNT</StyledTableCell>
+							<StyledTableCell>{selectedItems.length}</StyledTableCell>
+							<StyledTableCell></StyledTableCell>
+							<StyledTableCell>{billTotal}</StyledTableCell>
+						</TableRow> */}
 						</TableBody>
 					</Table>
 				</TableContainer>

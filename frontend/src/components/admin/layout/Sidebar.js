@@ -47,6 +47,11 @@ function Sidebar() {
 							CUSTOMERS
 						</Button>
 					</li>
+					<li>
+						<Button variant='text' href='/admin/change-password'>
+							CHANGE PASWWORD
+						</Button>
+					</li>
 				</ul>
 				<Footer />
 			</div>

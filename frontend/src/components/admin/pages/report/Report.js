@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import ReactToPrint from 'react-to-print';
 import {
 	Grid,
@@ -17,6 +17,8 @@ import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlin
 import { formatDate } from '../../../../services/appointment';
 import { reportTypes } from '../../../../services/datasets/report-types.d';
 import SaleReportTemplate from './SaleReportTemplate';
+import StockReportTemplate from './StockReportTemplate';
+import { getAllItems } from '../../../../services/inventory';
 
 function Report() {
 	const d = new Date();
@@ -25,7 +27,7 @@ function Report() {
 	const [EndDate, setEndDate] = useState(date);
 	const [reportType, setReportType] = useState();
 	const [loading, setLoading] = useState(null);
-	const [salesData, setSalesData] = useState([]);
+	const [data, setData] = useState([]);
 	//Set start date
 	const onStartDateSelect = (e) => {
 		setStartDate(e.target.value);
@@ -44,8 +46,16 @@ function Report() {
 	//Get report data
 	const getReportData = async () => {
 		setLoading(false);
-		const res = await getSalesByDate(StartDate, EndDate);
-		if (res !== undefined) setSalesData(res);
+		if (reportType === 1) {
+			const res = await getSalesByDate(StartDate, EndDate);
+			if (res !== undefined) setData(res);
+		} else if (reportType === 2) {
+			const res = await getAllItems();
+			if (res !== undefined) {
+				const nonEmptyItems = res.filter((item) => item.quantity !== 0);
+				setData(nonEmptyItems);
+			}
+		}
 		setLoading(true);
 	};
 
@@ -65,30 +75,6 @@ function Report() {
 					style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
 				>
 					<Grid item>
-						<TextField
-							label='Start Date'
-							variant='outlined'
-							type='date'
-							size='small'
-							name='startDate'
-							value={StartDate}
-							style={{ backgroundColor: '#fff', borderRadius: '0.2rem' }}
-							onChange={(e) => onStartDateSelect(e)}
-						/>
-					</Grid>
-					<Grid item>
-						<TextField
-							label='End Date'
-							variant='outlined'
-							type='date'
-							size='small'
-							name='EndDate'
-							value={EndDate}
-							style={{ backgroundColor: '#fff', borderRadius: '0.2rem' }}
-							onChange={(e) => onEndDateSelect(e)}
-						/>
-					</Grid>
-					<Grid item>
 						<FormControl
 							variant='outlined'
 							size='small'
@@ -107,7 +93,7 @@ function Report() {
 							>
 								{reportTypes.length > 0 ? (
 									reportTypes.map((item) => (
-										<MenuItem key={item.id} value={item.type}>
+										<MenuItem key={item.id} value={item.id}>
 											{item.type}
 										</MenuItem>
 									))
@@ -116,6 +102,32 @@ function Report() {
 								)}
 							</Select>
 						</FormControl>
+					</Grid>
+					<Grid item>
+						<TextField
+							disabled={reportType !== 1 ? true : false}
+							label='Start Date'
+							variant='outlined'
+							type='date'
+							size='small'
+							name='startDate'
+							value={StartDate}
+							style={{ backgroundColor: '#fff', borderRadius: '0.2rem' }}
+							onChange={(e) => onStartDateSelect(e)}
+						/>
+					</Grid>
+					<Grid item>
+						<TextField
+							disabled={reportType !== 1 ? true : false}
+							label='End Date'
+							variant='outlined'
+							type='date'
+							size='small'
+							name='EndDate'
+							value={EndDate}
+							style={{ backgroundColor: '#fff', borderRadius: '0.2rem' }}
+							onChange={(e) => onEndDateSelect(e)}
+						/>
 					</Grid>
 					<Grid item>
 						<Button
@@ -145,7 +157,23 @@ function Report() {
 					)}
 					content={() => componentRef.current}
 				/>
-				<SaleReportTemplate ref={componentRef} salesData={salesData} />
+				{reportType === 1 ? (
+					<SaleReportTemplate
+						ref={componentRef}
+						data={data}
+						StartDate={StartDate}
+						EndDate={EndDate}
+					/>
+				) : reportType === 2 ? (
+					<StockReportTemplate
+						ref={componentRef}
+						data={data}
+						StartDate={StartDate}
+						EndDate={EndDate}
+					/>
+				) : (
+					<Fragment></Fragment>
+				)}
 			</div>
 		</div>
 	);

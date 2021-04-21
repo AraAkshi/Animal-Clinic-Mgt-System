@@ -28,6 +28,7 @@ import { join } from 'path';
 import { SalesEntity } from './entities/sales.entity';
 import { SalesModule } from './sales/sales.module';
 import { MailModule } from './mail/mail.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     CustomerModule,
     SalesModule,
+    EmailModule,
     // MailModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'images'),

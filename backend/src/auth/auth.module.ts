@@ -6,13 +6,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/user/user.module';
 import { MailModule } from 'src/mail/mail.module';
+import { EmailModule } from 'src/email/email.module';
 
 const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
 
 @Module({
   imports: [
     UsersModule,
-    MailModule,
+    EmailModule,
     passportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRETKEY || 'mySecret',

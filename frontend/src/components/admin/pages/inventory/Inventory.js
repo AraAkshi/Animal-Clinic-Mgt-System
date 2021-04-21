@@ -20,12 +20,14 @@ import Sidebar from '../../layout/Sidebar';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import TrendingDownSharpIcon from '@material-ui/icons/TrendingDownSharp';
+import ErrorOutlineSharpIcon from '@material-ui/icons/ErrorOutlineSharp';
 import Alerts from '../../../client/layout/Alerts';
 import { getAllItems, getItemsByCat } from '../../../../services/inventory';
 import { getAllCategories } from '../../../../services/productCategory';
 import CategoryBtn from './CategoryBtn';
 import EditItem from './EditItem';
-import { formatDate } from '../../../../services/appointment';
+import { dateDiff, formatDate } from '../../../../services/appointment';
 import { Autocomplete } from '@material-ui/lab';
 import { getCategoryItems } from '../../../../services/inventory';
 
@@ -65,9 +67,7 @@ function Inventory() {
 			addedDate: '',
 		},
 	]);
-
 	const [catItems, setCatItems] = useState([]);
-
 	const [selectedItem, setSelectedItem] = useState({
 		id: 0,
 		isEmpty: false,
@@ -113,7 +113,33 @@ function Inventory() {
 			const items = await getCategoryItems(id);
 			if (items !== undefined) setCatItems(items);
 		} else {
+			const itemRes = await getAllItems();
+			setItems(itemRes);
 			setCatItems([]);
+		}
+	};
+
+	//Get the low stock data set
+	const onLowStockSelect = async () => {
+		const itemRes = await getAllItems();
+		if (itemRes !== undefined) {
+			const lowStock = itemRes.filter(
+				(item) => item.quantity <= item.bufferQty
+			);
+			setItems(lowStock);
+		}
+	};
+
+	//Get soon to expire items
+	const onExpireSelect = async () => {
+		const itemRes = await getAllItems();
+		if (itemRes !== undefined) {
+			const toExpireStock = itemRes.filter((item) => {
+				const today = new Date();
+				const dayDiff = dateDiff(today, item.expireDate);
+				if (dayDiff <= item.notifyBefore) return item;
+			});
+			setItems(toExpireStock);
 		}
 	};
 
@@ -146,7 +172,8 @@ function Inventory() {
 						>
 							<Grid item>
 								<Button
-									// variant='contained'
+									variant='outlined'
+									color='secondary'
 									onClick={() => handleCatSelect(null)}
 								>
 									ALL ITEMS
@@ -167,18 +194,29 @@ function Inventory() {
 					justify='space-between'
 					style={{ marginBottom: '1rem' }}
 				>
-					<Grid item xs={3}>
+					<Grid item xs={2}>
 						<Button
 							size='small'
 							color='secondary'
-							startIcon={<ShoppingCartIcon />}
-							onClick={sellItems}
+							onClick={onLowStockSelect}
 							variant='contained'
+							startIcon={<TrendingDownSharpIcon fontSize='small' />}
 						>
-							Sell Items
+							Low Stock
 						</Button>
 					</Grid>
-					<Grid item xs={6}>
+					<Grid item xs={2}>
+						<Button
+							size='small'
+							color='secondary'
+							onClick={onExpireSelect}
+							variant='contained'
+							startIcon={<ErrorOutlineSharpIcon fontSize='small' />}
+						>
+							Expire Soon
+						</Button>
+					</Grid>
+					<Grid item xs={4}>
 						<Autocomplete
 							options={items.map((item) => item.name)}
 							onChange={(e, newValue) => {
@@ -189,7 +227,18 @@ function Inventory() {
 							)}
 						/>
 					</Grid>
-					<Grid item xs={3}>
+					<Grid item xs={2}>
+						<Button
+							size='small'
+							color='secondary'
+							startIcon={<ShoppingCartIcon />}
+							onClick={sellItems}
+							variant='contained'
+						>
+							Sell Items
+						</Button>
+					</Grid>
+					<Grid item xs={2}>
 						<Button
 							size='small'
 							color='secondary'
@@ -225,7 +274,16 @@ function Inventory() {
 								</TableHead>
 								<TableBody>
 									{searchItem !== null && searchItem !== undefined ? (
-										<TableRow hover={true} key={searchItem.id}>
+										<TableRow
+											hover={true}
+											key={searchItem.id}
+											style={{
+												backgroundColor:
+													searchItem.quantity <= searchItem.bufferQty
+														? '#ff6961'
+														: '',
+											}}
+										>
 											<StyledTableCell>
 												{searchItem.category.name}
 											</StyledTableCell>
@@ -268,7 +326,16 @@ function Inventory() {
 										</TableRow>
 									) : catItems.length > 0 ? (
 										catItems.map((item) => (
-											<TableRow hover={true} key={item.id}>
+											<TableRow
+												hover={true}
+												key={item.id}
+												style={{
+													backgroundColor:
+														catItems.quantity <= catItems.bufferQty
+															? '#ff6961'
+															: '',
+												}}
+											>
 												<StyledTableCell>{item.category.name}</StyledTableCell>
 												<StyledTableCell>{item.batchNo}</StyledTableCell>
 												<StyledTableCell>{item.name}</StyledTableCell>
@@ -295,13 +362,6 @@ function Inventory() {
 														>
 															<EditIcon />
 														</IconButton>
-														{/* <IconButton
-														color='secondary'
-														fontSize='small'
-														onClick={() => handleDelete(item)}
-													>
-														<DeleteIcon fontSize='small' />
-													</IconButton> */}
 													</TableCell>
 												) : (
 													<TableCell />
@@ -310,7 +370,14 @@ function Inventory() {
 										))
 									) : items.length > 0 ? (
 										items.map((item) => (
-											<TableRow hover={true} key={item.id}>
+											<TableRow
+												hover={true}
+												key={item.id}
+												style={{
+													backgroundColor:
+														items.quantity <= items.bufferQty ? '#ff6961' : '',
+												}}
+											>
 												<StyledTableCell>{item.category.name}</StyledTableCell>
 												<StyledTableCell>{item.batchNo}</StyledTableCell>
 												<StyledTableCell>{item.name}</StyledTableCell>
@@ -337,13 +404,6 @@ function Inventory() {
 														>
 															<EditIcon />
 														</IconButton>
-														{/* <IconButton
-															color='secondary'
-															fontSize='small'
-															onClick={() => handleDelete(item)}
-														>
-															<DeleteIcon fontSize='small' />
-														</IconButton> */}
 													</TableCell>
 												) : (
 													<TableCell />
