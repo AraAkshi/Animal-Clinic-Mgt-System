@@ -50,7 +50,9 @@ export class CustomerService {
     remarks: string;
   }): Promise<CustomerEntity> {
     Object.assign(data, { enteredDate: new Date() });
+    console.log(data)
     const res = this.repo.create(data);
+    console.log(res)
     await this.repo.save(res);
     this.logger.log(`Successfully Added Customer - ${data.name}`);
     return res;

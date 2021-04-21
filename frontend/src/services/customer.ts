@@ -60,8 +60,8 @@ export const addCustomer = async (
 	name: string,
 	email: string,
 	address: string,
+	contact: number,
 	remarks: string,
-	contact: number
 ) => {
 	const response = await fetch(baseurl + 'customer/add', {
 		method: 'POST',
@@ -73,9 +73,8 @@ export const addCustomer = async (
 		body: JSON.stringify({
 			name,
 			email,
-			address,
+			address,remarks,
 			contact,
-			remarks,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {

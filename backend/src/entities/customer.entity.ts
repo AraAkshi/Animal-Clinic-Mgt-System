@@ -14,7 +14,7 @@ export class CustomerEntity {
   @Column({ type: 'varchar', unique: true, nullable: true })
   email: string;
 
-  @Column()
+  @Column({nullable:true})
   contact: number;
 
   @Column({ type: 'varchar', nullable: true })
