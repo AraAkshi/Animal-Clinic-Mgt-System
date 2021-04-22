@@ -18,7 +18,7 @@ export const getAllEmployees = async () => {
 };
 
 //Get a employee @params - employeeId
-export const getOneEmployee = async (id: number) => {
+export const getOneEmployee = async (email: string) => {
 	const response = await fetch(baseurl + 'employee/getOne', {
 		method: 'POST',
 		headers: {
@@ -27,7 +27,7 @@ export const getOneEmployee = async (id: number) => {
 			Authorization: token,
 		},
 		body: JSON.stringify({
-			id,
+			email,
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {

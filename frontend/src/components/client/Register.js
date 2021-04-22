@@ -59,7 +59,16 @@ const Register = () => {
 		e.preventDefault();
 
 		//Check password match
-		if (password !== password2) {
+		if (password.length < 6) {
+			const newAlert = [
+				{
+					msg: 'Please enter a Password of minimum 6 characters',
+					alertType: 'danger',
+					state: true,
+				},
+			];
+			setAlert(newAlert);
+		} else if (password !== password2) {
 			const newAlert = [
 				{
 					msg: 'Passwords do not match',
@@ -124,7 +133,7 @@ const Register = () => {
 								name='name'
 								size='small'
 								label='Name'
-								value={name}
+								value={name.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								required
 							/>
@@ -144,7 +153,7 @@ const Register = () => {
 								name='address'
 								label='Address'
 								size='small'
-								value={address}
+								value={address.toUpperCase()}
 								onChange={(e) => onChange(e)}
 								multiline
 								rows={2}

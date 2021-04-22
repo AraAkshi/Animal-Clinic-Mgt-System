@@ -14,8 +14,8 @@ export class EmployeeController {
 
   @Post('/getOne')
   // @UseGuards(JwtAuthGuard)
-  async getOne(@Body() data: { id: number }): Promise<EmployeeEntity> {
-    return await this.service.getOneEmployee(data.id);
+  async getOne(@Body() data: { email: string }): Promise<EmployeeEntity> {
+    return await this.service.getOneEmployee(data.email);
   }
 
   @Post('/add')

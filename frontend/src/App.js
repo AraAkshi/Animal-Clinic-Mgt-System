@@ -26,6 +26,7 @@ import Forbidden from './components/common/forbidden';
 import ClientProfile from './components/client/profile/ClientProfile';
 import ChangePassword from './components/client/profile/ChangePassword';
 import EmployeeChangePassword from './components/admin/pages/profile/EmployeeChangePassword';
+import UserProfile from './components/admin/pages/profile/UserProfile';
 
 function App() {
 	return (
@@ -94,6 +95,11 @@ function App() {
 					exact
 					path='/admin/customers/add-customer'
 					component={AddCustomer}
+				/>
+				<EmpPrivateRoute
+					exact
+					path='/admin/my-profile'
+					component={UserProfile}
 				/>
 				<EmpPrivateRoute
 					exact

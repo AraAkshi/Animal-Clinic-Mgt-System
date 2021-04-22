@@ -21,11 +21,11 @@ export class EmployeeService {
 
   //Get One Employee
   //@params - Employee Id
-  async getOneEmployee(empID: number): Promise<EmployeeEntity> {
-    this.logger.log(`Start getting details for Employee with Id - ${empID}`);
-    const res = await this.repo.findOne(empID);
+  async getOneEmployee(email: string): Promise<EmployeeEntity> {
+    this.logger.log(`Start getting details for Employee with Id - ${email}`);
+    const res = await this.repo.findOne({ where: { email: email } });
     this.logger.log(
-      `Successfully returned details for Employee with Id - ${empID}`,
+      `Successfully returned details for Employee with Id - ${email}`,
     );
     return res;
   }

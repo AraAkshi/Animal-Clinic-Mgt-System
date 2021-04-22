@@ -48,8 +48,8 @@ function Sidebar() {
 						</Button>
 					</li>
 					<li>
-						<Button variant='text' href='/admin/change-password'>
-							CHANGE PASWWORD
+						<Button variant='text' href='/admin/my-profile'>
+							PROFILE
 						</Button>
 					</li>
 				</ul>
