@@ -31,7 +31,7 @@ export const getOneEmployee = async (email: string) => {
 		}),
 	});
 	if (response.status === 200 || response.status === 201) {
-		const data = await response.text();
+		const data = await response.json();
 		return data;
 	}
 };

@@ -27,97 +27,101 @@ import ClientProfile from './components/client/profile/ClientProfile';
 import ChangePassword from './components/client/profile/ChangePassword';
 import EmployeeChangePassword from './components/admin/pages/profile/EmployeeChangePassword';
 import UserProfile from './components/admin/pages/profile/UserProfile';
+import AboutUs from './components/client/AboutUs';
+import Services from './components/client/Services';
 
 function App() {
-	return (
-		<Router>
-			<Switch>
-				{/* Public Accessible Routes Routes */}
-				<Route exact path='/' component={Homepage} />
-				<Route exact path='/login' component={Login} />
-				<Route exact path='/register' component={Register} />
-				<Route exact path='/access-denied' component={Forbidden} />
+  return (
+    <Router>
+      <Switch>
+        {/* Public Accessible Routes Routes */}
+        <Route exact path="/" component={Homepage} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/access-denied" component={Forbidden} />
+        <Route exact path="/about-us" component={AboutUs} />
+        <Route exact path="/services" component={Services} />
 
-				{/* Client Private Routes */}
-				<ClientPrivateRoute
-					exact
-					path='/client/appointments'
-					component={ClientAppointment}
-				/>
-				<ClientPrivateRoute
-					exact
-					path='/my-profile'
-					component={ClientProfile}
-				/>
-				<ClientPrivateRoute
-					exact
-					path='/my-profile/change-password'
-					component={ChangePassword}
-				/>
+        {/* Client Private Routes */}
+        <ClientPrivateRoute
+          exact
+          path="/client/appointments"
+          component={ClientAppointment}
+        />
+        <ClientPrivateRoute
+          exact
+          path="/my-profile"
+          component={ClientProfile}
+        />
+        <ClientPrivateRoute
+          exact
+          path="/my-profile/change-password"
+          component={ChangePassword}
+        />
 
-				{/* Employee Private Routes */}
-				<EmpPrivateRoute exact path='/admin/dashboard' component={Dashboard} />
-				<EmpPrivateRoute
-					exact
-					path='/admin/appointments'
-					component={Appointment}
-				/>
-				<EmpPrivateRoute
-					exact
-					path='/admin/appointments/add-appointment'
-					component={AddAppointment}
-				/>
-				<EmpPrivateRoute exact path='/admin/animals' component={Animal} />
-				<EmpPrivateRoute
-					exact
-					path='/admin/animals/add-animal'
-					component={AddAnimal}
-				/>
-				<EmpPrivateRoute exact path='/admin/treatments' component={Treatment} />
-				<EmpPrivateRoute
-					exact
-					path='/admin/treatments/add-treatment'
-					component={AddTreatment}
-				/>
-				<EmpPrivateRoute exact path='/admin/inventory' component={Inventory} />
-				<EmpPrivateRoute
-					exact
-					path='/admin/inventory/add-item'
-					component={AddItem}
-				/>
-				<EmpPrivateRoute
-					exact
-					path='/admin/inventory/sell-item'
-					component={SellItem}
-				/>
-				<EmpPrivateRoute exact path='/admin/customers' component={Customer} />
-				<EmpPrivateRoute
-					exact
-					path='/admin/customers/add-customer'
-					component={AddCustomer}
-				/>
-				<EmpPrivateRoute
-					exact
-					path='/admin/my-profile'
-					component={UserProfile}
-				/>
-				<EmpPrivateRoute
-					exact
-					path='/admin/change-password'
-					component={EmployeeChangePassword}
-				/>
+        {/* Employee Private Routes */}
+        <EmpPrivateRoute exact path="/admin/dashboard" component={Dashboard} />
+        <EmpPrivateRoute
+          exact
+          path="/admin/appointments"
+          component={Appointment}
+        />
+        <EmpPrivateRoute
+          exact
+          path="/admin/appointments/add-appointment"
+          component={AddAppointment}
+        />
+        <EmpPrivateRoute exact path="/admin/animals" component={Animal} />
+        <EmpPrivateRoute
+          exact
+          path="/admin/animals/add-animal"
+          component={AddAnimal}
+        />
+        <EmpPrivateRoute exact path="/admin/treatments" component={Treatment} />
+        <EmpPrivateRoute
+          exact
+          path="/admin/treatments/add-treatment"
+          component={AddTreatment}
+        />
+        <EmpPrivateRoute exact path="/admin/inventory" component={Inventory} />
+        <EmpPrivateRoute
+          exact
+          path="/admin/inventory/add-item"
+          component={AddItem}
+        />
+        <EmpPrivateRoute
+          exact
+          path="/admin/inventory/sell-item"
+          component={SellItem}
+        />
+        <EmpPrivateRoute exact path="/admin/customers" component={Customer} />
+        <EmpPrivateRoute
+          exact
+          path="/admin/customers/add-customer"
+          component={AddCustomer}
+        />
+        <EmpPrivateRoute
+          exact
+          path="/admin/my-profile"
+          component={UserProfile}
+        />
+        <EmpPrivateRoute
+          exact
+          path="/admin/change-password"
+          component={EmployeeChangePassword}
+        />
 
-				{/* Admin Private Routes */}
-				<AdminPrivateRoute exact path='/admin/reports' component={Report} />
-				<AdminPrivateRoute exact path='/admin/employees' component={Employee} />
-				<AdminPrivateRoute
-					exact
-					path='/admin/employees/add-employee'
-					component={AddEmployee}
-				/>
-			</Switch>
-		</Router>
-	);
+        {/* Admin Private Routes */}
+        <AdminPrivateRoute exact path="/admin/reports" component={Report} />
+        <AdminPrivateRoute exact path="/admin/employees" component={Employee} />
+        <AdminPrivateRoute
+          exact
+          path="/admin/employees/add-employee"
+          component={AddEmployee}
+        />
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
