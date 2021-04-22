@@ -27,8 +27,9 @@ import { AllExceptionsFilter } from './_shared/http-error-filter';
 import { join } from 'path';
 import { SalesEntity } from './entities/sales.entity';
 import { SalesModule } from './sales/sales.module';
-import { MailModule } from './mail/mail.module';
+// import { MailModule } from './mail/mail.module';
 import { EmailModule } from './email/email.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -37,8 +38,8 @@ import { EmailModule } from './email/email.module';
       username: process.env.DB_USER || 'postgres',
       host: process.env.DB_HOST || 'localhost',
       database: process.env.DB_DATABASE || 'animal-clinic-db',
-      // password: process.env.DB_PASSWORD || 'chamal123',
-      password: process.env.DB_PASSWORD || 'Ish@1996',
+      password: process.env.DB_PASSWORD || 'chamal123',
+      // password: process.env.DB_PASSWORD || 'Ish@1996',
       port: parseInt(process.env.DB_PORT) || 5432,
       entities: [
         AnimalEntity,
@@ -66,7 +67,7 @@ import { EmailModule } from './email/email.module';
     CustomerModule,
     SalesModule,
     EmailModule,
-    // MailModule,
+    ScheduleModule.forRoot(),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'images'),
       exclude: ['/api*'],

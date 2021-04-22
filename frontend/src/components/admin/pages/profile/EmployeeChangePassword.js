@@ -51,10 +51,7 @@ function EmployeeChangePassword() {
 			setAlert(newAlert);
 			setAlertMsg('Passwords do not match. Please Try Again!');
 			setOpenAlert(true);
-			window.open(
-				window.location.origin + `/my-profile/change-password`,
-				'_self'
-			);
+			window.open(window.location.origin + `/admin/change-password`, '_self');
 		} else {
 			const res = await changePassword(email, password);
 			if (res !== undefined) {
@@ -66,7 +63,7 @@ function EmployeeChangePassword() {
 					},
 				];
 				setAlert(newAlert);
-				window.open(window.location.origin + `/my-profile`, '_self');
+				window.open(window.location.origin + `/admin/dashboard`, '_self');
 			} else {
 				const newAlert = [
 					{

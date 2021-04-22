@@ -1,4 +1,5 @@
 import { Controller, Get, Res, Body, Post } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import { EmailService } from './email.service';
 
 @Controller('email')
@@ -25,5 +26,15 @@ export class EmailController {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  @Cron('0 4 * * *')
+  async notifyNextTreatment() {
+    return await this.emailservice.sendTreatmentReminder();
+  }
+
+  @Cron('0 5 * * *')
+  async notifyDueAppointments() {
+    return await this.emailservice.sendAppointmentReminder();
   }
 }
