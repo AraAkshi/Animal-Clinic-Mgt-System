@@ -254,8 +254,8 @@ function Inventory() {
 				</Grid>
 				<Grid container direction='row' justify='space-between'>
 					<Grid item xs={12}>
-						<TableContainer component={Paper}>
-							<Table size='small' stickyHeader style={{ maxHeight: '70vh' }}>
+						<TableContainer component={Paper} style={{ maxHeight: '70vh' }}>
+							<Table size='small' stickyHeader>
 								<TableHead>
 									<TableRow>
 										<StyledTableCell>Category</StyledTableCell>

@@ -22,7 +22,7 @@ const Alerts = (props) => {
 		alerts.map((alerts) => (
 			<Snackbar
 				open={open}
-				autoHideDuration={60000}
+				autoHideDuration={100000}
 				onClose={handleClose}
 				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 			>

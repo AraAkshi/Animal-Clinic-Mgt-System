@@ -9,7 +9,7 @@ import {
 	Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { formatDate } from '../../../../services/appointment';
+import { dateDiff, formatDate } from '../../../../services/appointment';
 
 const StyledTableCell = withStyles((theme) => ({
 	head: {
@@ -27,6 +27,7 @@ export default class StockReportTemplate extends React.PureComponent {
 	render() {
 		const date = new Date().toLocaleDateString();
 		const time = new Date().toLocaleTimeString();
+		const today = new Date();
 		return (
 			<div
 				// ref={ref}
@@ -65,25 +66,36 @@ export default class StockReportTemplate extends React.PureComponent {
 								<StyledTableCell>Name</StyledTableCell>
 								<StyledTableCell>Sold Quantity</StyledTableCell>
 								<StyledTableCell>Remaining Quantity</StyledTableCell>
+								<StyledTableCell>Expire Date</StyledTableCell>
 							</TableRow>
 						</TableHead>
 						<TableBody>
 							{this.props.data.length > 0 ? (
-								this.props.data.map((item) => (
-									<TableRow
-										key={item.id}
-										style={{
-											backgroundColor:
-												item.quantity <= item.bufferQty ? '#ff6961' : '',
-										}}
-									>
-										<StyledTableCell>{item.batchNo}</StyledTableCell>
-										<StyledTableCell>{item.brand}</StyledTableCell>
-										<StyledTableCell>{item.name}</StyledTableCell>
-										<StyledTableCell>{item.soldQty}</StyledTableCell>
-										<StyledTableCell>{item.quantity}</StyledTableCell>
-									</TableRow>
-								))
+								this.props.data.map((item) => {
+									const dayDiff = dateDiff(today, item.expireDate);
+									return (
+										<TableRow
+											key={item.id}
+											style={{
+												backgroundColor:
+													item.quantity <= item.bufferQty
+														? '#ff6961'
+														: dayDiff <= item.notifyBefore
+														? '#ffe268'
+														: '',
+											}}
+										>
+											<StyledTableCell>{item.batchNo}</StyledTableCell>
+											<StyledTableCell>{item.brand}</StyledTableCell>
+											<StyledTableCell>{item.name}</StyledTableCell>
+											<StyledTableCell>{item.soldQty}</StyledTableCell>
+											<StyledTableCell>{item.quantity}</StyledTableCell>
+											<StyledTableCell>
+												{formatDate(item.expireDate)}
+											</StyledTableCell>
+										</TableRow>
+									);
+								})
 							) : (
 								<TableRow>
 									<StyledTableCell>No Items</StyledTableCell>
