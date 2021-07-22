@@ -7,7 +7,8 @@ A web-based system to manage operations in an Animal clinic. Build using ReactJs
 2. npm run start:dev => run the backend while watching for any changes
 
 # Frontend installation
-1. npm run start => will start the application
+1. npm i => will install required modules.
+2. npm run start => will start the application
 
 # Database configuration
 1. Make sure PostgreSQL is installed with pgAdmin (GUI to interact with Postgres DB)
